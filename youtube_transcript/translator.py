@@ -17,7 +17,8 @@ def _check_ollama() -> bool:
         ollama.list()
         _ollama_available = True
     except Exception:
-        _ollama_available = False    return _ollama_available
+        _ollama_available = False
+    return _ollama_available
 
 
 def translate_to_english(text: str, source_lang: str) -> str:
