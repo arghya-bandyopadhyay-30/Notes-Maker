@@ -43,22 +43,6 @@ def fetch_entries_with_fallback(
     language: str,
 ) -> tuple[list, str]:
     print("\nTrying YouTube transcript API...")
-
-    try:
-        entries = fetch_from_transcript_api(video_id, language)
-        print("YouTube transcript retrieved successfully.")
-        return entries, "youtube_transcript_api"
-    except (TranscriptsDisabled, NoTranscriptFound) as error:
-        print(f"Transcript unavailable: {type(error).__name__}")
-    except Exception as error:
-        error_name = type(error).__name__
-        print(f"Transcript API failed: {error_name}")
-
-        if "IpBlocked" in error_name:
-            print("YouTube appears to be blocking the transcript request.")
-        else:
-            print(f"Reason: {str(error)[:300]}")
-
     print("\nFalling back to audio transcription...")
 
     try:
