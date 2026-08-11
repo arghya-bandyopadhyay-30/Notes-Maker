@@ -3,11 +3,14 @@ from dataclasses import dataclass
 from .string_constants import MODELS, TRANSCRIPT, VALIDATOR, YOUTUBE_URL
 
 
-def _require_non_empty_string(value, field: str) -> str:
-    if not isinstance(value, str) or not value.strip():
-        raise ValueError(f"'{field}' must be a non-empty string")
+def _require_field(data: dict, field: str):
+    if not isinstance(data, dict):
+        raise TypeError("config data must be a dict")
 
-    return value.strip()
+    if field not in data:
+        raise KeyError(f"'{field}' is required")
+
+    return data[field]
 
 
 @dataclass
@@ -23,12 +26,9 @@ class ModelsConfig:
 
     @classmethod
     def from_dict(cls, data: dict) -> "ModelsConfig":
-        if not isinstance(data, dict):
-            raise TypeError("'models' config must be a dict")
-
         return cls(
-            transcript=_require_non_empty_string(data[TRANSCRIPT], TRANSCRIPT),
-            validator=_require_non_empty_string(data[VALIDATOR], VALIDATOR),
+            transcript=_require_field(data, TRANSCRIPT),
+            validator=_require_field(data, VALIDATOR),
         )
 
 
@@ -45,10 +45,7 @@ class Config:
 
     @classmethod
     def from_dict(cls, data: dict) -> "Config":
-        if not isinstance(data, dict):
-            raise TypeError("config must be a dict")
-
         return cls(
-            youtube_url=_require_non_empty_string(data[YOUTUBE_URL], YOUTUBE_URL),
-            models=ModelsConfig.from_dict(data[MODELS]),
+            youtube_url=_require_field(data, YOUTUBE_URL),
+            models=ModelsConfig.from_dict(_require_field(data, MODELS)),
         )
