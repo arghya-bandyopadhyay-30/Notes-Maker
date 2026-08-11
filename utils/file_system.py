@@ -2,6 +2,14 @@ import os
 
 import yaml
 
+from .string_constants import (
+    FILE_NOT_FOUND,
+    READ_MODE,
+    UTF_8_ENCODING,
+    YAML_FILE_IS_EMPTY,
+    YAML_FILE_MUST_BE_MAPPING,
+)
+
 
 class FileSystem:
     def path_exists(self, path: str) -> bool:
@@ -15,17 +23,17 @@ class FileSystem:
 
     def read_yaml(self, path: str) -> dict:
         if not self.is_file(path):
-            raise FileNotFoundError(f"File not found: {path}")
+            raise FileNotFoundError(FILE_NOT_FOUND.format(path))
 
-        with open(path, "r", encoding="utf-8") as file:
+        with open(path, READ_MODE, encoding=UTF_8_ENCODING) as file:
             data = yaml.safe_load(file)
 
         if data is None:
-            raise ValueError(f"YAML file is empty: {path}")
+            raise ValueError(YAML_FILE_IS_EMPTY.format(path))
 
         if not isinstance(data, dict):
             raise ValueError(
-                f"YAML file must contain a mapping at the top level: {path}"
+                YAML_FILE_MUST_BE_MAPPING.format(path)
             )
 
         return data

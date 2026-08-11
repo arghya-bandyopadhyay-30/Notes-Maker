@@ -10,7 +10,7 @@ from .string_constants import (
     VALIDATOR,
     YOUTUBE,
 )
-from .validation import _require_directory_path, _require_field
+from .validation import require_directory_path, require_field
 
 
 @dataclass
@@ -27,8 +27,8 @@ class YoutubeConfig:
     @classmethod
     def from_dict(cls, data: dict) -> "YoutubeConfig":
         return cls(
-            url=_require_field(data, URL),
-            language=_require_field(data, LANGUAGE),
+            url=require_field(data, URL),
+            language=require_field(data, LANGUAGE),
         )
 
 
@@ -46,8 +46,8 @@ class ModelsConfig:
     @classmethod
     def from_dict(cls, data: dict) -> "ModelsConfig":
         return cls(
-            transcript=_require_field(data, TRANSCRIPT),
-            validator=_require_field(data, VALIDATOR),
+            transcript=require_field(data, TRANSCRIPT),
+            validator=require_field(data, VALIDATOR),
         )
 
 
@@ -71,11 +71,11 @@ class Config:
         dependencies: DependencyContainer,
     ) -> "Config":
         return cls(
-            youtube=YoutubeConfig.from_dict(_require_field(data, YOUTUBE)),
-            output_directory=_require_directory_path(
-                _require_field(data, OUTPUT_DIRECTORY),
+            youtube=YoutubeConfig.from_dict(require_field(data, YOUTUBE)),
+            output_directory=require_directory_path(
+                require_field(data, OUTPUT_DIRECTORY),
                 OUTPUT_DIRECTORY,
                 dependencies,
             ),
-            models=ModelsConfig.from_dict(_require_field(data, MODELS)),
+            models=ModelsConfig.from_dict(require_field(data, MODELS)),
         )

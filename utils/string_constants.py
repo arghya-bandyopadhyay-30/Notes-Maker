@@ -45,3 +45,21 @@ YOUTUBE_URL_MUST_NOT_BE_EMPTY = "YouTube URL must not be empty."
 YOUTUBE_INVALID_URL_MISSING_HOSTNAME = "Invalid YouTube URL. Missing hostname: {0}"
 
 YOUTUBE_COULD_NOT_EXTRACT_VIDEO_ID = "Could not extract a valid YouTube video ID from: {0}"
+
+CONFIG_DATA_MUST_BE_A_DICT = "config data must be a dict"
+
+FIELD_IS_REQUIRED = "'{0}' is required"
+
+FIELD_MUST_BE_NON_EMPTY_STRING = "'{0}' must be a non-empty string"
+
+FIELD_IS_NOT_A_DIRECTORY = "'{0}' is not a directory: {1}"
+
+READ_MODE = "r"
+
+UTF_8_ENCODING = "utf-8"
+
+FILE_NOT_FOUND = "File not found: {0}"
+
+YAML_FILE_IS_EMPTY = "YAML file is empty: {0}"
+
+YAML_FILE_MUST_BE_MAPPING = "YAML file must contain a mapping at the top level: {0}"
