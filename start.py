@@ -168,7 +168,7 @@ def main():
 
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-    from youtube_transcript.run import interactive_mode, run
+    from youtube_transcript.run import run
 
     url = args.url or config_url
 
@@ -180,8 +180,6 @@ def main():
             validate=not args.no_validate,
             output_dir=args.output_dir,
         )
-    else:
-        interactive_mode()
 
 
 if __name__ == "__main__":
