@@ -5,6 +5,10 @@ from utils.file_system import FileSystem
 CONFIG_PATH = "config.yaml"
 
 
+def run():
+    pass
+
+
 def main():
     dependencies = DependencyContainer(
         file_system=FileSystem(),
@@ -21,8 +25,11 @@ def main():
 
     dependencies.file_system.make_dirs(config.output_directory)
 
-    print(config)
-    print(f"Output directory: {config.output_directory}")
+    output_dir_path = config.output_directory
+    youtube_url = config.youtube.url
+    youtube_language = config.youtube.language
+    transcript_model = config.models.transcript
+    validator_model = config.models.validator
 
 
 if __name__ == "__main__":
