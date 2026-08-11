@@ -35,9 +35,6 @@ def normalise_host(host: str) -> str:
 
 
 def extract_video_id(url: str) -> str:
-    if not url:
-        raise ValueError("YouTube URL must not be empty.")
-
     if not isinstance(url, str):
         raise ValueError("YouTube URL must be a string.")
 
@@ -75,13 +72,10 @@ def extract_video_id(url: str) -> str:
             return video_id
 
     if host == YOUTUBE_SHORT_HOSTS:
-        path_parts = parsed.path.strip("/").split("/")
+        video_id = parsed.path.strip("/").split("/")[0]
 
-        if path_parts and path_parts[0]:
-            video_id = path_parts[0]
-
-            if VIDEO_ID_PATTERN.fullmatch(video_id):
-                return video_id
+        if video_id and VIDEO_ID_PATTERN.fullmatch(video_id):
+            return video_id
 
     if host in YOUTUBE_EMBED_HOSTS:
         match = PATH_PATTERN.match(parsed.path)
