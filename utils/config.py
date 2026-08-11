@@ -21,6 +21,9 @@ def _require_field(data: dict, field: str):
 
 
 def _require_directory_path(path: str, field: str) -> str:
+    if not isinstance(path, str) or not path.strip():
+        raise ValueError(f"'{field}' must be a non-empty string")
+
     if os.path.exists(path) and not os.path.isdir(path):
         raise NotADirectoryError(f"'{field}' is not a directory: {path}")
 
@@ -52,12 +55,6 @@ class Config:
     output_directory: str
     models: ModelsConfig
 
-    def __post_init__(self) -> None:
-        self.output_directory = _require_directory_path(
-            self.output_directory,
-            OUTPUT_DIRECTORY,
-        )
-
     def to_dict(self) -> dict:
         return {
             YOUTUBE_URL: self.youtube_url,
@@ -69,6 +66,9 @@ class Config:
     def from_dict(cls, data: dict) -> "Config":
         return cls(
             youtube_url=_require_field(data, YOUTUBE_URL),
-            output_directory=_require_field(data, OUTPUT_DIRECTORY),
+            output_directory=_require_directory_path(
+                _require_field(data, OUTPUT_DIRECTORY),
+                OUTPUT_DIRECTORY,
+            ),
             models=ModelsConfig.from_dict(_require_field(data, MODELS)),
         )
