@@ -1,4 +1,8 @@
-YOUTUBE_URL = "youtube_url"
+YOUTUBE = "youtube"
+
+URL = "url"
+
+LANGUAGE = "language"
 
 OUTPUT_DIRECTORY = "output_directory"
 

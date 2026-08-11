@@ -1,4 +1,6 @@
-youtube_url: "https://youtu.be/4cm9PMNikXM"
+youtube:
+  url: "https://youtu.be/4cm9PMNikXM"
+  language: "en"
 output_directory: "output"
 
 models:

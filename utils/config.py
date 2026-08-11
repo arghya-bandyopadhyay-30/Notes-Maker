@@ -2,13 +2,34 @@ from dataclasses import dataclass
 
 from .dependency_container import DependencyContainer
 from .string_constants import (
+    LANGUAGE,
     MODELS,
     OUTPUT_DIRECTORY,
     TRANSCRIPT,
+    URL,
     VALIDATOR,
-    YOUTUBE_URL,
+    YOUTUBE,
 )
 from .validation import _require_directory_path, _require_field
+
+
+@dataclass
+class YoutubeConfig:
+    url: str
+    language: str
+
+    def to_dict(self) -> dict:
+        return {
+            URL: self.url,
+            LANGUAGE: self.language,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "YoutubeConfig":
+        return cls(
+            url=_require_field(data, URL),
+            language=_require_field(data, LANGUAGE),
+        )
 
 
 @dataclass
@@ -32,13 +53,13 @@ class ModelsConfig:
 
 @dataclass
 class Config:
-    youtube_url: str
+    youtube: YoutubeConfig
     output_directory: str
     models: ModelsConfig
 
     def to_dict(self) -> dict:
         return {
-            YOUTUBE_URL: self.youtube_url,
+            YOUTUBE: self.youtube.to_dict(),
             OUTPUT_DIRECTORY: self.output_directory,
             MODELS: self.models.to_dict(),
         }
@@ -50,7 +71,7 @@ class Config:
         dependencies: DependencyContainer,
     ) -> "Config":
         return cls(
-            youtube_url=_require_field(data, YOUTUBE_URL),
+            youtube=YoutubeConfig.from_dict(_require_field(data, YOUTUBE)),
             output_directory=_require_directory_path(
                 _require_field(data, OUTPUT_DIRECTORY),
                 OUTPUT_DIRECTORY,
