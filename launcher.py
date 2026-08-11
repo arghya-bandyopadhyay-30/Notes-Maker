@@ -10,7 +10,7 @@ from start import (
     pull_model,
     start_ollama,
 )
-from youtube_transcript.config import load_config
+from youtube_transcript.config import ConfigError, load_config
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -42,11 +42,15 @@ def ensure_models_ready(transcript_model: str, validator_model: str):
 
 
 def main():
-    config = load_config()
+    try:
+        config = load_config()
+    except ConfigError as error:
+        print(f"Config error: {error}")
+        sys.exit(1)
 
-    transcript_model = config["models"]["transcript"]
-    validator_model = config["models"]["validator"]
-    config_url = config.get("youtube_url") or ""
+    transcript_model = config.transcript_model
+    validator_model = config.validator_model
+    config_url = config.youtube_url
 
     parser = argparse.ArgumentParser(description="Launch NotesMaker using config.yaml")
     parser.add_argument("url", nargs="?", help="YouTube URL (overrides config.yaml)")
@@ -76,7 +80,7 @@ def main():
     print("=" * 60)
     print("NOTES MAKER")
     print("=" * 60)
-    print(f"\nConfig file: {config.get('_path', 'config.yaml')}")
+    print(f"\nConfig file: {config.source_path or 'config.yaml'}")
 
     url = args.url or config_url
 

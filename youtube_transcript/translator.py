@@ -8,9 +8,9 @@ from .config import load_config
 
 _config = load_config()
 
-MODEL_NAME = _config["models"]["transcript"]
+MODEL_NAME = _config.transcript_model
 
-VALIDATOR_MODEL = _config["models"]["validator"]
+VALIDATOR_MODEL = _config.validator_model
 
 TRANSLATION_CHUNK_SIZE = 6000
 

@@ -6,7 +6,7 @@ import time
 
 import requests
 
-from youtube_transcript.config import load_config
+from youtube_transcript.config import ConfigError, load_config
 
 OLLAMA_HOST = "http://localhost:11434"
 
@@ -128,11 +128,15 @@ def ensure_ollama_ready(
 
 
 def main():
-    config = load_config()
+    try:
+        config = load_config()
+    except ConfigError as error:
+        print(f"Config error: {error}")
+        sys.exit(1)
 
-    transcript_model = config["models"]["transcript"]
-    validator_model = config["models"]["validator"]
-    config_url = config.get("youtube_url") or ""
+    transcript_model = config.transcript_model
+    validator_model = config.validator_model
+    config_url = config.youtube_url
 
     parser = argparse.ArgumentParser(
         description="NotesMaker YouTube Transcript Fetcher"
