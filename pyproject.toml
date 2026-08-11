@@ -9,6 +9,7 @@ readme = "README.md"
 python = ">=3.12,<3.15"
 youtube-transcript-api = "^1.2.4"
 ollama = "^0.6.2"
+yt-dlp = "^2026.7.4"
 
 [build-system]
 requires = ["poetry-core"]

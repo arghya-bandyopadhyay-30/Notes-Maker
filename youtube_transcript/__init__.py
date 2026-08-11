@@ -8,7 +8,7 @@ from .fetcher import (
 
 __all__ = [
     "fetch_transcript",
-    "fetch_transcript_with_timestamps", 
+    "fetch_transcript_with_timestamps",
     "extract_video_id",
     "list_available_transcripts",
     "SUPPORTED_LANGUAGES",
