@@ -4,13 +4,13 @@ import yaml
 
 
 class FileSystem:
-    def path_exists(self, path: str | Path) -> bool:
+    def path_exists(self, path: str) -> bool:
         return Path(path).exists()
 
-    def is_file(self, path: str | Path) -> bool:
+    def is_file(self, path: str) -> bool:
         return Path(path).is_file()
 
-    def read_yaml(self, path: str | Path) -> dict:
+    def read_yaml(self, path: str) -> dict:
         path = Path(path)
 
         if not self.is_file(path):

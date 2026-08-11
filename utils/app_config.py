@@ -6,7 +6,7 @@ from .file_system import FileSystem
 class AppConfig:
     def __init__(
         self,
-        config_path: str | Path = "config.yaml",
+        config_path: str = "config.yaml",
         file_system: FileSystem | None = None,
     ):
         self.config_path = Path(config_path)
