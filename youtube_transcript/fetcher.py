@@ -37,36 +37,6 @@ def clean_transcript_text(text: str) -> str:
     return text.strip()
 
 
-def fetch_from_transcript_api(
-    video_id: str,
-    language: str,
-) -> list:
-    api = YouTubeTranscriptApi()
-
-    transcript = api.fetch(video_id, languages=[language])
-
-    entries = []
-
-    for snippet in transcript:
-        text = clean_transcript_text(snippet.text)
-
-        if not text:
-            continue
-
-        entries.append(
-            {
-                "text": text,
-                "start": float(snippet.start),
-                "duration": float(snippet.duration),
-            }
-        )
-
-    if not entries:
-        raise ValueError("YouTube returned an empty transcript.")
-
-    return entries
-
-
 def fetch_entries_with_fallback(
     url: str,
     video_id: str,
