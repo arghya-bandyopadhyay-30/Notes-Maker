@@ -28,3 +28,13 @@ class FileSystem:
             )
 
         return data
+
+    def ensure_directory_exists(self, path: str) -> str:
+        path_obj = Path(path)
+
+        if path_obj.exists() and not path_obj.is_dir():
+            raise NotADirectoryError(f"Path is not a directory: {path}")
+
+        path_obj.mkdir(parents=True, exist_ok=True)
+
+        return str(path_obj)

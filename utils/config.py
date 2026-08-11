@@ -1,6 +1,12 @@
 from dataclasses import dataclass
 
-from .string_constants import MODELS, TRANSCRIPT, VALIDATOR, YOUTUBE_URL
+from .string_constants import (
+    MODELS,
+    OUTPUT_DIRECTORY,
+    TRANSCRIPT,
+    VALIDATOR,
+    YOUTUBE_URL,
+)
 
 
 def _require_field(data: dict, field: str):
@@ -35,11 +41,13 @@ class ModelsConfig:
 @dataclass
 class Config:
     youtube_url: str
+    output_directory: str
     models: ModelsConfig
 
     def to_dict(self) -> dict:
         return {
             YOUTUBE_URL: self.youtube_url,
+            OUTPUT_DIRECTORY: self.output_directory,
             MODELS: self.models.to_dict(),
         }
 
@@ -47,5 +55,6 @@ class Config:
     def from_dict(cls, data: dict) -> "Config":
         return cls(
             youtube_url=_require_field(data, YOUTUBE_URL),
+            output_directory=_require_field(data, OUTPUT_DIRECTORY),
             models=ModelsConfig.from_dict(_require_field(data, MODELS)),
         )

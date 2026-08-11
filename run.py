@@ -16,7 +16,10 @@ def main():
         config_path=CONFIG_PATH,
     ).get_config()
 
+    file_system.ensure_directory_exists(config.output_directory)
+
     print(config)
+    print(f"Output directory: {config.output_directory}")
 
 
 if __name__ == "__main__":
