@@ -14,4 +14,4 @@ class AppConfigService:
     def get_config(self) -> Config:
         data = self.file_system.read_yaml(self.config_path)
 
-        return Config.from_dict(data)
+        return Config.from_dict(data, file_system=self.file_system)
