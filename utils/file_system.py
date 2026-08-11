@@ -30,7 +30,7 @@ class FileSystem:
 
         return data
 
-    def ensure_directory_exists(self, path: str) -> str:
+    def make_dir(self, path: str) -> str:
         if self.path_exists(path) and not self.is_dir(path):
             raise NotADirectoryError(f"Path is not a directory: {path}")
 
