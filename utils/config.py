@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass
 
 from .string_constants import (
@@ -17,6 +18,13 @@ def _require_field(data: dict, field: str):
         raise KeyError(f"'{field}' is required")
 
     return data[field]
+
+
+def _require_directory_path(path: str, field: str) -> str:
+    if os.path.exists(path) and not os.path.isdir(path):
+        raise NotADirectoryError(f"'{field}' is not a directory: {path}")
+
+    return path
 
 
 @dataclass
@@ -43,6 +51,12 @@ class Config:
     youtube_url: str
     output_directory: str
     models: ModelsConfig
+
+    def __post_init__(self) -> None:
+        self.output_directory = _require_directory_path(
+            self.output_directory,
+            OUTPUT_DIRECTORY,
+        )
 
     def to_dict(self) -> dict:
         return {

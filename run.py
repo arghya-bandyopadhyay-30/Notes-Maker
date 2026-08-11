@@ -16,7 +16,7 @@ def main():
         config_path=CONFIG_PATH,
     ).get_config()
 
-    file_system.make_dir(config.output_directory)
+    file_system.make_dirs(config.output_directory)
 
     print(config)
     print(f"Output directory: {config.output_directory}")
