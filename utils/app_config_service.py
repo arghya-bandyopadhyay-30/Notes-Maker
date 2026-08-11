@@ -10,5 +10,5 @@ class AppConfigService:
         self.file_system = file_system
         self.config_path = config_path
 
-    def get_config(self):
-        pass
+    def get_config(self) -> dict:
+        return self.file_system.read_yaml(self.config_path)
