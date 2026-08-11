@@ -19,4 +19,12 @@ class FileSystem:
         with path.open("r", encoding="utf-8") as file:
             data = yaml.safe_load(file)
 
-        return data or {}
+        if data is None:
+            raise ValueError(f"YAML file is empty: {path}")
+
+        if not isinstance(data, dict):
+            raise ValueError(
+                f"YAML file must contain a mapping at the top level: {path}"
+            )
+
+        return data
