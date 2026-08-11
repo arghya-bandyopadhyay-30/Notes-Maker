@@ -1,0 +1,5 @@
+youtube_url: "https://youtu.be/4cm9PMNikXM"
+
+models:
+  transcript: "llama3.2:3b"
+  validator: "llama3.2:3b"

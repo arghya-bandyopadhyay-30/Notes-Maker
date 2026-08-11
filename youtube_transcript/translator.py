@@ -4,9 +4,13 @@ import re
 
 import ollama
 
-MODEL_NAME = "llama3.2:3b"
+from .config import load_config
 
-VALIDATOR_MODEL = "llama3.2:3b"
+_config = load_config()
+
+MODEL_NAME = _config["models"]["transcript"]
+
+VALIDATOR_MODEL = _config["models"]["validator"]
 
 TRANSLATION_CHUNK_SIZE = 6000
 

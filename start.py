@@ -6,9 +6,9 @@ import time
 
 import requests
 
+from youtube_transcript.config import load_config
+
 OLLAMA_HOST = "http://localhost:11434"
-MODEL_NAME = "llama3.2:3b"
-VALIDATOR_MODEL = "llama3.2:3b"
 
 
 def check_ollama_running() -> bool:
@@ -95,7 +95,10 @@ def pull_model(model_name: str) -> bool:
         return False
 
 
-def ensure_ollama_ready():
+def ensure_ollama_ready(
+    transcript_model: str,
+    validator_model: str,
+):
     if not check_ollama_running():
         print("Ollama server not running. Starting...")
         start_ollama()
@@ -107,24 +110,30 @@ def ensure_ollama_ready():
     else:
         print("Ollama server is already running")
 
-    if not check_model_pulled(MODEL_NAME):
-        print(f"Model {MODEL_NAME} not found. Pulling...")
+    if not check_model_pulled(transcript_model):
+        print(f"Model {transcript_model} not found. Pulling...")
 
-        if not pull_model(MODEL_NAME):
+        if not pull_model(transcript_model):
             print("Warning: Could not pull model. Translation may fail.")
     else:
-        print(f"Model {MODEL_NAME} already available")
+        print(f"Model {transcript_model} already available")
 
-    if VALIDATOR_MODEL != MODEL_NAME and not check_model_pulled(VALIDATOR_MODEL):
-        print(f"Validator model {VALIDATOR_MODEL} not found. Pulling...")
+    if validator_model != transcript_model and not check_model_pulled(validator_model):
+        print(f"Validator model {validator_model} not found. Pulling...")
 
-        if not pull_model(VALIDATOR_MODEL):
+        if not pull_model(validator_model):
             print("Warning: Could not pull validator model.")
-    elif VALIDATOR_MODEL != MODEL_NAME:
-        print(f"Validator model {VALIDATOR_MODEL} already available")
+    elif validator_model != transcript_model:
+        print(f"Validator model {validator_model} already available")
 
 
 def main():
+    config = load_config()
+
+    transcript_model = config["models"]["transcript"]
+    validator_model = config["models"]["validator"]
+    config_url = config.get("youtube_url") or ""
+
     parser = argparse.ArgumentParser(
         description="NotesMaker YouTube Transcript Fetcher"
     )
@@ -151,15 +160,17 @@ def main():
     args = parser.parse_args()
 
     if not args.skip_ollama:
-        ensure_ollama_ready()
+        ensure_ollama_ready(transcript_model, validator_model)
 
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
     from youtube_transcript.run import interactive_mode, run
 
-    if args.url:
+    url = args.url or config_url
+
+    if url:
         run(
-            url=args.url,
+            url=url,
             language=args.language,
             translate=not args.no_translate,
             validate=not args.no_validate,
