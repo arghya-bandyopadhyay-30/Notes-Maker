@@ -1,12 +1,17 @@
 from utils.app_config_service import AppConfigService
 from utils.dependency_container import DependencyContainer
 from utils.file_system import FileSystem
+from utils.video_id import extract_video_id
 
 CONFIG_PATH = "config.yaml"
 
 
-def run():
-    pass
+def run(
+    youtube_url: str,
+    youtube_language: str
+):
+    video_id = extract_video_id(youtube_url)
+
 
 
 def main():
@@ -30,6 +35,11 @@ def main():
     youtube_language = config.youtube.language
     transcript_model = config.models.transcript
     validator_model = config.models.validator
+
+    run(
+        youtube_url=youtube_url,
+        youtube_language=youtube_language
+    )
 
 
 if __name__ == "__main__":

@@ -63,3 +63,5 @@ FILE_NOT_FOUND = "File not found: {0}"
 YAML_FILE_IS_EMPTY = "YAML file is empty: {0}"
 
 YAML_FILE_MUST_BE_MAPPING = "YAML file must contain a mapping at the top level: {0}"
+
+LANGUAGE_NOT_SUPPORTED = "Language not supported: {0}"

@@ -1,8 +1,8 @@
 output_directory: "output"
 
 youtube:
-  url: "https://youtu.be/4cm9PMNikXM"
-  language: "en"
+  url: "https://www.youtube.com/watch?v=4cm9PMNikXM"
+  language: "english"
 
 models:
   transcript: "llama3.2:3b"
