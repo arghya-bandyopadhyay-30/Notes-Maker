@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from youtube_transcript.supported_languages import SupportedLanguage
+from utils.supported_languages import SupportedLanguage
 
 from .dependency_container import DependencyContainer
 from .string_constants import (

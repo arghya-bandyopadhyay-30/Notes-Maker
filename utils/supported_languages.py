@@ -2,9 +2,9 @@ from enum import Enum
 
 
 class SupportedLanguage(str, Enum):
-    ENGLISH = "english"
-    HINDI = "hindi"
-    BENGALI = "bengali"
+    ENGLISH = "en"
+    HINDI = "hi"
+    BENGALI = "bn"
 
     @classmethod
     def _missing_(cls, value):

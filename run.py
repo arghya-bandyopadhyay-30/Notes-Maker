@@ -2,16 +2,19 @@ from utils.app_config_service import AppConfigService
 from utils.dependency_container import DependencyContainer
 from utils.file_system import FileSystem
 from utils.video_id import extract_video_id
+from utils.supported_languages import SupportedLanguage
+from youtube_transcript.transcript_fetcher import TranscriptFetcher
 
 CONFIG_PATH = "config.yaml"
 
 
 def run(
-    youtube_url: str,
-    youtube_language: str
+    transcript_fetcher: TranscriptFetcher,
+    youtube_language: SupportedLanguage,
+    transcript_model: str,
+    validator_model: str
 ):
-    video_id = extract_video_id(youtube_url)
-
+    translate = validate = not (youtube_language == SupportedLanguage.ENGLISH)
 
 
 def main():
@@ -28,18 +31,19 @@ def main():
         config_path=CONFIG_PATH,
     ).get_config()
 
-    dependencies.file_system.make_dirs(config.output_directory)
-
-    output_dir_path = config.output_directory
-    youtube_url = config.youtube.url
-    youtube_language = config.youtube.language
-    transcript_model = config.models.transcript
-    validator_model = config.models.validator
+    transcript_fetcher = TranscriptFetcher(
+        youtube_url=config.youtube.url,
+        youtube_language=config.youtube.language
+    )
 
     run(
-        youtube_url=youtube_url,
-        youtube_language=youtube_language
+        transcript_fetcher=transcript_fetcher,
+        youtube_language=config.youtube.language,
+        transcript_model=config.models.transcript,
+        validator_model=config.models.validator
     )
+
+    dependencies.file_system.make_dirs(config.output_directory)
 
 
 if __name__ == "__main__":

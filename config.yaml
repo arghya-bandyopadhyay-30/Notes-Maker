@@ -2,7 +2,7 @@ output_directory: "output"
 
 youtube:
   url: "https://www.youtube.com/watch?v=4cm9PMNikXM"
-  language: "english"
+  language: "bn"
 
 models:
   transcript: "llama3.2:3b"
