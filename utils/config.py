@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from .string_constants import MODELS, TRANSCRIPT, VALIDATOR, YOUTUBE_URL
+
 
 @dataclass
 class ModelsConfig:
@@ -8,8 +10,8 @@ class ModelsConfig:
 
     def to_dict(self) -> dict:
         return {
-            "transcript": self.transcript,
-            "validator": self.validator,
+            TRANSCRIPT: self.transcript,
+            VALIDATOR: self.validator,
         }
 
     @classmethod
@@ -17,8 +19,8 @@ class ModelsConfig:
         data = data or {}
 
         return cls(
-            transcript=data.get("transcript", ""),
-            validator=data.get("validator", ""),
+            transcript=data.get(TRANSCRIPT, ""),
+            validator=data.get(VALIDATOR, ""),
         )
 
 
@@ -29,8 +31,8 @@ class Config:
 
     def to_dict(self) -> dict:
         return {
-            "youtube_url": self.youtube_url,
-            "models": self.models.to_dict(),
+            YOUTUBE_URL: self.youtube_url,
+            MODELS: self.models.to_dict(),
         }
 
     @classmethod
@@ -38,6 +40,6 @@ class Config:
         data = data or {}
 
         return cls(
-            youtube_url=data.get("youtube_url", ""),
-            models=ModelsConfig.from_dict(data.get("models")),
+            youtube_url=data.get(YOUTUBE_URL, ""),
+            models=ModelsConfig.from_dict(data.get(MODELS)),
         )
