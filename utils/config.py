@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .file_system import FileSystem
+from .dependency_container import DependencyContainer
 from .string_constants import (
     MODELS,
     OUTPUT_DIRECTORY,
@@ -23,10 +23,12 @@ def _require_field(data: dict, field: str):
 def _require_directory_path(
     path: str,
     field: str,
-    file_system: FileSystem,
+    dependencies: DependencyContainer,
 ) -> str:
     if not isinstance(path, str) or not path.strip():
         raise ValueError(f"'{field}' must be a non-empty string")
+
+    file_system = dependencies.file_system
 
     if file_system.path_exists(path) and not file_system.is_dir(path):
         raise NotADirectoryError(f"'{field}' is not a directory: {path}")
@@ -70,14 +72,14 @@ class Config:
     def from_dict(
         cls,
         data: dict,
-        file_system: FileSystem,
+        dependencies: DependencyContainer,
     ) -> "Config":
         return cls(
             youtube_url=_require_field(data, YOUTUBE_URL),
             output_directory=_require_directory_path(
                 _require_field(data, OUTPUT_DIRECTORY),
                 OUTPUT_DIRECTORY,
-                file_system,
+                dependencies,
             ),
             models=ModelsConfig.from_dict(_require_field(data, MODELS)),
         )

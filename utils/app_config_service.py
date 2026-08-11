@@ -1,17 +1,17 @@
 from .config import Config
-from .file_system import FileSystem
+from .dependency_container import DependencyContainer
 
 
 class AppConfigService:
     def __init__(
         self,
-        file_system: FileSystem,
+        dependencies: DependencyContainer,
         config_path: str,
     ):
-        self.file_system = file_system
+        self.dependencies = dependencies
         self.config_path = config_path
 
     def get_config(self) -> Config:
-        data = self.file_system.read_yaml(self.config_path)
+        data = self.dependencies.file_system.read_yaml(self.config_path)
 
-        return Config.from_dict(data, file_system=self.file_system)
+        return Config.from_dict(data, dependencies=self.dependencies)
