@@ -8,6 +8,22 @@ OUTPUT_DIRECTORY = "output_directory"
 
 AUDIO_OUTPUT_DIRECTORY = "audio_directory"
 
+BEST_AUDIO_FORMAT = "bestaudio/best"
+
+NODE = "node"
+
+FFMPEG = "ffmpeg"
+
+FFMPEG_EXTRACT_AUDIO = "FFmpegExtractAudio"
+
+WAV = "wav"
+
+WAV_FILE_EXTENSION = ".wav"
+
+VIDEO_ID_FORMAT = "%(id)s"
+
+ID = "id"
+
 MODELS = "models"
 
 TRANSCRIPT = "transcript"
