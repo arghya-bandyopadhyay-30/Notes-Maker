@@ -26,16 +26,20 @@ class TranscriptFetcher:
             environment_system=self.dependencies.environment_system
         )
 
-    def fetch_transcript_text_from_youtube_api(self) -> str:
+    def fetch_transcript_text_from_youtube_api(self) -> tuple[str, str]:
         transcript = self.youtube_transcript_api.fetch(
             self.youtube_video_id,
             languages=[self.youtube_language]
         )
 
-        return "\n".join(
+        script = "\n".join(
             snippet.text.replace("\n", " ").strip()
             for snippet in transcript
         )
 
-    def fetch_transcript_text_from_audio(self) -> str:
-        return self.youtube_transcriber.transcribe()
+        return script, self.youtube_video_id
+
+    def fetch_transcript_text_from_audio(self) -> tuple[str, str]:
+        script =  self.youtube_transcriber.transcribe()
+
+        return script, self.youtube_video_id

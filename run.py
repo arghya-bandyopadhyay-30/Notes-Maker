@@ -11,13 +11,15 @@ def run(
     youtube_language: SupportedLanguage,
     transcript_model: str,
     validator_model: str
-):
-    script = transcript_fetcher.fetch_transcript_text_from_audio()
+) -> tuple[str, str]:
+    script, video_id = transcript_fetcher.fetch_transcript_text_from_audio()
     print("Script: ", script)
 
     translate = validate = not (youtube_language == SupportedLanguage.ENGLISH)
     print("Do we need to translate? ", translate)
     print("Do we need to validate? ", validate)
+
+    return script, video_id
 
 
 def main():
@@ -38,14 +40,16 @@ def main():
         dependencies=dependencies
     )
 
-    run(
+    script, video_id = run(
         transcript_fetcher=transcript_fetcher,
         youtube_language=config.youtube.language,
         transcript_model=config.models.transcript,
         validator_model=config.models.validator
     )
 
-    dependencies.file_system.make_dirs(config.output_directory)
+    file_system = dependencies.file_system
+    file_system.make_dirs(config.output_directory)
+    file_system.write_file(f"{config.output_directory}/{video_id}.txt", script)
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ from .string_constants import (
     READ_MODE,
     UTF_8_ENCODING,
     YAML_FILE_IS_EMPTY,
-    YAML_FILE_MUST_BE_MAPPING,
+    YAML_FILE_MUST_BE_MAPPING, WRITE_MODE,
 )
 
 
@@ -40,4 +40,10 @@ class FileSystem:
 
     def make_dirs(self, path: str) -> str:
         os.makedirs(path, exist_ok=True)
+        return path
+
+    def write_file(self, path: str, content: str) -> str:
+        with open(path, WRITE_MODE, encoding=UTF_8_ENCODING) as file:
+            file.write(content)
+
         return path
