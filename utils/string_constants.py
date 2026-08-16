@@ -6,6 +6,8 @@ LANGUAGE = "language"
 
 OUTPUT_DIRECTORY = "output_directory"
 
+AUDIO_OUTPUT_DIRECTORY = "audio_directory"
+
 MODELS = "models"
 
 TRANSCRIPT = "transcript"

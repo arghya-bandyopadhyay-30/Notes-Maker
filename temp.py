@@ -21,40 +21,40 @@ YOUTUBE_URL = "https://www.youtube.com/watch?v=4cm9PMNikXM"
 
 # download_audio_as_mp3(YOUTUBE_URL)
 
-# from banglaspeech2text import Speech2Text
-#
-#
-# AUDIO_PATH = "audio/4cm9PMNikXM.mp3"
-#
-#
-# print("Loading BanglaSpeech2Text model...")
-#
-# stt = Speech2Text("small")
-#
-# print("Model loaded.")
-# print("Starting transcription...\n")
-#
-#
-# segments = stt.recognize(
-#     AUDIO_PATH,
-#     return_segments=True
-# )
-#
-#
-# transcript = []
-#
-# for segment in segments:
-#     text = segment.text.strip()
-#
-#     print(
-#         f"[{segment.start:.2f}s -> {segment.end:.2f}s] "
-#         f"{text}"
-#     )
-#
-#     transcript.append(text)
-#
-#
-# final_transcript = " ".join(transcript)
-#
-# print("\nFinal Transcript:\n")
-# print(final_transcript)
+from banglaspeech2text import Speech2Text
+
+
+AUDIO_PATH = "utils/audio_directory/4cm9PMNikXM.wav"
+
+
+print("Loading BanglaSpeech2Text model...")
+
+stt = Speech2Text("small")
+
+print("Model loaded.")
+print("Starting transcription...\n")
+
+
+segments = stt.recognize(
+    AUDIO_PATH,
+    return_segments=True
+)
+
+
+transcript = []
+
+for segment in segments:
+    text = segment.text.strip()
+
+    print(
+        f"[{segment.start:.2f}s -> {segment.end:.2f}s] "
+        f"{text}"
+    )
+
+    transcript.append(text)
+
+
+final_transcript = " ".join(transcript)
+
+print("\nFinal Transcript:\n")
+print(final_transcript)

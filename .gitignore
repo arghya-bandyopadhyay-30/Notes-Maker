@@ -36,8 +36,8 @@ poetry.lock
 *.swo
 
 # Output
-output/
-audio/
+output*/
+audio*/
 
 # OS
 .DS_Store

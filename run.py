@@ -1,3 +1,5 @@
+import shutil
+
 from utils.app_config_service import AppConfigService
 from utils.dependency_container import DependencyContainer
 from utils.file_system import FileSystem
@@ -23,9 +25,7 @@ def run(
 
 
 def main():
-    dependencies = DependencyContainer(
-        file_system=FileSystem(),
-    )
+    dependencies = DependencyContainer()
 
     if not dependencies.file_system.path_exists(CONFIG_PATH):
         print(f"Config file not found: {CONFIG_PATH}")
@@ -38,7 +38,8 @@ def main():
 
     transcript_fetcher = TranscriptFetcher(
         youtube_url=config.youtube.url,
-        youtube_language=config.youtube.language
+        youtube_language=config.youtube.language,
+        dependencies=dependencies
     )
 
     run(
