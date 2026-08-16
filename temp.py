@@ -1,60 +1,55 @@
 import yt_dlp
 
-YOUTUBE_URL = "https://www.youtube.com/watch?v=4cm9PMNikXM"
+YOUTUBE_URL = "https://www.youtube.com/watch?v=q9jixKv4h2I"
 
-# def download_audio_as_mp3(url: str, output_dir: str = "audio"):
-#     ydl_opts = {
-#         "format": "bestaudio/best",
-#         "outtmpl": f"{output_dir}/%(id)s.%(ext)s",
-#         "js_runtimes": {"node": {"path": "C:/Program Files/node.exe"}},
-#         "postprocessors": [
-#             {
-#                 "key": "FFmpegExtractAudio",
-#                 "preferredcodec": "mp3",
-#                 "preferredquality": "192",
-#             }
-#         ],
-#     }
-#
-#     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-#         ydl.download([url])
+ydl_opts = {
+    "format": "bestaudio/best",
+    "outtmpl": f"audio_directory/%(id)s.%(ext)s",
+    "js_runtimes": {"node": {"path": "C:/Program Files/node.exe"}},
+    "remote_components": {"ejs:github",},
+    "extractor_args": {
+        "youtube": {
+            "player_client": [
+                "web_embedded",
+            ],
+        },
+    },
+    "postprocessors": [
+        {
+            "key": "FFmpegExtractAudio",
+            "preferredcodec": "wav",
+        }
+    ],
+}
 
-# download_audio_as_mp3(YOUTUBE_URL)
+with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+    info = ydl.extract_info(
+        YOUTUBE_URL,
+        download=True,
+    )
 
-from banglaspeech2text import Speech2Text
+video_id = info["id"]
 
-
-AUDIO_PATH = "utils/audio_directory/4cm9PMNikXM.wav"
-
-
-print("Loading BanglaSpeech2Text model...")
-
-stt = Speech2Text("small")
-
-print("Model loaded.")
-print("Starting transcription...\n")
+import whisper
 
 
-segments = stt.recognize(
+AUDIO_PATH = f"audio_directory/{video_id}.wav"
+
+print("Loading Whisper model...")
+
+model = whisper.load_model("small")
+
+
+print("Starting transcription...")
+
+result = model.transcribe(
     AUDIO_PATH,
-    return_segments=True
+    language="en",
+    task="transcribe",
+    fp16=False,
 )
 
 
-transcript = []
+print("\nTranscript:\n")
 
-for segment in segments:
-    text = segment.text.strip()
-
-    print(
-        f"[{segment.start:.2f}s -> {segment.end:.2f}s] "
-        f"{text}"
-    )
-
-    transcript.append(text)
-
-
-final_transcript = " ".join(transcript)
-
-print("\nFinal Transcript:\n")
-print(final_transcript)
+print(result["text"])
