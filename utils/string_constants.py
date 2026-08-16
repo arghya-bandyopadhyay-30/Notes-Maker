@@ -1,85 +1,43 @@
 YOUTUBE = "youtube"
-
 URL = "url"
-
 LANGUAGE = "language"
-
 OUTPUT_DIRECTORY = "output_directory"
-
 AUDIO_OUTPUT_DIRECTORY = "audio_directory"
-
 BEST_AUDIO_FORMAT = "bestaudio/best"
-
 NODE = "node"
-
 FFMPEG = "ffmpeg"
-
 FFMPEG_EXTRACT_AUDIO = "FFmpegExtractAudio"
-
 WAV = "wav"
-
 WAV_FILE_EXTENSION = ".wav"
-
 VIDEO_ID_FORMAT = "%(id)s"
-
 ID = "id"
-
 MODELS = "models"
-
 TRANSCRIPT = "transcript"
-
 VALIDATOR = "validator"
-
 YOUTUBE_VIDEO_ID_PATTERN = r"^[A-Za-z0-9_-]{11}$"
-
 YOUTUBE_PATH_PATTERN = r"^/(?:shorts|embed|v)/([A-Za-z0-9_-]{11})(?:/|$)"
-
 YOUTUBE_WATCH_HOSTS = {"youtube.com"}
-
 YOUTUBE_SHORT_HOSTS = {"youtu.be"}
-
 YOUTUBE_EMBED_HOSTS = {"youtube.com", "youtube-nocookie.com"}
-
 YOUTUBE_SUBDOMAIN_PREFIXES = ("www.", "m.", "music.")
-
 EMPTY_STRING = ""
-
 DOT = "."
-
 COLON = ":"
-
 SLASH = "/"
-
 QUOTE_CHARS = {'"', "'"}
-
 YOUTUBE_WATCH_PATH = "/watch"
-
 YOUTUBE_VIDEO_ID_QUERY_KEY = "v"
-
 YOUTUBE_URL_MUST_BE_A_STRING = "YouTube URL must be a string."
-
 YOUTUBE_URL_MUST_NOT_BE_EMPTY = "YouTube URL must not be empty."
-
 YOUTUBE_INVALID_URL_MISSING_HOSTNAME = "Invalid YouTube URL. Missing hostname: {0}"
-
 YOUTUBE_COULD_NOT_EXTRACT_VIDEO_ID = "Could not extract a valid YouTube video ID from: {0}"
-
 CONFIG_DATA_MUST_BE_A_DICT = "config data must be a dict"
-
 FIELD_IS_REQUIRED = "'{0}' is required"
-
 FIELD_MUST_BE_NON_EMPTY_STRING = "'{0}' must be a non-empty string"
-
 FIELD_IS_NOT_A_DIRECTORY = "'{0}' is not a directory: {1}"
-
 READ_MODE = "r"
-
 UTF_8_ENCODING = "utf-8"
-
 FILE_NOT_FOUND = "File not found: {0}"
-
 YAML_FILE_IS_EMPTY = "YAML file is empty: {0}"
-
 YAML_FILE_MUST_BE_MAPPING = "YAML file must contain a mapping at the top level: {0}"
-
 LANGUAGE_NOT_SUPPORTED = "Language not supported: {0}"
