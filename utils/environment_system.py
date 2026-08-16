@@ -6,6 +6,6 @@ class EnvironmentSystem:
         executable_path = shutil.which(executable)
 
         if executable_path is None:
-            raise RuntimeError(f"{executable.capitalize()} was not found in PATH")
+            raise ValueError(f"{executable.capitalize()} was not found in PATH")
 
         return executable_path

@@ -21,7 +21,9 @@ class TranscriptFetcher:
         self.youtube_video_id = extract_video_id(youtube_url)
         self.youtube_transcript_api = YouTubeTranscriptApi()
         self.youtube_transcriber = get_transcriber(
-            language=self.youtube_language
+            language=self.youtube_language,
+            url=self.youtube_url,
+            environment_system=self.dependencies.environment_system
         )
 
     def fetch_transcript_text_from_youtube_api(self) -> str:
