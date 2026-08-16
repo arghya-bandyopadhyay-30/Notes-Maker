@@ -6,11 +6,18 @@ authors = ["Arghya Bandyopadhyay <arghya.bandyopadhyay.official1@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.12,<3.15"
+python = ">=3.12,<3.14"
 youtube-transcript-api = "^1.2.4"
 ollama = "^0.6.2"
 yt-dlp = "^2026.7.4"
 pyyaml = "^6.0"
+openai-whisper = "^20250625"
+transformers = "^5.15.0"
+torchaudio = "^2.11.0"
+onnxruntime = "^1.28.0"
+onnx = "^1.22.0"
+nemo-toolkit = {extras = ["asr"], version = "^3.0.0"}
+faster-whisper = "^1.2.1"
 
 [build-system]
 requires = ["poetry-core"]

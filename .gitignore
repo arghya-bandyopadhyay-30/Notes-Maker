@@ -37,6 +37,7 @@ poetry.lock
 
 # Output
 output/
+audio/
 
 # OS
 .DS_Store
