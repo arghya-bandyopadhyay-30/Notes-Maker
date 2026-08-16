@@ -1,9 +1,5 @@
-import shutil
-
 from utils.app_config_service import AppConfigService
 from utils.dependency_container import DependencyContainer
-from utils.file_system import FileSystem
-from utils.video_id import extract_video_id
 from utils.supported_languages import SupportedLanguage
 from youtube_transcript.transcript_fetcher import TranscriptFetcher
 
