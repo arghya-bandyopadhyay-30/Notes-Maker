@@ -35,21 +35,3 @@ import whisper
 
 AUDIO_PATH = f"audio_directory/{video_id}.wav"
 
-print("Loading Whisper model...")
-
-model = whisper.load_model("small")
-
-
-print("Starting transcription...")
-
-result = model.transcribe(
-    AUDIO_PATH,
-    language="en",
-    task="transcribe",
-    fp16=False,
-)
-
-
-print("\nTranscript:\n")
-
-print(result["text"])
