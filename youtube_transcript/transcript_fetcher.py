@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from youtube_transcript_api import YouTubeTranscriptApi
 
+from transcribers.get_transcriber import get_transcriber
 from utils.supported_languages import SupportedLanguage
 from utils.video_id import extract_video_id
 
@@ -17,8 +18,11 @@ class TranscriptFetcher:
         self.youtube_url = youtube_url
         self.youtube_video_id = extract_video_id(youtube_url)
         self.youtube_transcript_api = YouTubeTranscriptApi()
+        self.youtube_transcriber = get_transcriber(
+            language=self.youtube_language
+        )
 
-    def fetch_transcript_text(self) -> str:
+    def fetch_transcript_text_from_youtube_api(self) -> str:
         transcript = self.youtube_transcript_api.fetch(
             self.youtube_video_id,
             languages=[self.youtube_language]
@@ -28,3 +32,6 @@ class TranscriptFetcher:
             snippet.text.replace("\n", " ").strip()
             for snippet in transcript
         )
+
+    def fetch_transcript_text_from_audio(self) -> str:
+        return self.youtube_transcriber.transcribe()

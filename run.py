@@ -14,7 +14,12 @@ def run(
     transcript_model: str,
     validator_model: str
 ):
+    script = transcript_fetcher.fetch_transcript_text_from_audio()
+    print("Script: ", script)
+
     translate = validate = not (youtube_language == SupportedLanguage.ENGLISH)
+    print("Do we need to translate? ", translate)
+    print("Do we need to validate? ", validate)
 
 
 def main():
