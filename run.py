@@ -1,3 +1,5 @@
+from processors.translator import Translator
+from processors.validator import Validator
 from utils.app_config_service import AppConfigService
 from utils.dependency_container import DependencyContainer
 from utils.supported_languages import SupportedLanguage
@@ -23,12 +25,6 @@ def run(
             transcript_fetcher.fetch_transcript_text_from_audio()
         )
 
-    print("Script:", script)
-
-    translate = validate = not (youtube_language == SupportedLanguage.ENGLISH)
-    print("Do we need to translate? ", translate)
-    print("Do we need to validate? ", validate)
-
     return script, video_id
 
 
@@ -48,6 +44,14 @@ def main():
         youtube_url=config.youtube.url,
         youtube_language=config.youtube.language,
         dependencies=dependencies
+    )
+
+    translator = Translator(
+        youtube_language=config.youtube.language
+    )
+
+    validator = Validator(
+        youtube_language=config.youtube.language
     )
 
     script, video_id = run(
