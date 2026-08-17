@@ -10,9 +10,8 @@ CONFIG_PATH = "config.yaml"
 
 def run(
     transcript_fetcher: TranscriptFetcher,
-    youtube_language: SupportedLanguage,
-    transcript_model: str,
-    validator_model: str
+    translator: Translator,
+    validator: Validator
 ) -> tuple[str, str]:
     try:
         print("Trying to fetch transcript from YouTube API...")
@@ -48,19 +47,20 @@ def main():
 
     translator = Translator(
         youtube_language=config.youtube.language,
-        model=config.models.translator
+        model=config.models.translator,
+        environment_system=dependencies.environment_system
     )
 
     validator = Validator(
         youtube_language=config.youtube.language,
-        model=config.models.validator
+        model=config.models.validator,
+        environment_system=dependencies.environment_system
     )
 
     script, video_id = run(
         transcript_fetcher=transcript_fetcher,
-        youtube_language=config.youtube.language,
-        transcript_model=config.models.translator,
-        validator_model=config.models.validator
+        translator=translator,
+        validator=validator
     )
 
     file_system = dependencies.file_system

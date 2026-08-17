@@ -1,5 +1,7 @@
 import shutil
 
+import ollama
+
 
 class EnvironmentSystem:
     def find_executable(self, executable: str) -> str:
@@ -9,3 +11,21 @@ class EnvironmentSystem:
             raise ValueError(f"{executable.capitalize()} was not found in PATH")
 
         return executable_path
+
+    def ensure_ollama_model(self, model_name: str):
+        installed_models = {
+            model.model
+            for model in ollama.list().models
+        }
+
+        if model_name in installed_models:
+            print(
+                f"Model '{model_name}' already exists. Skipping pull."
+            )
+            return
+
+        print(f"Model '{model_name}' not found. Pulling model...")
+
+        ollama.pull(model_name)
+
+        print(f"Model '{model_name}' downloaded successfully.")
