@@ -8,7 +8,7 @@ from .string_constants import (
     LANGUAGE_NOT_SUPPORTED,
     MODELS,
     OUTPUT_DIRECTORY,
-    TRANSCRIPT,
+    TRANSLATOR,
     URL,
     VALIDATOR,
     YOUTUBE,
@@ -43,19 +43,19 @@ class YoutubeConfig:
 
 @dataclass
 class ModelsConfig:
-    transcript: str
+    translator: str
     validator: str
 
     def to_dict(self) -> dict:
         return {
-            TRANSCRIPT: self.transcript,
+            TRANSLATOR: self.translator,
             VALIDATOR: self.validator,
         }
 
     @classmethod
     def from_dict(cls, data: dict) -> "ModelsConfig":
         return cls(
-            transcript=require_field(data, TRANSCRIPT),
+            translator=require_field(data, TRANSLATOR),
             validator=require_field(data, VALIDATOR),
         )
 

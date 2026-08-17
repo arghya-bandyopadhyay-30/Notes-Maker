@@ -47,17 +47,19 @@ def main():
     )
 
     translator = Translator(
-        youtube_language=config.youtube.language
+        youtube_language=config.youtube.language,
+        model=config.models.translator
     )
 
     validator = Validator(
-        youtube_language=config.youtube.language
+        youtube_language=config.youtube.language,
+        model=config.models.validator
     )
 
     script, video_id = run(
         transcript_fetcher=transcript_fetcher,
         youtube_language=config.youtube.language,
-        transcript_model=config.models.transcript,
+        transcript_model=config.models.translator,
         validator_model=config.models.validator
     )
 

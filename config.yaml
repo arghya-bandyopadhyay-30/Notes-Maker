@@ -13,5 +13,5 @@ youtube:
 #  language: "en"
 
 models:
-  transcript: "llama3.2:3b"
+  translator: "llama3.2:3b"
   validator: "llama3.2:3b"
