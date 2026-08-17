@@ -21,6 +21,9 @@ class FileSystem:
     def is_dir(self, path: str) -> bool:
         return os.path.isdir(path)
 
+    def join_paths(self, primary_path: str, *paths: str) -> str:
+        return os.path.join(primary_path, *paths)
+
     def read_yaml(self, path: str) -> dict:
         if not self.is_file(path):
             raise FileNotFoundError(FILE_NOT_FOUND.format(path))
