@@ -1,5 +1,6 @@
 from banglaspeech2text import Speech2Text
 
+from transcribers.process_segment import process_segment
 from transcribers.transcriber import Transcriber
 from utils.environment_system import EnvironmentSystem
 
@@ -16,7 +17,7 @@ class BnTranscriber(Transcriber):
         )
 
         transcript = [
-            segment.text.strip()
+            process_segment(segment)
             for segment in segments
         ]
 

@@ -5,8 +5,12 @@ output_directory: "output"
 #  language: "bn"
 
 youtube:
-  url: "https://www.youtube.com/watch?v=q9jixKv4h2I"
-  language: "en"
+  url: "https://www.youtube.com/watch?v=_R_d3ibfttY"
+  language: "hi"
+
+#youtube:
+#  url: "https://www.youtube.com/watch?v=q9jixKv4h2I"
+#  language: "en"
 
 models:
   transcript: "llama3.2:3b"

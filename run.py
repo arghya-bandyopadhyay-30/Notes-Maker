@@ -12,8 +12,18 @@ def run(
     transcript_model: str,
     validator_model: str
 ) -> tuple[str, str]:
-    script, video_id = transcript_fetcher.fetch_transcript_text_from_audio()
-    print("Script: ", script)
+    try:
+        print("Trying to fetch transcript from YouTube API...")
+        script, video_id = (
+            transcript_fetcher.fetch_transcript_text_from_youtube_api()
+        )
+    except Exception:
+        print("Falling back to audio transcription...")
+        script, video_id = (
+            transcript_fetcher.fetch_transcript_text_from_audio()
+        )
+
+    print("Script:", script)
 
     translate = validate = not (youtube_language == SupportedLanguage.ENGLISH)
     print("Do we need to translate? ", translate)
