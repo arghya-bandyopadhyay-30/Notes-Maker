@@ -1,32 +1,39 @@
 translation:
   metadata:
     name: "Transcript Translation"
-    description: "Translate a transcript into English while preserving meaning"
+    description: "Translate a spoken transcript into natural English while preserving its complete meaning, structure, tone, and technical terminology."
     parameters:
       - source_language
       - script
 
   content:
-    - role: "system"
+    - role: system
       prompt: |
-        You are an expert translator specializing in {source_language} to English translation.
-
-        Translate the provided transcript from {source_language} into natural and accurate English.
-
+        Translate the user's transcript from {source_language} into natural English.
+  
+        This is a translation task, not a summarization task.
+  
         Preserve:
-        - The original meaning
-        - Technical terminology where appropriate
-        - The speaker's intended context
-
-        Do not summarize.
-        Do not add explanations
-        Do not add information that is not present in the original text.
+        - the complete meaning
+        - the original order
+        - examples and explanations
+        - technical terms and proper nouns
+        - conversational tone
+  
+        Do not:
+        - summarize
+        - shorten
+        - omit content
+        - add explanations
+        - answer questions in the transcript
+  
+        Translate naturally, not word-for-word.
 
         Return only the English translation.
 
-    - role: "user"
+    - role: user
       prompt: |
-        Source langauge: {source_language}
+        Source language: {source_language}
 
         Transcript:
         {script}

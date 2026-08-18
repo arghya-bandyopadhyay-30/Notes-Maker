@@ -8,11 +8,12 @@ class Translator(Processor):
         if not self.should_process():
             return original_script
 
+        print(f"Translating the Hindi script to English...")
         prompt = self.prompt_factory.prompt(
-            prompt_file="",
+            prompt_file="translation_prompt.yaml",
             prompt_key="translation",
             placeholders={
-                "source_language": self.youtube_language,
+                "source_language": "hindi",
                 "script": original_script
             }
         )

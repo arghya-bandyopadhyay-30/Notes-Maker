@@ -27,6 +27,7 @@ class TranscriptFetcher:
         )
 
     def fetch_transcript_text_from_youtube_api(self) -> tuple[str, str]:
+        print("Trying to fetch transcript from YouTube API...")
         transcript = self.youtube_transcript_api.fetch(
             self.youtube_video_id,
             languages=[self.youtube_language]
@@ -40,6 +41,7 @@ class TranscriptFetcher:
         return script, self.youtube_video_id
 
     def fetch_transcript_text_from_audio(self) -> tuple[str, str]:
+        print("Falling back to audio transcription...")
         script =  self.youtube_transcriber.transcribe()
 
         return script, self.youtube_video_id

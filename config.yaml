@@ -14,4 +14,4 @@ youtube:
 
 models:
   translator: "translategemma:4b"
-  validator: "gemma3:4b"
+  validator: "qwen3:8b"

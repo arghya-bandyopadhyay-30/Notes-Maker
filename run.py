@@ -14,18 +14,20 @@ def run(
     validator: Validator
 ) -> tuple[str, str]:
     try:
-        print("Trying to fetch transcript from YouTube API...")
         original_script, video_id = (
             transcript_fetcher.fetch_transcript_text_from_youtube_api()
         )
     except Exception:
-        print("Falling back to audio transcription...")
         original_script, video_id = (
             transcript_fetcher.fetch_transcript_text_from_audio()
         )
 
-    translated_script = translator.translate(original_script=original_script)
-    validation_score = validator.validate(original_script=original_script, translated_script=translated_script)
+    print("Original Script:\n", original_script)
+
+    # translated_script = translator.translate(original_script=original_script)
+    # print("Translated Script:\n", translated_script)
+    #
+    # validation_score = validator.validate(original_script=original_script, translated_script=translated_script)
 
     return translated_script, video_id
 
@@ -41,6 +43,9 @@ def main():
         dependencies=dependencies,
         config_path=CONFIG_PATH,
     ).get_config()
+
+    file_system = dependencies.file_system
+    file_system.make_dirs(config.output_directory)
 
     prompt_factory = PromptFactory(
         file_system=dependencies.file_system
@@ -71,10 +76,6 @@ def main():
         translator=translator,
         validator=validator
     )
-
-    file_system = dependencies.file_system
-    file_system.make_dirs(config.output_directory)
-    file_system.write_file(f"{config.output_directory}/{video_id}.txt", script)
 
 
 if __name__ == "__main__":
