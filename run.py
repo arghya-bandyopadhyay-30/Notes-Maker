@@ -15,17 +15,17 @@ def run(
 ) -> tuple[str, str]:
     try:
         print("Trying to fetch transcript from YouTube API...")
-        script, video_id = (
+        original_script, video_id = (
             transcript_fetcher.fetch_transcript_text_from_youtube_api()
         )
     except Exception:
         print("Falling back to audio transcription...")
-        script, video_id = (
+        original_script, video_id = (
             transcript_fetcher.fetch_transcript_text_from_audio()
         )
 
-    translated_script = translator.translate(script=script)
-    validation_score = validator.validate(script=script)
+    translated_script = translator.translate(original_script=original_script)
+    validation_score = validator.validate(original_script=original_script, translated_script=translated_script)
 
     return translated_script, video_id
 
