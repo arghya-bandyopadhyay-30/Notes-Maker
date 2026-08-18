@@ -1,5 +1,6 @@
 from processors.translator import Translator
 from processors.validator import Validator
+from prompt_factory.prompt_factory import PromptFactory
 from utils.app_config_service import AppConfigService
 from utils.dependency_container import DependencyContainer
 from utils.supported_languages import SupportedLanguage
@@ -38,6 +39,10 @@ def main():
         dependencies=dependencies,
         config_path=CONFIG_PATH,
     ).get_config()
+
+    prompt_factory = PromptFactory(
+        file_system=dependencies.file_system
+    )
 
     transcript_fetcher = TranscriptFetcher(
         youtube_url=config.youtube.url,

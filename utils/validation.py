@@ -1,9 +1,12 @@
+from typing import Any
+
 from .dependency_container import DependencyContainer
 from .string_constants import (
     CONFIG_DATA_MUST_BE_A_DICT,
     FIELD_IS_NOT_A_DIRECTORY,
     FIELD_IS_REQUIRED,
     FIELD_MUST_BE_NON_EMPTY_STRING,
+    MISSING_PLACEHOLDERS,
 )
 
 
@@ -31,3 +34,12 @@ def require_directory_path(
         raise NotADirectoryError(FIELD_IS_NOT_A_DIRECTORY.format(field, path))
 
     return path
+
+
+def validate_parameters(parameters: list[str], placeholders: dict[str, Any]) -> None:
+    required_parameters = set(parameters)
+    provided_parameters = set(placeholders.keys())
+    missing_placeholder = (required_parameters - provided_parameters)
+
+    if missing_placeholder:
+        raise ValueError(MISSING_PLACEHOLDERS.format(", ".join(missing_placeholder)))
