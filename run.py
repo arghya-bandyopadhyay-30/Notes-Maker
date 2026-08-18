@@ -25,9 +25,9 @@ def run(
         )
 
     translated_script = translator.translate(script=script)
-    validator.validate(script=script)
+    validation_score = validator.validate(script=script)
 
-    return script, video_id
+    return translated_script, video_id
 
 
 def main():
