@@ -9,7 +9,7 @@ class PromptFactory:
     def __init__(self, file_system: FileSystem):
         self.file_system = file_system
 
-    def create(self, prompt_file: str, prompt_key: str, placeholders: dict[str, Any]):
+    def prompt(self, prompt_file: str, prompt_key: str, placeholders: dict[str, Any]) -> Prompt:
         prompt_file_path = self.file_system.join_paths(
             PROMPT_FACTORY_DIRECTORY,
             PROMPT_RESOURCES_DIRECTORY,
@@ -20,8 +20,7 @@ class PromptFactory:
         if prompt_key not in prompts:
             raise KeyError(f"Prompt '{prompt_key}' not found in '{prompt_file}'")
 
-        prompt = Prompt.from_dict(
+        return Prompt.from_dict(
             data=prompts[prompt_key],
             placeholders=placeholders
         )
-        print(prompt)

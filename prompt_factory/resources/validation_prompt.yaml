@@ -6,13 +6,14 @@ validation:
       - source_langauge
       - original_script
       - translated_script
+      - parsed_format
 
   content:
     - role: "system"
       prompt: |
         You are an expert translation validator.
 
-        Your task is to verify whether the English translation accurately represents the meaning of the original {source_langauge} transcript.
+        Your task is to evaluate whether the English translation accurately represents the meaning of the original {source_language} transcript.
 
         Check for:
         - Missing information
@@ -21,12 +22,13 @@ validation:
         - Incorrect technical terminology
         - Major grammatical errors that change meaning
 
-        If the translation is accurate, return the corrected translation unchanged.
-
-        If there are issues, return a corrected English translation.
-
-        Return only the final English text.
-        Do not explain your reasoning.
+        Assign an overall accuracy score from 0 to 1.
+        
+        Return only valid JSON matching this format:
+        {parsed_format}
+        
+        Do not translate, rewrite, or correct the English translation.
+        Do not explain your reasoning outside the JSON response.
 
     - role: "user"
       prompt: |

@@ -3,7 +3,6 @@ from processors.validator import Validator
 from prompt_factory.prompt_factory import PromptFactory
 from utils.app_config_service import AppConfigService
 from utils.dependency_container import DependencyContainer
-from utils.supported_languages import SupportedLanguage
 from youtube_transcript.transcript_fetcher import TranscriptFetcher
 
 CONFIG_PATH = "config.yaml"
@@ -24,6 +23,9 @@ def run(
         script, video_id = (
             transcript_fetcher.fetch_transcript_text_from_audio()
         )
+
+    translated_script = translator.translate(script=script)
+    validator.validate(script=script)
 
     return script, video_id
 
@@ -53,13 +55,15 @@ def main():
     translator = Translator(
         youtube_language=config.youtube.language,
         model=config.models.translator,
-        environment_system=dependencies.environment_system
+        environment_system=dependencies.environment_system,
+        prompt_factory=prompt_factory
     )
 
     validator = Validator(
         youtube_language=config.youtube.language,
         model=config.models.validator,
-        environment_system=dependencies.environment_system
+        environment_system=dependencies.environment_system,
+        prompt_factory=prompt_factory
     )
 
     script, video_id = run(
