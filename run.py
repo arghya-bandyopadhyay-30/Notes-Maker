@@ -24,10 +24,10 @@ def run(
 
     print("Original Script:\n", original_script)
 
-    # translated_script = translator.translate(original_script=original_script)
-    # print("Translated Script:\n", translated_script)
-    #
-    # validation_score = validator.validate(original_script=original_script, translated_script=translated_script)
+    translated_script = translator.translate(original_script=original_script)
+    print("Translated Script:\n", translated_script)
+
+    validation_score = validator.validate(original_script=original_script, translated_script=translated_script)
 
     return translated_script, video_id
 

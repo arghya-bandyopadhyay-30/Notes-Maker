@@ -1,5 +1,7 @@
 from abc import ABC
 
+from langchain_core.output_parsers import PydanticOutputParser
+
 from prompt_factory.prompt_factory import PromptFactory
 from utils.environment_system import EnvironmentSystem
 from utils.supported_languages import SupportedLanguage
@@ -11,6 +13,9 @@ class Processor(ABC):
         self.model = model
         environment_system.ensure_ollama_model(model)
         self.prompt_factory = prompt_factory
+        self.parser_format = lambda parser: PydanticOutputParser(
+            pydantic_object=parser
+        ).get_format_instructions()
 
     def should_process(self) -> bool:
         return not (self.youtube_language == SupportedLanguage.ENGLISH)
