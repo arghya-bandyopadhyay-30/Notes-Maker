@@ -56,11 +56,8 @@ class Translator(Processor):
             response = chat(
                 model=self.model,
                 messages=[
-                    {
-                        "role": item.role,
-                        "content": item.prompt,
-                    }
-                    for item in prompt.content
+                    item.to_dict()
+                    for item in prompt.template
                 ],
                 format=TranslatedSentence.model_json_schema(),
             )
@@ -68,9 +65,6 @@ class Translator(Processor):
             formatted_response = TranslatedSentence.model_validate_json(
                 response.message.content
             ).text
-
-            print(sentence)
-            print(formatted_response)
 
             responses.append(formatted_response)
 

@@ -76,6 +76,7 @@ def main():
         translator=translator,
         validator=validator
     )
+    file_system.write_file(f"{config.output_directory}/{video_id}.txt", script)
 
 
 if __name__ == "__main__":

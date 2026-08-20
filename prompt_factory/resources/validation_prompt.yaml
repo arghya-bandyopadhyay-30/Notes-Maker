@@ -8,9 +8,9 @@ validation:
       - translated_script
       - parsed_format
 
-  content:
+  template:
     - role: "system"
-      prompt: |
+      content: |
         You are an expert translation validator.
 
         Your task is to evaluate whether the English translation accurately represents the meaning of the original {source_language} transcript.
@@ -31,7 +31,7 @@ validation:
         Do not explain your reasoning outside the JSON response.
 
     - role: "user"
-      prompt: |
+      content: |
         Source language: {source_langauge}
 
         Original transcript:

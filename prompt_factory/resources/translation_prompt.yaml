@@ -7,9 +7,9 @@ translation:
       - sentence
       - parsed_format
 
-  content:
+  template:
     - role: system
-      prompt: |
+      content: |
         Translate the user's sentence from {source_language} into natural English.
 
         This is a translation task only.
@@ -38,7 +38,7 @@ translation:
         {parsed_format}
 
     - role: user
-      prompt: |
+      content: |
         Source language: {source_language}
 
         Sentence:

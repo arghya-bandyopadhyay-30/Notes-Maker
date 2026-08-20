@@ -7,8 +7,8 @@ from utils.string_constants import (
     METADATA,
     NAME,
     PARAMETERS,
-    PROMPT,
     ROLE,
+    TEMPLATE,
 )
 from utils.validation import require_field, validate_parameters
 
@@ -42,26 +42,26 @@ class PromptMetadata:
 
 
 @dataclass
-class PromptContent:
+class PromptTemplate:
     role: str
-    prompt: str
+    content: str
 
     def to_dict(self) -> dict[str, Any]:
         return {
             ROLE: self.role,
-            PROMPT: self.prompt,
+            CONTENT: self.content,
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any], placeholders: dict[str, Any]) -> "PromptContent":
+    def from_dict(cls, data: dict[str, Any], placeholders: dict[str, Any]) -> "PromptTemplate":
         render_prompt = (
             lambda prompt: prompt.format(**placeholders)
         )
 
         return cls(
             role=require_field(data, ROLE),
-            prompt=render_prompt(
-                prompt=require_field(data, PROMPT),
+            content=render_prompt(
+                prompt=require_field(data, CONTENT),
             ),
         )
 
@@ -69,12 +69,12 @@ class PromptContent:
 @dataclass
 class Prompt:
     metadata: PromptMetadata
-    content: list[PromptContent]
+    template: list[PromptTemplate]
 
     def to_dict(self) -> dict[str, Any]:
         return {
             METADATA: self.metadata.to_dict(),
-            CONTENT: [item.to_dict() for item in self.content],
+            TEMPLATE: [item.to_dict() for item in self.template],
         }
 
     @classmethod
@@ -84,11 +84,11 @@ class Prompt:
                 data=require_field(data, METADATA),
                 placeholders=placeholders
             ),
-            content=[
-                PromptContent.from_dict(
+            template=[
+                PromptTemplate.from_dict(
                     data=item,
                     placeholders=placeholders
                 )
-                for item in require_field(data, CONTENT)
+                for item in require_field(data, TEMPLATE)
             ],
         )
