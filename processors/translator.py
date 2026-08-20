@@ -1,7 +1,6 @@
 import re
 from typing import Final
 
-from langchain_core.output_parsers import JsonOutputParser
 from ollama import chat
 
 from processors.base_models.translated_sentence import TranslatedSentence
@@ -35,22 +34,27 @@ class Translator(Processor):
         if not self.should_process():
             return original_script
 
-        print(f"Translating the Hindi script to English...")
-        responses = []
-        for sentence in self.split_sentences(original_script):
-            prompt = self.prompt_factory.prompt(
+        print(
+            f"Translating the {self.youtube_language.value} script to English..."
+        )
+
+        prompts = [
+            self.prompt_factory.prompt(
                 prompt_file="translation_prompt.yaml",
                 prompt_key="translation",
                 placeholders={
-                    "source_language": "hindi",
+                    "source_language": self.youtube_language.value,
                     "sentence": sentence,
                     "parsed_format": self.parser_format(
                         TranslatedSentence
-                    )
-                }
+                    ),
+                },
             )
+            for sentence in self.split_sentences(original_script)
+        ]
 
-            response = chat(
+        responses = [
+            chat(
                 model=self.model,
                 messages=[
                     {
@@ -58,16 +62,20 @@ class Translator(Processor):
                         "content": item.prompt,
                     }
                     for item in prompt.content
-                ]
+                ],
+                format=TranslatedSentence.model_json_schema(),
             )
+            for prompt in prompts
+        ]
 
-            translated_sentence = TranslatedSentence.model_validate(
-                JsonOutputParser().parse(response.message.content)
+        formatted_response = [
+            TranslatedSentence.model_validate_json(
+                response.message.content
             )
+            for response in responses
+        ]
 
-            responses.append(translated_sentence.translated_sentence)
-
-            print(sentence)
-            print(translated_sentence.translated_sentence)
-
-        return " ".join(responses)
+        return " ".join(
+            translated_sentence.text
+            for translated_sentence in formatted_response
+        )

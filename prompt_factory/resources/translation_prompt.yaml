@@ -1,7 +1,7 @@
 translation:
   metadata:
     name: "Sentence Translation"
-    description: "Translate a spoken sentence into natural English while preserving its meaning, tone, and terminology."
+    description: "Translate a sentence into natural English."
     parameters:
       - source_language
       - sentence
@@ -15,6 +15,7 @@ translation:
         This is a translation task only.
 
         Requirements:
+
         - Translate the complete sentence.
         - Preserve its original meaning and intent.
         - Preserve technical terms, product names, company names, and proper nouns.
@@ -24,6 +25,7 @@ translation:
         - Translate naturally, not word-for-word.
 
         Do not:
+
         - summarize
         - shorten
         - omit any part of the sentence
@@ -32,6 +34,7 @@ translation:
         - correct or fact-check the speaker
 
         Return only valid JSON matching this format:
+
         {parsed_format}
 
     - role: user
