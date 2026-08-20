@@ -38,8 +38,10 @@ class Translator(Processor):
             f"Translating the {self.youtube_language.value} script to English..."
         )
 
-        prompts = [
-            self.prompt_factory.prompt(
+        responses = []
+
+        for sentence in self.split_sentences(original_script):
+            prompt = self.prompt_factory.prompt(
                 prompt_file="translation_prompt.yaml",
                 prompt_key="translation",
                 placeholders={
@@ -50,11 +52,8 @@ class Translator(Processor):
                     ),
                 },
             )
-            for sentence in self.split_sentences(original_script)
-        ]
 
-        responses = [
-            chat(
+            response = chat(
                 model=self.model,
                 messages=[
                     {
@@ -65,17 +64,14 @@ class Translator(Processor):
                 ],
                 format=TranslatedSentence.model_json_schema(),
             )
-            for prompt in prompts
-        ]
 
-        formatted_response = [
-            TranslatedSentence.model_validate_json(
+            formatted_response = TranslatedSentence.model_validate_json(
                 response.message.content
-            )
-            for response in responses
-        ]
+            ).text
 
-        return " ".join(
-            translated_sentence.text
-            for translated_sentence in formatted_response
-        )
+            print(sentence)
+            print(formatted_response)
+
+            responses.append(formatted_response)
+
+        return " ".join(responses)
