@@ -5,7 +5,7 @@ youtube:
   language: "hi"
 
 llm:
-  provider: "ollama"
+  provider_model: "ollama"
   models:
     translator: "translategemma:4b"
     validator: "qwen3:8b"

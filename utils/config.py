@@ -11,7 +11,7 @@ from .string_constants import (
     LLM,
     MODELS,
     OUTPUT_DIRECTORY,
-    PROVIDER,
+    PROVIDER_MODEL,
     TRANSLATOR,
     URL,
     VALIDATOR,
@@ -71,22 +71,22 @@ class ModelsConfig:
 
 @dataclass
 class LLMConfig:
-    provider: ProviderModels
+    provider_model: ProviderModels
     models: ModelsConfig
 
     def to_dict(self) -> dict:
         return {
-            PROVIDER: self.provider.value,
+            PROVIDER_MODEL: self.provider_model.value,
             MODELS: self.models.to_dict(),
         }
 
     @classmethod
     def from_dict(cls, data: dict, dependencies: DependencyContainer) -> "LLMConfig":
-        provider_name = require_field(data, PROVIDER)
-        provider = ProviderModels(provider_name.lower())
+        provider_name = require_field(data, PROVIDER_MODEL)
+        provider_model = ProviderModels(provider_name.lower())
 
         return cls(
-            provider=provider,
+            provider_model=provider_model,
             models=ModelsConfig.from_dict(require_field(data, MODELS)),
         )
 
