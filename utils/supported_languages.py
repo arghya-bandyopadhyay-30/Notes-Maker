@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class SupportedLanguage(str, Enum):
+class SupportedLanguages(str, Enum):
     ENGLISH = "en"
     HINDI = "hi"
     BENGALI = "bn"

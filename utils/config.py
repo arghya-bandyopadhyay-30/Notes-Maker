@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from utils.supported_languages import SupportedLanguage
+from utils.supported_languages import SupportedLanguages
 
 from .dependency_container import DependencyContainer
 from .string_constants import (
@@ -19,7 +19,7 @@ from .validation import require_directory_path, require_field
 @dataclass
 class YoutubeConfig:
     url: str
-    language: SupportedLanguage
+    language: SupportedLanguages
 
     def to_dict(self) -> dict:
         return {
@@ -30,7 +30,7 @@ class YoutubeConfig:
     @classmethod
     def from_dict(cls, data: dict) -> "YoutubeConfig":
         language_code = require_field(data, LANGUAGE)
-        language = SupportedLanguage(language_code.lower())
+        language = SupportedLanguages(language_code.lower())
 
         if language is None:
             raise ValueError(LANGUAGE_NOT_SUPPORTED.format(language_code))

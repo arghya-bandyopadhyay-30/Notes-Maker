@@ -4,11 +4,11 @@ from langchain_core.output_parsers import PydanticOutputParser
 
 from prompt_factory.prompt_factory import PromptFactory
 from utils.environment_system import EnvironmentSystem
-from utils.supported_languages import SupportedLanguage
+from utils.supported_languages import SupportedLanguages
 
 
 class Processor(ABC):
-    def __init__(self, youtube_language: SupportedLanguage, model: str, prompt_factory: PromptFactory, environment_system: EnvironmentSystem):
+    def __init__(self, youtube_language: SupportedLanguages, model: str, prompt_factory: PromptFactory, environment_system: EnvironmentSystem):
         self.youtube_language = youtube_language
         self.model = model
         environment_system.ensure_ollama_model(model)
@@ -18,4 +18,4 @@ class Processor(ABC):
         ).get_format_instructions()
 
     def should_process(self) -> bool:
-        return not (self.youtube_language == SupportedLanguage.ENGLISH)
+        return not (self.youtube_language == SupportedLanguages.ENGLISH)

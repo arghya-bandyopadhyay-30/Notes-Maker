@@ -4,7 +4,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 
 from transcribers.get_transcriber import get_transcriber
 from utils.dependency_container import DependencyContainer
-from utils.supported_languages import SupportedLanguage
+from utils.supported_languages import SupportedLanguages
 from utils.video_id import extract_video_id
 
 
@@ -14,7 +14,7 @@ class TranscriptFetcher:
     youtube_url: str
     youtube_language: str
 
-    def __init__(self, youtube_url: str, youtube_language: SupportedLanguage, dependencies: DependencyContainer):
+    def __init__(self, youtube_url: str, youtube_language: SupportedLanguages, dependencies: DependencyContainer):
         self.youtube_language = youtube_language.value
         self.youtube_url = youtube_url
         self.dependencies = dependencies

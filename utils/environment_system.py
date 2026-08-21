@@ -1,4 +1,5 @@
 import shutil
+import subprocess
 
 import ollama
 
@@ -11,6 +12,14 @@ class EnvironmentSystem:
             raise ValueError(f"{executable.capitalize()} was not found in PATH")
 
         return executable_path
+
+    def start_process(self, command: list[str]) -> subprocess.Popen[str]:
+        return subprocess.Popen(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True
+        )
 
     def ensure_ollama_model(self, model_name: str):
         installed_models = {

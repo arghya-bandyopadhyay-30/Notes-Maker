@@ -3,7 +3,7 @@ from faster_whisper import WhisperModel
 from transcribers.process_segment import process_segment
 from transcribers.transcriber import Transcriber
 from utils.environment_system import EnvironmentSystem
-from utils.supported_languages import SupportedLanguage
+from utils.supported_languages import SupportedLanguages
 
 
 class HiTranscriber(Transcriber):
@@ -18,7 +18,7 @@ class HiTranscriber(Transcriber):
     def transcribe(self) -> str:
         segments, info = self.speech_to_text_model.transcribe(
             self.audio_path,
-            language=SupportedLanguage.HINDI
+            language=SupportedLanguages.HINDI
         )
 
         transcript = [
