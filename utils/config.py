@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 
+from transcribers.transcriber import Transcriber
 from utils.supported_languages import SupportedLanguages
 from llm.provider_models import ProviderModels
 
 from .dependency_container import DependencyContainer
+from .get_transcriber import get_transcriber
 from .string_constants import (
     LANGUAGE,
     LLM,
@@ -22,6 +24,7 @@ from .validation import require_directory_path, require_field
 class YoutubeConfig:
     url: str
     language: SupportedLanguages
+    transcriber: Transcriber
 
     def to_dict(self) -> dict:
         return {
@@ -30,13 +33,20 @@ class YoutubeConfig:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "YoutubeConfig":
+    def from_dict(cls, data: dict, dependencies: DependencyContainer) -> "YoutubeConfig":
+        youtube_url = require_field(data, URL)
         language_code = require_field(data, LANGUAGE)
         language = SupportedLanguages(language_code.lower())
+        transcriber = get_transcriber(
+            language=language.value,
+            url=youtube_url,
+            environment_system=dependencies.environment_system
+        )
 
         return cls(
-            url=require_field(data, URL),
+            url=youtube_url,
             language=language,
+            transcriber=transcriber
         )
 
 
@@ -71,7 +81,7 @@ class LLMConfig:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "LLMConfig":
+    def from_dict(cls, data: dict, dependencies: DependencyContainer) -> "LLMConfig":
         provider_name = require_field(data, PROVIDER)
         provider = ProviderModels(provider_name.lower())
 
@@ -101,11 +111,17 @@ class Config:
         dependencies: DependencyContainer,
     ) -> "Config":
         return cls(
-            youtube=YoutubeConfig.from_dict(require_field(data, YOUTUBE)),
+            youtube=YoutubeConfig.from_dict(
+                data=require_field(data, YOUTUBE),
+                dependencies=dependencies
+            ),
             output_directory=require_directory_path(
                 require_field(data, OUTPUT_DIRECTORY),
                 OUTPUT_DIRECTORY,
                 dependencies,
             ),
-            llm=LLMConfig.from_dict(require_field(data, LLM)),
+            llm=LLMConfig.from_dict(
+                data=require_field(data, LLM),
+                dependencies=dependencies
+            ),
         )
