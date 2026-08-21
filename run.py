@@ -44,18 +44,20 @@ def main():
         config_path=CONFIG_PATH,
     ).get_config()
 
+    print(config)
+
     file_system = dependencies.file_system
     file_system.make_dirs(config.output_directory)
 
-    prompt_factory = PromptFactory(
-        file_system=dependencies.file_system
-    )
-
-    transcript_fetcher = TranscriptFetcher(
-        youtube_url=config.youtube.url,
-        youtube_language=config.youtube.language,
-        dependencies=dependencies
-    )
+    # prompt_factory = PromptFactory(
+    #     file_system=dependencies.file_system
+    # )
+    #
+    # transcript_fetcher = TranscriptFetcher(
+    #     youtube_url=config.youtube.url,
+    #     youtube_language=config.youtube.language,
+    #     dependencies=dependencies
+    # )
 
     # translator = Translator(
     #     youtube_language=config.youtube.language,
@@ -71,12 +73,12 @@ def main():
     #     prompt_factory=prompt_factory
     # )
 
-    script, video_id = run(
-        transcript_fetcher=transcript_fetcher,
-        translator=translator,
-        validator=validator
-    )
-    file_system.write_file(f"{config.output_directory}/{video_id}.txt", script)
+    # script, video_id = run(
+    #     transcript_fetcher=transcript_fetcher,
+    #     translator=translator,
+    #     validator=validator
+    # )
+    # file_system.write_file(f"{config.output_directory}/{video_id}.txt", script)
 
 
 if __name__ == "__main__":

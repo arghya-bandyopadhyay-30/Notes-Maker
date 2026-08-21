@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from youtube_transcript_api import YouTubeTranscriptApi
 
-from transcribers.get_transcriber import get_transcriber
+from utils.get_transcriber import get_transcriber
 from utils.dependency_container import DependencyContainer
 from utils.supported_languages import SupportedLanguages
 from utils.video_id import extract_video_id

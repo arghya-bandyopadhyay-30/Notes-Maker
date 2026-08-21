@@ -1,17 +1,11 @@
 output_directory: "output"
 
-#youtube:
-#  url: "https://www.youtube.com/watch?v=4cm9PMNikXM"
-#  language: "bn"
-
 youtube:
   url: "https://www.youtube.com/watch?v=_R_d3ibfttY"
   language: "hi"
 
-#youtube:
-#  url: "https://www.youtube.com/watch?v=q9jixKv4h2I"
-#  language: "en"
-
-models:
-  translator: "translategemma:4b"
-  validator: "qwen3:8b"
+llm:
+  provider: "ollama"
+  models:
+    translator: "translategemma:4b"
+    validator: "qwen3:8b"

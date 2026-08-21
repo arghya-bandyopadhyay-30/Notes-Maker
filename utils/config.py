@@ -1,13 +1,15 @@
 from dataclasses import dataclass
 
 from utils.supported_languages import SupportedLanguages
+from llm.provider_models import ProviderModels
 
 from .dependency_container import DependencyContainer
 from .string_constants import (
     LANGUAGE,
-    LANGUAGE_NOT_SUPPORTED,
+    LLM,
     MODELS,
     OUTPUT_DIRECTORY,
+    PROVIDER,
     TRANSLATOR,
     URL,
     VALIDATOR,
@@ -31,9 +33,6 @@ class YoutubeConfig:
     def from_dict(cls, data: dict) -> "YoutubeConfig":
         language_code = require_field(data, LANGUAGE)
         language = SupportedLanguages(language_code.lower())
-
-        if language is None:
-            raise ValueError(LANGUAGE_NOT_SUPPORTED.format(language_code))
 
         return cls(
             url=require_field(data, URL),
@@ -61,16 +60,38 @@ class ModelsConfig:
 
 
 @dataclass
+class LLMConfig:
+    provider: ProviderModels
+    models: ModelsConfig
+
+    def to_dict(self) -> dict:
+        return {
+            PROVIDER: self.provider.value,
+            MODELS: self.models.to_dict(),
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "LLMConfig":
+        provider_name = require_field(data, PROVIDER)
+        provider = ProviderModels(provider_name.lower())
+
+        return cls(
+            provider=provider,
+            models=ModelsConfig.from_dict(require_field(data, MODELS)),
+        )
+
+
+@dataclass
 class Config:
     youtube: YoutubeConfig
     output_directory: str
-    models: ModelsConfig
+    llm: LLMConfig
 
     def to_dict(self) -> dict:
         return {
             YOUTUBE: self.youtube.to_dict(),
             OUTPUT_DIRECTORY: self.output_directory,
-            MODELS: self.models.to_dict(),
+            LLM: self.llm.to_dict(),
         }
 
     @classmethod
@@ -86,5 +107,5 @@ class Config:
                 OUTPUT_DIRECTORY,
                 dependencies,
             ),
-            models=ModelsConfig.from_dict(require_field(data, MODELS)),
+            llm=LLMConfig.from_dict(require_field(data, LLM)),
         )
