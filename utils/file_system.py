@@ -41,6 +41,12 @@ class FileSystem:
 
         return data
 
+    def write_yaml(self, path: str, content: dict) -> str:
+        with open(path, WRITE_MODE, encoding=UTF_8_ENCODING) as file:
+            yaml.safe_dump(content, file, sort_keys=False)
+
+        return path
+
     def make_dirs(self, path: str) -> str:
         os.makedirs(path, exist_ok=True)
         return path

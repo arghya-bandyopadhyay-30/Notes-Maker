@@ -1,8 +1,12 @@
 from pydantic import BaseModel, Field
 
 
-class TranslatedSentence(BaseModel):
+class TranslatedSegment(BaseModel):
     text: str = Field(
         ...,
-        description="The natural English translation of the source sentence."
+        description=(
+            "The complete natural English translation of the corresponding "
+            "source transcript segment, preserving its original meaning, "
+            "intent, and conversational tone."
+        ),
     )

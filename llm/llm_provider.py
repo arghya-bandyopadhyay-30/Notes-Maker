@@ -1,16 +1,23 @@
 import asyncio
 from abc import ABC, abstractmethod
 
+from pipeline_statistics.execution_time import execution_time
+
 
 class LLMProvider(ABC):
     @abstractmethod
-    async def generate(self, prompt: str):
+    async def invoke(self, prompt) -> str:
         pass
 
-    async def batch_generate(self, prompts: list[str]):
+    @execution_time
+    async def generate(self, prompt: str) -> str:
+        return await self.invoke(prompt)
+
+    @execution_time
+    async def batch_generate(self, prompts: list[str]) -> list[str]:
         return await asyncio.gather(
             *(
-                self.generate(prompt)
+                self.invoke(prompt)
                 for prompt in prompts
             )
         )

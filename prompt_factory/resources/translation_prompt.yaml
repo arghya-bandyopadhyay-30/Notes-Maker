@@ -1,45 +1,43 @@
 translation:
   metadata:
-    name: "Sentence Translation"
-    description: "Translate a sentence into natural English."
+    name: "Transcript Translation"
+    description: "Translate a spoken transcript into natural English while preserving its complete meaning, structure, tone, and technical terminology."
     parameters:
       - source_language
-      - sentence
-      - parsed_format
+      - script
+      - response_format
 
-  template:
+  content:
     - role: system
-      content: |
-        Translate the user's sentence from {source_language} into natural English.
+      prompt: |
+        Translate the user's transcript from {source_language} into natural English.
 
-        This is a translation task only.
+        This is a translation task, not a summarization task.
 
-        Requirements:
-
-        - Translate the complete sentence.
-        - Preserve its original meaning and intent.
-        - Preserve technical terms, product names, company names, and proper nouns.
-        - Preserve numbers, dates, percentages, prices, and other factual values.
-        - Preserve questions as questions.
-        - Preserve the conversational tone.
-        - Translate naturally, not word-for-word.
+        Preserve:
+        - the complete meaning
+        - the original order
+        - examples and explanations
+        - technical terms and proper nouns
+        - the conversational tone
 
         Do not:
-
         - summarize
         - shorten
-        - omit any part of the sentence
-        - add information or explanations
-        - answer questions contained in the sentence
-        - correct or fact-check the speaker
+        - omit content
+        - add explanations
+        - answer questions contained in the transcript
 
-        Return only valid JSON matching this format:
+        Translate naturally rather than word-for-word.
 
-        {parsed_format}
+        Return valid JSON matching exactly this format:
+        {response_format}
+
+        Do not include Markdown, code fences, comments, or any text outside the JSON.
 
     - role: user
-      content: |
+      prompt: |
         Source language: {source_language}
 
-        Sentence:
-        {sentence}
+        Transcript:
+        {script}

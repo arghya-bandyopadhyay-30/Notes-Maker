@@ -25,10 +25,10 @@ def run(
 
     print("Original Script:\n", original_script)
 
-    # translated_script = translator.translate(original_script=original_script)
-    # print("Translated Script:\n", translated_script)
-    #
-    # validation_score = validator.validate(original_script=original_script, translated_script=translated_script)
+    translated_script = translator.translate(original_script=original_script)
+    print("Translated Script:\n", translated_script)
+
+    validation_score = validator.validate(original_script=original_script, translated_script=translated_script)
 
     return original_script, video_id
 
@@ -45,8 +45,6 @@ def main():
         config_path=CONFIG_PATH,
     ).get_config()
 
-    print(config)
-
     file_system = dependencies.file_system
     file_system.make_dirs(config.output_directory)
 
@@ -55,32 +53,30 @@ def main():
         dependencies=dependencies
     )
 
-    # prompt_factory = PromptFactory(
-    #     file_system=dependencies.file_system
-    # )
+    prompt_factory = PromptFactory(
+        file_system=dependencies.file_system
+    )
 
-    # translator = Translator(
-    #     youtube_language=config.youtube.language,
-    #     model=config.models.translator,
-    #     environment_system=dependencies.environment_system,
-    #     prompt_factory=prompt_factory
-    # )
-    #
-    # validator = Validator(
-    #     youtube_language=config.youtube.language,
-    #     model=config.models.validator,
-    #     environment_system=dependencies.environment_system,
-    #     prompt_factory=prompt_factory
-    # )
+    translator = Translator(
+        youtube_language=config.youtube.language,
+        llm=config.llm,
+        prompt_factory=prompt_factory
+    )
 
-    # script, video_id = run(
-    #     transcript_fetcher=transcript_fetcher,
-    #     translator=translator,
-    #     validator=validator
-    # )
-    # file_system.write_file(f"{config.output_directory}/{video_id}.txt", script)
+    validator = Validator(
+        youtube_language=config.youtube.language,
+        llm=config.llm,
+        prompt_factory=prompt_factory
+    )
 
-    print(timing_tracker.to_dict())
+    script, video_id = run(
+        transcript_fetcher=transcript_fetcher,
+        translator=translator,
+        validator=validator
+    )
+
+    file_system.write_file(f"{config.output_directory}/{video_id}.txt", script)
+    file_system.write_yaml(f"{config.output_directory}/pipeline_statistics.yaml", timing_tracker.to_dict())
 
 
 if __name__ == "__main__":

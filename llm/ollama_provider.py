@@ -5,5 +5,5 @@ class OllamaProvider(LLMProvider):
     def __init__(self):
         pass
 
-    async def generate(self, prompt: str):
+    async def invoke(self, prompt: str):
         pass

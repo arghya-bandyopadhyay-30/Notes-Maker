@@ -1,11 +1,9 @@
 from dataclasses import dataclass
 
 from llm.llm_provider import LLMProvider
-from pipeline_statistics.execution_time import execution_time
+from llm.provider_models import ProviderModels
 from transcribers.transcriber import Transcriber
 from utils.supported_languages import SupportedLanguages
-from llm.provider_models import ProviderModels
-
 from .dependency_container import DependencyContainer
 from .get_class_name import get_transcriber, get_llm_provider_class_name
 from .string_constants import (
@@ -109,7 +107,6 @@ class Config:
         }
 
     @classmethod
-    @execution_time
     def from_dict(
         cls,
         data: dict,

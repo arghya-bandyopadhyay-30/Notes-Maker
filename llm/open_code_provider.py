@@ -3,6 +3,7 @@ import re
 import requests
 
 from llm.llm_provider import LLMProvider
+from temp import response
 from utils.environment_system import EnvironmentSystem
 
 
@@ -40,5 +41,18 @@ class OpenCodeProvider(LLMProvider):
             ) from error
 
 
-    async def generate(self, prompt: str):
-        pass
+    async def invoke(self, prompt: str):
+        requests.post(
+            f"{self.base_url}/session/{self.session['id']}/message",
+            json={
+                "parts": [
+                    {
+                        "type": "text",
+                        "text": prompt,
+                    }
+                ]
+            },
+            timeout=300,
+        )
+
+        print(response)

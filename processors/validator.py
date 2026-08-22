@@ -1,16 +1,16 @@
 from processors.processor import Processor
 from prompt_factory.prompt_factory import PromptFactory
+from utils.config import LLMConfig
 from utils.environment_system import EnvironmentSystem
 from utils.supported_languages import SupportedLanguages
 
 
 class Validator(Processor):
-    def __init__(self, youtube_language: SupportedLanguages, model: str, prompt_factory: PromptFactory, environment_system: EnvironmentSystem):
+    def __init__(self, youtube_language: SupportedLanguages, llm: LLMConfig, prompt_factory: PromptFactory):
         super().__init__(
             youtube_language=youtube_language,
-            model=model,
+            llm=llm,
             prompt_factory=prompt_factory,
-            environment_system=environment_system
         )
 
     def validate(self, original_script: str, translated_script: str) -> float:
@@ -20,6 +20,5 @@ class Validator(Processor):
         print(
             f"Validating the {self.youtube_language.value} script to English translated scrip..."
         )
-
 
         return 0
