@@ -14,14 +14,10 @@ src/
     │   │   └── tracker.py
     │   └── __init__.py
     ├── processors/
-    │   ├── base/
-    │   │   ├── __init__.py
-    │   │   ├── models.py
-    │   │   ├── processor.py
-    │   │   └── validation.py
     │   ├── __init__.py
-    │   ├── translator.py
-    │   └── validator.py
+    │   ├── models.py
+    │   ├── processor.py
+    │   └── validation.py
     ├── prompts/
     │   ├── resources/
     │   │   ├── __init__.py
@@ -41,20 +37,30 @@ src/
     │   ├── base.py
     │   └── segment.py
     ├── utils/
-    │   ├── __init__.py
-    │   ├── config.py
-    │   ├── config_service.py
-    │   ├── container.py
-    │   ├── environment.py
-    │   ├── filesystem.py
-    │   ├── filesystem_ops.py
-    │   ├── formatting.py
-    │   ├── languages.py
-    │   ├── naming.py
-    │   ├── naming_case.py
-    │   ├── strings.py
-    │   ├── validation.py
-    │   └── video.py
+    │   ├── config/
+    │   │   ├── __init__.py
+    │   │   ├── config.py
+    │   │   ├── config_service.py
+    │   │   └── container.py
+    │   ├── formatting/
+    │   │   ├── __init__.py
+    │   │   ├── formatting.py
+    │   │   └── strings.py
+    │   ├── io/
+    │   │   ├── __init__.py
+    │   │   ├── environment.py
+    │   │   ├── filesystem.py
+    │   │   ├── filesystem_ops.py
+    │   │   └── video.py
+    │   ├── naming/
+    │   │   ├── __init__.py
+    │   │   ├── naming.py
+    │   │   └── naming_case.py
+    │   ├── validation/
+    │   │   ├── __init__.py
+    │   │   ├── languages.py
+    │   │   └── validation.py
+    │   └── __init__.py
     ├── youtube/
     │   ├── __init__.py
     │   └── transcript.py

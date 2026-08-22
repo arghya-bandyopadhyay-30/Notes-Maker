@@ -26,7 +26,7 @@ class Processor:
             return original_script
 
         prompt = self.prompt_factory.prompt(
-            prompt_file="translation_prompt.yaml",
+            prompt_file="translation.yaml",
             prompt_key="translation",
             placeholders={
                 "source_language": self.youtube_language.value,

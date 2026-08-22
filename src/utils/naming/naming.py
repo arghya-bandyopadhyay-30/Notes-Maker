@@ -12,6 +12,7 @@ def get_llm_provider_class_name(provider_model_name: str, environment_system: En
 
     return class_name(environment_system=environment_system)
 
+
 def get_transcriber(language: str, url: str, environment_system: EnvironmentSystem) -> Transcriber:
     module = importlib.import_module(f"src.transcribers.languages.{language}")
     class_name = getattr(module, f"{snake_to_pascal_case(language.capitalize())}Transcriber")
