@@ -21,14 +21,6 @@ class Processor:
     def should_process(self) -> bool:
         return not (self.youtube_language == SupportedLanguages.ENGLISH)
 
-    async def temp(self, original_script: str) -> tuple[str, float]:
-        translated_script = self.translate(original_script)
-
-        confidence_score = self.validate(
-            original_script=original_script,
-            translated_script=translated_script
-        )
-
     async def translate(self, original_script: str) -> str:
         if not self.should_process():
             return original_script

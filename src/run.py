@@ -1,11 +1,4 @@
-import sys
 import asyncio
-
-# Force UTF-8 encoding on Windows
-if sys.platform == "win32":
-    import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 from src.pipeline.statistics.tracker import timing_tracker
 from src.processors.processor import Processor
