@@ -1,0 +1,26 @@
+pydantic_validation:
+  metadata:
+    name: "LLM Response Validation Retry"
+    description: "Regenerate an LLM response that failed Pydantic schema validation."
+    parameters:
+      - validation_error
+
+  template:
+    - role: user
+      content: |
+        Your previous response failed schema validation.
+
+        Regenerate the complete response and strictly follow the required JSON schema.
+
+        Requirements:
+        - Return ONLY valid JSON.
+        - Do not use Markdown or code fences.
+        - Do not include explanations, comments, or additional text.
+        - Include all required fields.
+        - Use the correct data type for every field.
+        - Correct the validation errors identified below.
+
+        Validation error:
+        {validation_error}
+
+        Regenerate the complete response now.

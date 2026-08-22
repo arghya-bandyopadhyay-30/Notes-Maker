@@ -1,9 +1,7 @@
 import asyncio
-from pathlib import Path
 
 from src.pipeline.statistics.tracker import timing_tracker
 from src.processors.processor import Processor
-from src.prompts.factory import PromptFactory
 from src.utils.config.config_service import AppConfigService
 from src.utils.config.container import DependencyContainer
 from src.youtube.transcript import TranscriptFetcher
@@ -40,14 +38,10 @@ async def main():
         dependencies=dependencies
     )
 
-    prompt_factory = PromptFactory(
-        file_system=dependencies.file_system
-    )
-
     processor = Processor(
         youtube_language=app_config.youtube.language,
         llm=app_config.llm,
-        prompt_factory=prompt_factory
+        prompt_factory=dependencies.prompt_factory
     )
 
     script, video_id = await run(

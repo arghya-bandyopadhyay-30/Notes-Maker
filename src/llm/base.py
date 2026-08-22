@@ -4,10 +4,16 @@ from abc import ABC, abstractmethod
 from pydantic import BaseModel, ValidationError
 
 from src.pipeline.statistics.execution import execution_time
+from src.prompts.factory import PromptFactory
 from src.prompts.models import PromptTemplate
+from src.utils.config.container import DependencyContainer
 
 
 class LLMProvider(ABC):
+    def __init__(self, dependencies: DependencyContainer):
+        self.prompt_factory = dependencies.prompt_factory
+        self.environment_system = dependencies.environment_system
+
     @abstractmethod
     async def invoke(self, messages: list[dict]) -> str:
         pass
@@ -17,84 +23,92 @@ class LLMProvider(ABC):
         pass
 
     async def response_with_retries(
-            self,
-            prompt: list[PromptTemplate],
-            parser: type[BaseModel],
-            max_attempts: int = 3,
+        self,
+        prompt: list[PromptTemplate],
+        parser: type[BaseModel],
+        max_attempts: int = 3,
     ) -> BaseModel:
         messages = [
             item.to_dict()
             for item in prompt
         ]
 
-        validation_error = ""
-
-        for attempt in range(1, max_attempts + 1):
-            request_messages = self.request_messages(
-                messages,
-                validation_error,
+        async def attempt(
+            attempt_number: int,
+            validation_error: str,
+        ) -> BaseModel:
+            response_text = await self.invoke(
+                self.request_messages(
+                    messages=messages,
+                    validation_error=validation_error,
+                )
             )
-
-            response_text = await self.invoke(request_messages)
 
             try:
                 return parser.model_validate_json(response_text)
 
             except ValidationError as exception:
-                validation_error = str(exception)
+                error = str(exception)
 
                 print(
                     f"LLM response validation failed "
-                    f"(attempt {attempt}/{max_attempts}): "
-                    f"{validation_error}"
+                    f"(attempt {attempt_number}/{max_attempts}): "
+                    f"{error}"
                 )
 
-                if attempt == max_attempts:
+                if attempt_number == max_attempts:
                     raise RuntimeError(
                         f"LLM response validation failed after "
                         f"{max_attempts} attempts: "
-                        f"{validation_error}"
+                        f"{error}"
                     ) from exception
 
-        raise RuntimeError("LLM invocation failed.")
+                return await attempt(
+                    attempt_number + 1,
+                    error,
+                )
 
+        return await attempt(1, "")
 
-    def request_messages(self, messages: list[dict], validation_error: str) -> list[dict]:
+    def request_messages(
+        self,
+        messages: list[dict],
+        validation_error: str,
+    ) -> list[dict]:
         if not validation_error:
             return messages
 
+        validation_prompt = self.prompt_factory.pydantic_validation_prompt(
+            placeholders={
+                "validation_error": validation_error,
+            }
+        )
+
         return [
             *messages,
-            {
-                "role": "user",
-                "content": (
-                    "Your previous response failed schema validation.\n\n"
-                    "Regenerate the complete response and strictly "
-                    "follow the required JSON schema.\n\n"
-                    "Requirements:\n"
-                    "- Return ONLY valid JSON.\n"
-                    "- Do not use Markdown code fences.\n"
-                    "- Do not include explanations, comments, or "
-                    "additional text.\n"
-                    "- Include all required fields.\n"
-                    "- Use the correct data type for every field.\n"
-                    "- Correct the validation errors identified below.\n\n"
-                    f"Validation error:\n{validation_error}\n\n"
-                    "Regenerate the complete response now."
-                ),
-            },
+            *[
+                item.to_dict()
+                for item in validation_prompt.template
+            ],
         ]
 
+    @execution_time
+    async def generate(
+        self,
+        prompt: list[PromptTemplate],
+        parser: type[BaseModel],
+    ) -> BaseModel:
+        return await self.response_with_retries(prompt, parser)
 
     @execution_time
-    async def generate(self, prompt: list[PromptTemplate], parser: type[BaseModel]) -> type[BaseModel]:
-        return await self.response_with_reties(prompt, parser)
-
-    @execution_time
-    async def batch_generate(self, prompts: list[list[PromptTemplate]], parser: type[BaseModel]) -> list[type[BaseModel]]:
+    async def batch_generate(
+        self,
+        prompts: list[list[PromptTemplate]],
+        parser: type[BaseModel],
+    ) -> list[BaseModel]:
         return await asyncio.gather(
             *(
-                self.response_with_reties(prompt, parser)
+                self.response_with_retries(prompt, parser)
                 for prompt in prompts
             )
         )

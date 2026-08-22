@@ -91,7 +91,7 @@ class LLMConfig:
             models=ModelsConfig.from_dict(require_field(data, MODELS)),
             provider=get_llm_provider_class_name(
                 provider_model_name=provider_model.value,
-                environment_system=dependencies.environment_system
+                dependencies=dependencies
             )
         )
 

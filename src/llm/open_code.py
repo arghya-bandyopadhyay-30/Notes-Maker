@@ -5,13 +5,15 @@ from pydantic import BaseModel, ValidationError
 
 from src.llm.base import LLMProvider
 from src.prompts.models import PromptTemplate
+from src.utils.config.container import DependencyContainer
 from src.utils.io.environment import EnvironmentSystem
 
 
 class OpenCodeProvider(LLMProvider):
-    def __init__(self, environment_system: EnvironmentSystem):
-        open_code_path = environment_system.find_executable("opencode")
-        self.open_code_process = environment_system.start_subprocess(
+    def __init__(self, dependencies: DependencyContainer):
+        super().__init__(dependencies)
+        open_code_path = self.environment_system.find_executable("opencode")
+        self.open_code_process = self.environment_system.start_subprocess(
             [
                 open_code_path,
                 "serve"
@@ -23,7 +25,6 @@ class OpenCodeProvider(LLMProvider):
             json={},
             timeout=10
         ).json()
-        self.environment_system = environment_system
 
     def close(self):
         if self.open_code_process is None:
@@ -63,14 +64,14 @@ class OpenCodeProvider(LLMProvider):
         )
 
 
-    async def invoke(self, prompt: list[PromptTemplate]) -> str:
+    async def invoke(self, messages: list[dict]) -> str:
         response = requests.post(
             f"{self.base_url}/session/{self.session['id']}/message",
             json={
                 "parts": [
                     {
                         "type": "text",
-                        "text": str(request_messages),
+                        "text": str(messages),
                     }
                 ]
             },
