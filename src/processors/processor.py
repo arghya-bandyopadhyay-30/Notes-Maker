@@ -23,7 +23,7 @@ class Processor:
             return original_script
 
         print(
-            f"Translating the {self.youtube_language.value} script to English translated scrip..."
+            f"Translating the {self.youtube_language.value.capitalize()} script to English translated scrip..."
         )
         prompt = self.prompt_factory.prompt(
             prompt_file="translation.yaml",
@@ -37,16 +37,16 @@ class Processor:
             },
         )
 
-        response = await self.provider.generate(prompt=prompt.template, parser=TranslatedSegment)
+        response: TranslatedSegment = await self.provider.generate(prompt=prompt.template, parser=TranslatedSegment)
 
-        return response
+        return response.text
     
     async def validate(self, original_script: str, translated_script: str) -> float:
         if not self.should_process():
             return 1
 
         print(
-            f"Validating the {self.youtube_language.value} script to English translated scrip..."
+            f"Validating the {self.youtube_language.value.capitalize()} script to English translated scrip..."
         )
         # prompt = self.prompt_factory.prompt(
         #     prompt_file="validation.yaml",
