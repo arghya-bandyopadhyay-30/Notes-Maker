@@ -22,22 +22,26 @@ class TranscriptFetcher:
         self.youtube_transcript_api = YouTubeTranscriptApi()
         self.youtube_transcriber = youtube_config.transcriber
 
-    def fetch_transcript_text_from_youtube_api(self) -> tuple[str, str]:
+    def fetch_transcript_text_from_youtube_api(self) -> str:
         print("Trying to fetch transcript from YouTube API...")
         transcript = self.youtube_transcript_api.fetch(
             self.youtube_video_id,
             languages=[self.youtube_language]
         )
 
-        script = "\n".join(
+        return "\n".join(
             snippet.text.replace("\n", " ").strip()
             for snippet in transcript
         )
 
-        return script, self.youtube_video_id
-
-    def fetch_transcript_text_from_audio(self) -> tuple[str, str]:
+    def fetch_transcript_text_from_audio(self) -> str:
         print("Falling back to audio transcription...")
-        script =  self.youtube_transcriber.transcribe()
+        return self.youtube_transcriber.transcribe()
+
+    def fetch_transcript(self) -> tuple[str, str]:
+        try:
+            script = self.fetch_transcript_text_from_youtube_api()
+        except Exception:
+            script = self.fetch_transcript_text_from_audio()
 
         return script, self.youtube_video_id

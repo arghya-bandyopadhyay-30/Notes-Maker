@@ -23,15 +23,7 @@ async def run(
     translator: Translator,
     validator: Validator
 ) -> tuple[str, str]:
-    try:
-        original_script, video_id = (
-            transcript_fetcher.fetch_transcript_text_from_youtube_api()
-        )
-    except Exception:
-        original_script, video_id = (
-            transcript_fetcher.fetch_transcript_text_from_audio()
-        )
-
+    original_script, video_id = transcript_fetcher.fetch_transcript()
     print("Original Script:\n", original_script)
 
     translated_script = await translator.translate(original_script=original_script)
