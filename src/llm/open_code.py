@@ -1,7 +1,7 @@
 import re
 
 import requests
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 from src.llm.base import LLMProvider
 from src.prompts.models import PromptTemplate
@@ -63,34 +63,80 @@ class OpenCodeProvider(LLMProvider):
         )
 
 
-    async def invoke(self, prompt: list[PromptTemplate], parser: BaseModel) -> str:
+    async def invoke(self, prompt: list[PromptTemplate], parser: BaseModel, max_attempts: int = 3) -> str:
         messages = [
             item.to_dict()
             for item in prompt
         ]
-        
-        response = requests.post(
-            f"{self.base_url}/session/{self.session['id']}/message",
-            json={
-                "parts": [
+
+        validation_error = None
+
+        for attempt in range(1, max_attempts + 1):
+            request_messages = messages
+
+            if validation_error:
+                request_messages = [
+                    *messages,
                     {
-                        "type": "text",
-                        "text": str(messages),
-                    }
+                        "role": "user",
+                        "content": (
+                            "Your previous response failed schema validation.\n\n"
+                            "Regenerate the complete response and strictly "
+                            "follow the required JSON schema.\n\n"
+                            "Requirements:\n"
+                            "- Return ONLY valid JSON.\n"
+                            "- Do not use Markdown code fences.\n"
+                            "- Do not include explanations, comments, or "
+                            "additional text.\n"
+                            "- Include all required fields.\n"
+                            "- Use the correct data type for every field.\n"
+                            "- Correct the validation errors identified below.\n\n"
+                            f"Validation error:\n{validation_error}\n\n"
+                            "Regenerate the complete response now."
+                        ),
+                    },
                 ]
-            },
-            timeout=300,
-        )
 
-        response.raise_for_status()
+            response = requests.post(
+                f"{self.base_url}/session/{self.session['id']}/message",
+                json={
+                    "parts": [
+                        {
+                            "type": "text",
+                            "text": str(request_messages),
+                        }
+                    ]
+                },
+                timeout=300,
+            )
 
-        response_data = response.json()
-        text_part = next(
-            part
-            for part in response_data["parts"]
-            if part["type"] == "text"
-        )
+            response.raise_for_status()
 
-        return parser.model_validate_json(
-            text_part["text"]
-        ).text
+            response_data = response.json()
+
+            text_part = next(
+                part
+                for part in response_data["parts"]
+                if part["type"] == "text"
+            )
+
+            try:
+                parsed_response = parser.model_validate_json(
+                    text_part["text"]
+                )
+
+                return parsed_response.text
+
+            except ValidationError as exception:
+                validation_error = str(exception)
+
+                if attempt == max_attempts:
+                    raise
+
+                print(
+                    f"LLM response validation failed "
+                    f"(attempt {attempt}/{max_attempts}): "
+                    f"{validation_error}"
+                )
+
+        raise RuntimeError("LLM invocation failed.")

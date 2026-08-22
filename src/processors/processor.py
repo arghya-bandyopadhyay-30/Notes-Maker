@@ -51,23 +51,23 @@ class Processor:
         print(
             f"Validating the {self.youtube_language.value} script to English translated scrip..."
         )
-        prompt = self.prompt_factory.prompt(
-            prompt_file="validation.yaml",
-            prompt_key="validation",
-            placeholders={
-                "source_language": self.youtube_language.value,
-                "original_script": original_script,
-                "translated_script": translated_script,
-                "parsed_format": self.parser_format(
-                    TranslationValidation
-                ),
-            },
-        )
-
-        response = await self.provider.generate(prompt=prompt.template, parser=TranslationValidation)
-        print("="*80)
-        print(response)
-        print("="*80)
+        # prompt = self.prompt_factory.prompt(
+        #     prompt_file="validation.yaml",
+        #     prompt_key="validation",
+        #     placeholders={
+        #         "source_language": self.youtube_language.value,
+        #         "original_script": original_script,
+        #         "translated_script": translated_script,
+        #         "parsed_format": self.parser_format(
+        #             TranslationValidation
+        #         ),
+        #     },
+        # )
+        #
+        # response = await self.provider.generate(prompt=prompt.template, parser=TranslationValidation)
+        # print("="*80)
+        # print(response)
+        # print("="*80)
 
         return 0
 

@@ -3,7 +3,7 @@ validation:
     name: "Translation Validation"
     description: "Validate whether an English translation accurately represents the original transcript."
     parameters:
-      - source_langauge
+      - source_language
       - original_script
       - translated_script
       - parsed_format
@@ -32,7 +32,7 @@ validation:
 
     - role: "user"
       content: |
-        Source language: {source_langauge}
+        Source language: {source_language}
 
         Original transcript:
         {original_script}
