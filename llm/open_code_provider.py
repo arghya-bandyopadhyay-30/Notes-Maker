@@ -3,7 +3,6 @@ import re
 import requests
 
 from llm.llm_provider import LLMProvider
-from temp import response
 from utils.environment_system import EnvironmentSystem
 
 
@@ -42,7 +41,7 @@ class OpenCodeProvider(LLMProvider):
 
 
     async def invoke(self, prompt: str):
-        requests.post(
+        response = requests.post(
             f"{self.base_url}/session/{self.session['id']}/message",
             json={
                 "parts": [

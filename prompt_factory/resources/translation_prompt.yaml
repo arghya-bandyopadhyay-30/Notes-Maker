@@ -5,11 +5,11 @@ translation:
     parameters:
       - source_language
       - script
-      - response_format
+      - parsed_format
 
-  content:
+  template:
     - role: system
-      prompt: |
+      content: |
         Translate the user's transcript from {source_language} into natural English.
 
         This is a translation task, not a summarization task.
@@ -31,12 +31,12 @@ translation:
         Translate naturally rather than word-for-word.
 
         Return valid JSON matching exactly this format:
-        {response_format}
+        {parsed_format}
 
         Do not include Markdown, code fences, comments, or any text outside the JSON.
 
     - role: user
-      prompt: |
+      content: |
         Source language: {source_language}
 
         Transcript:

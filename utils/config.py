@@ -89,7 +89,10 @@ class LLMConfig:
         return cls(
             provider_model=provider_model,
             models=ModelsConfig.from_dict(require_field(data, MODELS)),
-            provider=get_llm_provider_class_name(provider_model.value)
+            provider=get_llm_provider_class_name(
+                provider_model_name=provider_model.value,
+                environment_system=dependencies.environment_system
+            )
         )
 
 

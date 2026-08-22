@@ -29,6 +29,7 @@ def run(
     print("Translated Script:\n", translated_script)
 
     validation_score = validator.validate(original_script=original_script, translated_script=translated_script)
+    print("Validation Script:\n", validation_score)
 
     return original_script, video_id
 

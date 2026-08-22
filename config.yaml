@@ -5,7 +5,7 @@ youtube:
   language: "hi"
 
 llm:
-  provider_model: "ollama"
+  provider_model: "open_code"
   models:
     translator: "translategemma:4b"
     validator: "qwen3:8b"
