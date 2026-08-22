@@ -1,5 +1,7 @@
 from dataclasses import field, dataclass
 
+from utils.format_time import format_time
+
 
 @dataclass
 class TimingNode:
@@ -10,8 +12,7 @@ class TimingNode:
     def to_dict(self) -> dict:
         return {
             **{
-                "execution_time": (
-                    f"{round(self.execution_time, 3)} sec"
+                "execution_time": format_time(round(self.execution_time, 3)
                 ),
             },
             **{

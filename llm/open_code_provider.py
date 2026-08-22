@@ -25,7 +25,7 @@ class OpenCodeProvider(LLMProvider):
         ).json()
         self.environment_system = environment_system
 
-    def stop(self):
+    def close(self):
         if self.open_code_process is None:
             return
 
