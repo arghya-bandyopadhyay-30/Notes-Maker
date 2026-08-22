@@ -8,7 +8,7 @@ if sys.platform == "win32":
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 from src.pipeline.statistics.tracker import timing_tracker
-from src.processors.base.processor import Processor
+from src.processors.processor import Processor
 from src.prompts.factory import PromptFactory
 from src.utils.config_service import AppConfigService
 from src.utils.container import DependencyContainer
@@ -25,9 +25,8 @@ async def run(
     print("Original Script:\n", original_script)
 
     translated_script = await processor.translate(original_script=original_script)
-    print("Translated Script:\n", translated_script)
-
     validation_score = await processor.validate(original_script=original_script, translated_script=translated_script)
+    print("Translated Script:\n", translated_script)
     print("Validation Script:\n", validation_score)
 
     return translated_script, video_id

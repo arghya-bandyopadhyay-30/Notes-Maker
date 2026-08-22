@@ -1,16 +1,15 @@
 import re
-from abc import ABC
 
 from langchain_core.output_parsers import PydanticOutputParser
 
-from src.processors.base.models import TranslatedSegment
+from src.processors.models import TranslatedSegment
 from src.prompts.factory import PromptFactory
 from src.utils.config import LLMConfig
 from src.utils.languages import SupportedLanguages
 from src.utils.strings import SENTENCE_BOUNDARY_PATTERN
 
 
-class Processor(ABC):
+class Processor:
     def __init__(self, youtube_language: SupportedLanguages, llm: LLMConfig, prompt_factory: PromptFactory):
         self.youtube_language = youtube_language
         self.prompt_factory = prompt_factory
@@ -18,16 +17,17 @@ class Processor(ABC):
             pydantic_object=parser
         ).get_format_instructions()
         self.provider = llm.provider
-        self.split_sentences = lambda script: [
-            sentence.strip()
-            for sentence in re.compile(SENTENCE_BOUNDARY_PATTERN).split(
-                " ".join(script.split())
-            )
-            if sentence.strip()
-        ]
 
     def should_process(self) -> bool:
         return not (self.youtube_language == SupportedLanguages.ENGLISH)
+
+    async def temp(self, original_script: str) -> tuple[str, float]:
+        translated_script = self.translate(original_script)
+
+        confidence_score = self.validate(
+            original_script=original_script,
+            translated_script=translated_script
+        )
 
     async def translate(self, original_script: str) -> str:
         if not self.should_process():
