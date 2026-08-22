@@ -1,5 +1,7 @@
 import shutil
 import subprocess
+import time
+from contextlib import contextmanager
 
 import ollama
 
@@ -38,3 +40,12 @@ class EnvironmentSystem:
         ollama.pull(model_name)
 
         print(f"Model '{model_name}' downloaded successfully.")
+
+    @contextmanager
+    def timed(self, operation: str):
+        start = time.perf_counter()
+        try:
+            yield
+        finally:
+            elapsed = time.perf_counter() - start
+            print(f"{operation} took {elapsed:.3f}s")
