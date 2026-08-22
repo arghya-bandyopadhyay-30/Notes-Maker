@@ -10,10 +10,9 @@ class TimingNode:
     def to_dict(self) -> dict:
         return {
             **{
-                "execution_time": round(
-                    self.execution_time,
-                    3
-                )
+                "execution_time": (
+                    f"{round(self.execution_time, 3)} sec"
+                ),
             },
             **{
                 child.caller_name: child.to_dict()

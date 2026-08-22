@@ -1,3 +1,12 @@
+import sys
+import asyncio
+
+# Force UTF-8 encoding on Windows
+if sys.platform == "win32":
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
 from pipeline_statistics.timing_tracker import timing_tracker
 from processors.translator import Translator
 from processors.validator import Validator
@@ -9,7 +18,7 @@ from youtube_transcript.transcript_fetcher import TranscriptFetcher
 CONFIG_PATH = "config.yaml"
 
 
-def run(
+async def run(
     transcript_fetcher: TranscriptFetcher,
     translator: Translator,
     validator: Validator
@@ -25,16 +34,16 @@ def run(
 
     print("Original Script:\n", original_script)
 
-    translated_script = translator.translate(original_script=original_script)
+    translated_script = await translator.translate(original_script=original_script)
     print("Translated Script:\n", translated_script)
 
     validation_score = validator.validate(original_script=original_script, translated_script=translated_script)
     print("Validation Script:\n", validation_score)
 
-    return original_script, video_id
+    return translated_script, video_id
 
 
-def main():
+async def main():
     dependencies = DependencyContainer()
 
     if not dependencies.file_system.path_exists(CONFIG_PATH):
@@ -70,7 +79,7 @@ def main():
         prompt_factory=prompt_factory
     )
 
-    script, video_id = run(
+    script, video_id = await run(
         transcript_fetcher=transcript_fetcher,
         translator=translator,
         validator=validator
@@ -81,4 +90,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

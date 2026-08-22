@@ -27,13 +27,9 @@ class Translator(Processor):
             if sentence.strip()
         ]
 
-    def translate(self, original_script: str) -> str:
+    async def translate(self, original_script: str) -> str:
         if not self.should_process():
             return original_script
-
-        print(
-            f"Translating the {self.youtube_language.value} script to English..."
-        )
 
         prompt = self.prompt_factory.prompt(
             prompt_file="translation_prompt.yaml",
@@ -47,15 +43,7 @@ class Translator(Processor):
             },
         )
 
-        response = self.provider.generate(prompt=prompt)
+        response = await self.provider.generate(prompt=prompt.template, parser=TranslatedSegment)
 
-        print(response)
-        return ""
+        return response
 
-        # formatted_response = TranslatedSentence.model_validate_json(
-        #     response.message.content
-        # ).text
-        #
-        # responses.append(formatted_response)
-        #
-        # return " ".join(responses)
