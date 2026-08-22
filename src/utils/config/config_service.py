@@ -1,5 +1,5 @@
-from src.utils.config import AppConfig
-from src.utils.container import DependencyContainer
+from src.utils.config.config import AppConfig
+from src.utils.config.container import DependencyContainer
 
 
 class AppConfigService:

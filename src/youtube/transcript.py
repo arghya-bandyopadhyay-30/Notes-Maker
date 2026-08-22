@@ -2,10 +2,10 @@ from dataclasses import dataclass
 
 from youtube_transcript_api import YouTubeTranscriptApi
 
-from src.utils.config import YoutubeConfig
-from src.utils.container import DependencyContainer
-from src.utils.languages import SupportedLanguages
-from src.utils.video import extract_video_id
+from src.utils.config.config import YoutubeConfig
+from src.utils.config.container import DependencyContainer
+from src.utils.validation.languages import SupportedLanguages
+from src.utils.io.video import extract_video_id
 
 
 @dataclass

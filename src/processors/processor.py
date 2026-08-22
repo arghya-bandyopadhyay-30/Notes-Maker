@@ -4,9 +4,9 @@ from langchain_core.output_parsers import PydanticOutputParser
 
 from src.processors.models import TranslatedSegment
 from src.prompts.factory import PromptFactory
-from src.utils.config import LLMConfig
-from src.utils.languages import SupportedLanguages
-from src.utils.strings import SENTENCE_BOUNDARY_PATTERN
+from src.utils.config.config import LLMConfig
+from src.utils.validation.languages import SupportedLanguages
+from src.utils.formatting.strings import SENTENCE_BOUNDARY_PATTERN
 
 
 class Processor:

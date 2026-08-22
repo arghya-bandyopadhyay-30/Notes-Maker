@@ -1,7 +1,7 @@
 from dataclasses import field, dataclass
 from typing import Any
 
-from src.utils.strings import (
+from src.utils.formatting.strings import (
     CONTENT,
     DESCRIPTION,
     METADATA,
@@ -10,7 +10,7 @@ from src.utils.strings import (
     ROLE,
     TEMPLATE,
 )
-from src.utils.validation import require_field, validate_parameters
+from src.utils.validation.validation import require_field, validate_parameters
 
 
 @dataclass

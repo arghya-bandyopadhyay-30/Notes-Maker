@@ -1,7 +1,7 @@
 import yt_dlp
 
-from src.utils.environment import EnvironmentSystem
-from src.utils.strings import (
+from src.utils.io.environment import EnvironmentSystem
+from src.utils.formatting.strings import (
     AUDIO_OUTPUT_DIRECTORY,
     BEST_AUDIO_FORMAT,
     FFMPEG,

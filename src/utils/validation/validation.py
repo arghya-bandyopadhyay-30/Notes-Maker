@@ -1,7 +1,7 @@
 from typing import Any
 
-from src.utils.container import DependencyContainer
-from src.utils.strings import (
+from src.utils.config.container import DependencyContainer
+from src.utils.formatting.strings import (
     CONFIG_DATA_MUST_BE_A_DICT,
     FIELD_IS_NOT_A_DIRECTORY,
     FIELD_IS_REQUIRED,

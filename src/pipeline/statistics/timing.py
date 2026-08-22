@@ -1,6 +1,6 @@
 from dataclasses import field, dataclass
 
-from src.utils.formatting import format_time
+from src.utils.formatting.formatting import format_time
 
 
 @dataclass

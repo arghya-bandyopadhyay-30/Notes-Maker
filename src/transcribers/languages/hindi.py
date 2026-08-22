@@ -2,8 +2,8 @@ from faster_whisper import WhisperModel
 
 from src.transcribers.segment import process_segment
 from src.transcribers.base import Transcriber
-from src.utils.environment import EnvironmentSystem
-from src.utils.languages import SupportedLanguages
+from src.utils.io.environment import EnvironmentSystem
+from src.utils.validation.languages import SupportedLanguages
 
 
 class HiTranscriber(Transcriber):

@@ -1,7 +1,7 @@
 import whisper
 
 from src.transcribers.base import Transcriber
-from src.utils.environment import EnvironmentSystem
+from src.utils.io.environment import EnvironmentSystem
 
 
 class EnTranscriber(Transcriber):

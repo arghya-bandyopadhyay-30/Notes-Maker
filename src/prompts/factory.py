@@ -1,8 +1,8 @@
 from typing import Any
 
 from src.prompts.models import Prompt
-from src.utils.filesystem_ops import FileSystem
-from src.utils.strings import PROMPT_RESOURCES_DIRECTORY, PROMPT_FACTORY_DIRECTORY
+from src.utils.io.filesystem_ops import FileSystem
+from src.utils.formatting.strings import PROMPT_RESOURCES_DIRECTORY, PROMPT_FACTORY_DIRECTORY
 
 
 class PromptFactory:

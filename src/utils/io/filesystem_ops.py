@@ -2,7 +2,7 @@ import os
 
 import yaml
 
-from src.utils.strings import (
+from src.utils.formatting.strings import (
     FILE_NOT_FOUND,
     READ_MODE,
     UTF_8_ENCODING,

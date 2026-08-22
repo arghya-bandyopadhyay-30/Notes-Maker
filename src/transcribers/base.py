@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from src.utils.filesystem import download_audio_as_wav
-from src.utils.environment import EnvironmentSystem
+from src.utils.io.filesystem import download_audio_as_wav
+from src.utils.io.environment import EnvironmentSystem
 
 
 class Transcriber(ABC):

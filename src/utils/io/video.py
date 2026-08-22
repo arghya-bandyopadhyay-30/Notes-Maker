@@ -2,7 +2,7 @@ import re
 from typing import Callable, Final
 from urllib.parse import ParseResult, parse_qs, urlparse
 
-from src.utils.strings import (
+from src.utils.formatting.strings import (
     COLON,
     DOT,
     EMPTY_STRING,

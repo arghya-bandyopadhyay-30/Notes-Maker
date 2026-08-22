@@ -2,7 +2,7 @@ from banglaspeech2text import Speech2Text
 
 from src.transcribers.segment import process_segment
 from src.transcribers.base import Transcriber
-from src.utils.environment import EnvironmentSystem
+from src.utils.io.environment import EnvironmentSystem
 
 
 class BnTranscriber(Transcriber):
