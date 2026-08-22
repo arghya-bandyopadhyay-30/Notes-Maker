@@ -1,6 +1,5 @@
 from typing import Any
 
-from src.utils.config.container import DependencyContainer
 from src.utils.formatting.strings import (
     CONFIG_DATA_MUST_BE_A_DICT,
     FIELD_IS_NOT_A_DIRECTORY,
@@ -8,6 +7,7 @@ from src.utils.formatting.strings import (
     FIELD_MUST_BE_NON_EMPTY_STRING,
     MISSING_PLACEHOLDERS,
 )
+from src.utils.io.filesystem_ops import FileSystem
 
 
 def require_field(data: dict, field: str):
@@ -23,12 +23,10 @@ def require_field(data: dict, field: str):
 def require_directory_path(
     path: str,
     field: str,
-    dependencies: DependencyContainer,
+    file_system: FileSystem,
 ) -> str:
     if not isinstance(path, str) or not path.strip():
         raise ValueError(FIELD_MUST_BE_NON_EMPTY_STRING.format(field))
-
-    file_system = dependencies.file_system
 
     if file_system.path_exists(path) and not file_system.is_dir(path):
         raise NotADirectoryError(FIELD_IS_NOT_A_DIRECTORY.format(field, path))

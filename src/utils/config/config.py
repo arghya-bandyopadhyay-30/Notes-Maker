@@ -123,7 +123,7 @@ class AppConfig:
             output_directory=require_directory_path(
                 require_field(data, OUTPUT_DIRECTORY),
                 OUTPUT_DIRECTORY,
-                dependencies,
+                dependencies.file_system,
             ),
             llm=LLMConfig.from_dict(
                 data=require_field(data, LLM),
