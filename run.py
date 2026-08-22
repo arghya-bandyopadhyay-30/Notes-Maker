@@ -49,14 +49,13 @@ def main():
     file_system = dependencies.file_system
     file_system.make_dirs(config.output_directory)
 
+    transcript_fetcher = TranscriptFetcher(
+        youtube_config=config.youtube,
+        dependencies=dependencies
+    )
+
     # prompt_factory = PromptFactory(
     #     file_system=dependencies.file_system
-    # )
-    #
-    # transcript_fetcher = TranscriptFetcher(
-    #     youtube_url=config.youtube.url,
-    #     youtube_language=config.youtube.language,
-    #     dependencies=dependencies
     # )
 
     # translator = Translator(

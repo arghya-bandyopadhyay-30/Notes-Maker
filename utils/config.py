@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 
+from llm.llm_provider import LLMProvider
 from transcribers.transcriber import Transcriber
 from utils.supported_languages import SupportedLanguages
 from llm.provider_models import ProviderModels
 
 from .dependency_container import DependencyContainer
-from .get_transcriber import get_transcriber
+from .get_class_name import get_transcriber, get_llm_provider_class_name
 from .string_constants import (
     LANGUAGE,
     LLM,
@@ -73,6 +74,7 @@ class ModelsConfig:
 class LLMConfig:
     provider_model: ProviderModels
     models: ModelsConfig
+    provider: LLMProvider
 
     def to_dict(self) -> dict:
         return {
@@ -82,12 +84,13 @@ class LLMConfig:
 
     @classmethod
     def from_dict(cls, data: dict, dependencies: DependencyContainer) -> "LLMConfig":
-        provider_name = require_field(data, PROVIDER_MODEL)
-        provider_model = ProviderModels(provider_name.lower())
+        provider_model_name = require_field(data, PROVIDER_MODEL)
+        provider_model = ProviderModels(provider_model_name.lower())
 
         return cls(
             provider_model=provider_model,
             models=ModelsConfig.from_dict(require_field(data, MODELS)),
+            provider=get_llm_provider_class_name(provider_model.value)
         )
 
 

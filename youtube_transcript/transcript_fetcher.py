@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from youtube_transcript_api import YouTubeTranscriptApi
 
-from utils.get_transcriber import get_transcriber
+from utils.config import YoutubeConfig
 from utils.dependency_container import DependencyContainer
 from utils.supported_languages import SupportedLanguages
 from utils.video_id import extract_video_id
@@ -14,17 +14,13 @@ class TranscriptFetcher:
     youtube_url: str
     youtube_language: str
 
-    def __init__(self, youtube_url: str, youtube_language: SupportedLanguages, dependencies: DependencyContainer):
-        self.youtube_language = youtube_language.value
-        self.youtube_url = youtube_url
+    def __init__(self, youtube_config: YoutubeConfig, dependencies: DependencyContainer):
+        self.youtube_language = youtube_config.language.value
+        self.youtube_url = youtube_config.url
         self.dependencies = dependencies
-        self.youtube_video_id = extract_video_id(youtube_url)
+        self.youtube_video_id = extract_video_id(self.youtube_url)
         self.youtube_transcript_api = YouTubeTranscriptApi()
-        self.youtube_transcriber = get_transcriber(
-            language=self.youtube_language,
-            url=self.youtube_url,
-            environment_system=self.dependencies.environment_system
-        )
+        self.youtube_transcriber = youtube_config.transcriber
 
     def fetch_transcript_text_from_youtube_api(self) -> tuple[str, str]:
         print("Trying to fetch transcript from YouTube API...")
