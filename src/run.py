@@ -8,8 +8,7 @@ if sys.platform == "win32":
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 from src.pipeline.statistics.tracker import timing_tracker
-from src.processors.translator import Translator
-from src.processors.validator import Validator
+from src.processors.base.processor import Processor
 from src.prompts.factory import PromptFactory
 from src.utils.config_service import AppConfigService
 from src.utils.container import DependencyContainer
@@ -20,16 +19,15 @@ CONFIG_PATH = "config.yaml"
 
 async def run(
     transcript_fetcher: TranscriptFetcher,
-    translator: Translator,
-    validator: Validator
+    processor: Processor
 ) -> tuple[str, str]:
     original_script, video_id = transcript_fetcher.fetch_transcript()
     print("Original Script:\n", original_script)
 
-    translated_script = await translator.translate(original_script=original_script)
+    translated_script = await processor.translate(original_script=original_script)
     print("Translated Script:\n", translated_script)
 
-    validation_score = validator.validate(original_script=original_script, translated_script=translated_script)
+    validation_score = await processor.validate(original_script=original_script, translated_script=translated_script)
     print("Validation Script:\n", validation_score)
 
     return translated_script, video_id
@@ -59,13 +57,7 @@ async def main():
         file_system=dependencies.file_system
     )
 
-    translator = Translator(
-        youtube_language=app_config.youtube.language,
-        llm=app_config.llm,
-        prompt_factory=prompt_factory
-    )
-
-    validator = Validator(
+    processor = Processor(
         youtube_language=app_config.youtube.language,
         llm=app_config.llm,
         prompt_factory=prompt_factory
@@ -73,8 +65,7 @@ async def main():
 
     script, video_id = await run(
         transcript_fetcher=transcript_fetcher,
-        translator=translator,
-        validator=validator
+        processor=processor
     )
 
     file_system.write_file(f"{app_config.output_directory}/{video_id}.txt", script)
