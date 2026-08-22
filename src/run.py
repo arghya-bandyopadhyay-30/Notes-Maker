@@ -17,8 +17,7 @@ async def run(
     original_script, video_id = transcript_fetcher.fetch_transcript()
     print("Original Script:\n", original_script)
 
-    translated_script = await processor.translate(original_script=original_script)
-    validation_score = await processor.validate(original_script=original_script, translated_script=translated_script)
+    translated_script, validation_score = await processor.process(original_script)
     print("Translated Script:\n", translated_script)
     print("Validation Script:\n", validation_score)
 

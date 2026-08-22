@@ -50,3 +50,11 @@ class Processor:
         )
 
         return 0
+
+    async def process(self, original_script: str) -> tuple[str, float]:
+        translated_script = await self.translate(original_script)
+        validation_score = await self.validate(
+            original_script=original_script,
+            translated_script=translated_script
+        )
+        return translated_script, validation_score
