@@ -1,8 +1,16 @@
 output_directory: "output"
 
+#youtube:
+#  url: "https://www.youtube.com/watch?v=4cm9PMNikXM"
+#  language: "bengali"
+
 youtube:
   url: "https://www.youtube.com/watch?v=_R_d3ibfttY"
-  language: "hi"
+  language: "hindi"
+
+#youtube:
+#  url: "https://www.youtube.com/watch?v=q9jixKv4h2I"
+#  language: "english"
 
 llm:
   provider_model: "open_code"

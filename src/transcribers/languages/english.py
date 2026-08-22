@@ -4,7 +4,7 @@ from src.transcribers.base import Transcriber
 from src.utils.io.environment import EnvironmentSystem
 
 
-class EnTranscriber(Transcriber):
+class EnglishTranscriber(Transcriber):
     def __init__(self, url: str, environment_system: EnvironmentSystem):
         super().__init__(url=url, environment_system=environment_system)
         self.speech_to_text_model = whisper.load_model("small")

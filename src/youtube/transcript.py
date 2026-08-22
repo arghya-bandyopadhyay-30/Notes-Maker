@@ -12,10 +12,10 @@ from src.utils.io.video import extract_video_id
 class TranscriptFetcher:
     video_id: str
     youtube_url: str
-    youtube_language: str
+    youtube_language: SupportedLanguages
 
     def __init__(self, youtube_config: YoutubeConfig, dependencies: DependencyContainer):
-        self.youtube_language = youtube_config.language.value
+        self.youtube_language = youtube_config.language
         self.youtube_url = youtube_config.url
         self.dependencies = dependencies
         self.youtube_video_id = extract_video_id(self.youtube_url)
@@ -26,7 +26,7 @@ class TranscriptFetcher:
         print("Trying to fetch transcript from YouTube API...")
         transcript = self.youtube_transcript_api.fetch(
             self.youtube_video_id,
-            languages=[self.youtube_language]
+            languages=[self.youtube_language.language_code]
         )
 
         return "\n".join(

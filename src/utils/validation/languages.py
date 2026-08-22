@@ -2,9 +2,9 @@ from enum import Enum
 
 
 class SupportedLanguages(str, Enum):
-    ENGLISH = "en"
-    HINDI = "hi"
-    BENGALI = "bn"
+    ENGLISH = "english"
+    HINDI = "hindi"
+    BENGALI = "bengali"
 
     @classmethod
     def _missing_(cls, value):
@@ -14,3 +14,11 @@ class SupportedLanguages(str, Enum):
             f"Unsupported language: '{value}'. "
             f"Supported languages are: {supported}"
         )
+
+    @property
+    def language_code(self) -> str:
+        return {
+            SupportedLanguages.ENGLISH: "en",
+            SupportedLanguages.HINDI: "hi",
+            SupportedLanguages.BENGALI: "bn"
+        }[self]

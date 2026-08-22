@@ -2,7 +2,7 @@ import re
 
 from langchain_core.output_parsers import PydanticOutputParser
 
-from src.processors.models import TranslatedSegment
+from src.processors.models import TranslatedSegment, TranslationValidation
 from src.prompts.factory import PromptFactory
 from src.utils.config.config import LLMConfig
 from src.utils.validation.languages import SupportedLanguages
@@ -25,6 +25,9 @@ class Processor:
         if not self.should_process():
             return original_script
 
+        print(
+            f"Translating the {self.youtube_language.value} script to English translated scrip..."
+        )
         prompt = self.prompt_factory.prompt(
             prompt_file="translation.yaml",
             prompt_key="translation",
@@ -48,6 +51,23 @@ class Processor:
         print(
             f"Validating the {self.youtube_language.value} script to English translated scrip..."
         )
+        prompt = self.prompt_factory.prompt(
+            prompt_file="validation.yaml",
+            prompt_key="validation",
+            placeholders={
+                "source_language": self.youtube_language.value,
+                "original_script": original_script,
+                "translated_script": translated_script,
+                "parsed_format": self.parser_format(
+                    TranslationValidation
+                ),
+            },
+        )
+
+        response = await self.provider.generate(prompt=prompt.template, parser=TranslationValidation)
+        print("="*80)
+        print(response)
+        print("="*80)
 
         return 0
 
