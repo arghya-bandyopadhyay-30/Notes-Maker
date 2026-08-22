@@ -12,6 +12,10 @@ class LLMProvider(ABC):
     async def invoke(self, prompt: list[PromptTemplate], parser: BaseModel) -> str:
         pass
 
+    @abstractmethod
+    def close(self):
+        pass
+
     @execution_time
     async def generate(self, prompt: list[PromptTemplate], parser: BaseModel) -> str:
         return await self.invoke(prompt, parser)

@@ -1,6 +1,6 @@
 from processors.processor import Processor
 from prompt_factory.prompt_factory import PromptFactory
-from utils.config import LLMConfig
+from utils.app_config import LLMConfig
 from utils.environment_system import EnvironmentSystem
 from utils.supported_languages import SupportedLanguages
 

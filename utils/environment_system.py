@@ -15,13 +15,16 @@ class EnvironmentSystem:
 
         return executable_path
 
-    def start_process(self, command: list[str]) -> subprocess.Popen[str]:
+    def start_subprocess(self, command: list[str]) -> subprocess.Popen[str]:
         return subprocess.Popen(
             command,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True
         )
+
+    def timeout_subprocess(self) -> type[subprocess.TimeoutExpired]:
+        return subprocess.TimeoutExpired
 
     def ensure_ollama_model(self, model_name: str):
         installed_models = {

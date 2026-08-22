@@ -97,7 +97,7 @@ class LLMConfig:
 
 
 @dataclass
-class Config:
+class AppConfig:
     youtube: YoutubeConfig
     output_directory: str
     llm: LLMConfig
@@ -114,7 +114,7 @@ class Config:
         cls,
         data: dict,
         dependencies: DependencyContainer,
-    ) -> "Config":
+    ) -> "AppConfig":
         return cls(
             youtube=YoutubeConfig.from_dict(
                 data=require_field(data, YOUTUBE),

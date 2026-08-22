@@ -1,4 +1,4 @@
-from .config import Config
+from .app_config import AppConfig
 from .dependency_container import DependencyContainer
 
 
@@ -11,7 +11,7 @@ class AppConfigService:
         self.dependencies = dependencies
         self.config_path = config_path
 
-    def get_config(self) -> Config:
+    def get_config(self) -> AppConfig:
         data = self.dependencies.file_system.read_yaml(self.config_path)
 
-        return Config.from_dict(data, dependencies=self.dependencies)
+        return AppConfig.from_dict(data, dependencies=self.dependencies)

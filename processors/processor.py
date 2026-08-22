@@ -3,7 +3,7 @@ from abc import ABC
 from langchain_core.output_parsers import PydanticOutputParser
 
 from prompt_factory.prompt_factory import PromptFactory
-from utils.config import LLMConfig
+from utils.app_config import LLMConfig
 from utils.environment_system import EnvironmentSystem
 from utils.supported_languages import SupportedLanguages
 

@@ -4,7 +4,7 @@ from typing import Final
 from processors.base_models.translated_sentence import TranslatedSegment
 from processors.processor import Processor
 from prompt_factory.prompt_factory import PromptFactory
-from utils.config import LLMConfig
+from utils.app_config import LLMConfig
 from utils.string_constants import SENTENCE_BOUNDARY_PATTERN
 from utils.supported_languages import SupportedLanguages
 

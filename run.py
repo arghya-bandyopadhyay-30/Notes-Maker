@@ -50,16 +50,16 @@ async def main():
         print(f"Config file not found: {CONFIG_PATH}")
         return
 
-    config = AppConfigService(
+    app_config = AppConfigService(
         dependencies=dependencies,
         config_path=CONFIG_PATH,
     ).get_config()
 
     file_system = dependencies.file_system
-    file_system.make_dirs(config.output_directory)
+    file_system.make_dirs(app_config.output_directory)
 
     transcript_fetcher = TranscriptFetcher(
-        youtube_config=config.youtube,
+        youtube_config=app_config.youtube,
         dependencies=dependencies
     )
 
@@ -68,14 +68,14 @@ async def main():
     )
 
     translator = Translator(
-        youtube_language=config.youtube.language,
-        llm=config.llm,
+        youtube_language=app_config.youtube.language,
+        llm=app_config.llm,
         prompt_factory=prompt_factory
     )
 
     validator = Validator(
-        youtube_language=config.youtube.language,
-        llm=config.llm,
+        youtube_language=app_config.youtube.language,
+        llm=app_config.llm,
         prompt_factory=prompt_factory
     )
 
@@ -85,8 +85,10 @@ async def main():
         validator=validator
     )
 
-    file_system.write_file(f"{config.output_directory}/{video_id}.txt", script)
-    file_system.write_yaml(f"{config.output_directory}/pipeline_statistics.yaml", timing_tracker.to_dict())
+    file_system.write_file(f"{app_config.output_directory}/{video_id}.txt", script)
+    file_system.write_yaml(f"{app_config.output_directory}/pipeline_statistics.yaml", timing_tracker.to_dict())
+
+    app_config.llm.provider.close()
 
 
 if __name__ == "__main__":

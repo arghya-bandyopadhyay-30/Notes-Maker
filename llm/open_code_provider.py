@@ -11,7 +11,7 @@ from utils.environment_system import EnvironmentSystem
 class OpenCodeProvider(LLMProvider):
     def __init__(self, environment_system: EnvironmentSystem):
         open_code_path = environment_system.find_executable("opencode")
-        self.open_code_process = environment_system.start_process(
+        self.open_code_process = environment_system.start_subprocess(
             [
                 open_code_path,
                 "serve"
@@ -23,6 +23,26 @@ class OpenCodeProvider(LLMProvider):
             json={},
             timeout=10
         ).json()
+        self.environment_system = environment_system
+
+    def stop(self):
+        if self.open_code_process is None:
+            return
+
+        if self.open_code_process.poll() is not None:
+            self.open_code_process = None
+            return
+
+        self.open_code_process.terminate()
+
+        try:
+            self.open_code_process.wait(timeout=5)
+        except self.environment_system.timeout_subprocess():
+            self.open_code_process.kill()
+            self.open_code_process.wait()
+
+        self.open_code_process = None
+
 
     def get_server_url(self, max_attempts: int = 10):
         for _ in range(max_attempts):
@@ -72,5 +92,5 @@ class OpenCodeProvider(LLMProvider):
         )
 
         return parser.model_validate_json(
-            text_part
+            text_part["text"]
         ).text
