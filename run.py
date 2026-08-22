@@ -1,3 +1,4 @@
+from pipeline_statistics.timing_tracker import timing_tracker
 from processors.translator import Translator
 from processors.validator import Validator
 from prompt_factory.prompt_factory import PromptFactory
@@ -78,6 +79,8 @@ def main():
     #     validator=validator
     # )
     # file_system.write_file(f"{config.output_directory}/{video_id}.txt", script)
+
+    print(timing_tracker.to_dict())
 
 
 if __name__ == "__main__":

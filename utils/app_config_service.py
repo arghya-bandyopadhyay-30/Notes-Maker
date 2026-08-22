@@ -1,5 +1,6 @@
 from .config import Config
 from .dependency_container import DependencyContainer
+from pipeline_statistics.execution_time import execution_time
 
 
 class AppConfigService:
@@ -11,6 +12,7 @@ class AppConfigService:
         self.dependencies = dependencies
         self.config_path = config_path
 
+    @execution_time
     def get_config(self) -> Config:
         data = self.dependencies.file_system.read_yaml(self.config_path)
 
