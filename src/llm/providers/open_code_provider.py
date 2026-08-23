@@ -3,7 +3,7 @@ import re
 import requests
 from pydantic import BaseModel, ValidationError
 
-from src.llm.llm_provider import LLMProvider
+from src.llm.base.llm_provider import LLMProvider
 from src.prompts.prompt_template import PromptTemplate
 from src.utils.config.dependency_container import DependencyContainer
 from src.utils.formatting.strings import (
