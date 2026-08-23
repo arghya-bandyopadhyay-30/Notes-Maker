@@ -5,7 +5,7 @@ from banglaspeech2text import Speech2Text
 from faster_whisper import WhisperModel
 from whisper import Whisper
 
-from src.utils.config.container import DependencyContainer
+from src.utils.config.dependency_container import DependencyContainer
 from src.utils.io.filesystem import download_audio_as_wav
 
 SpeechToTextModel: TypeAlias = Speech2Text | Whisper | WhisperModel

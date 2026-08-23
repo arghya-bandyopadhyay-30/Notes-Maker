@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-from src.llm.base import LLMProvider
-from src.llm.models import ProviderModels
-from src.transcribers.base import Transcriber
-from src.utils.validation.languages import SupportedLanguages
-from src.utils.config.container import DependencyContainer
+from src.llm.llm_provider import LLMProvider
+from src.llm.provider_models import ProviderModels
+from src.transcribers.transcriber import Transcriber
+from src.utils.validation.supported_languages import SupportedLanguages
+from src.utils.config.dependency_container import DependencyContainer
 from src.utils.naming.resolver import get_transcriber, get_llm_provider_class_name
 from src.utils.formatting.strings import (
     LANGUAGE,

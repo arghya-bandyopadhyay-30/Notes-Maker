@@ -4,13 +4,13 @@ from youtube_transcript_api import YouTubeTranscriptApi
 
 from src.pipeline.statistics.execution import execution_time
 from src.utils.config.config import YoutubeConfig
-from src.utils.config.container import DependencyContainer
+from src.utils.config.dependency_container import DependencyContainer
 from src.utils.formatting.strings import (
     TRYING_FETCH_TRANSCRIPT_API,
     FALLING_BACK_AUDIO_TRANSCRIPTION,
     TRANSCRIPT_JOIN_SEPARATOR,
 )
-from src.utils.validation.languages import SupportedLanguages
+from src.utils.validation.supported_languages import SupportedLanguages
 from src.utils.io.video import extract_video_id
 
 

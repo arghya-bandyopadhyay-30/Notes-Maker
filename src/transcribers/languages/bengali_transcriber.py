@@ -1,6 +1,6 @@
 from banglaspeech2text import Speech2Text
 
-from src.transcribers.base import Transcriber
+from src.transcribers.transcriber import Transcriber
 from src.transcribers.segment import process_segment
 from src.utils.formatting.strings import WHISPER_MODEL_SMALL
 

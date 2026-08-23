@@ -3,9 +3,9 @@ import re
 import requests
 from pydantic import BaseModel, ValidationError
 
-from src.llm.base import LLMProvider
+from src.llm.llm_provider import LLMProvider
 from src.prompts.models import PromptTemplate
-from src.utils.config.container import DependencyContainer
+from src.utils.config.dependency_container import DependencyContainer
 from src.utils.formatting.strings import (
     OPEN_CODE_EXECUTABLE,
     OPEN_CODE_SERVE_COMMAND,
@@ -22,7 +22,7 @@ from src.utils.formatting.strings import (
     OPEN_CODE_REQUEST_TIMEOUT,
     OPEN_CODE_SESSION_TIMEOUT,
 )
-from src.utils.io.environment import EnvironmentSystem
+from src.utils.io.environment_system import EnvironmentSystem
 
 
 class OpenCodeProvider(LLMProvider):

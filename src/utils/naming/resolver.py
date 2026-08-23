@@ -1,8 +1,8 @@
 import importlib
 
-from src.llm.base import LLMProvider
-from src.transcribers.base import Transcriber
-from src.utils.config.container import DependencyContainer
+from src.llm.llm_provider import LLMProvider
+from src.transcribers.transcriber import Transcriber
+from src.utils.config.dependency_container import DependencyContainer
 from src.utils.formatting.strings import (
     LLM_MODULE_PATH,
     TRANSCRIBER_MODULE_PATH,
