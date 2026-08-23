@@ -5,7 +5,7 @@ from src.transcribers.segment import process_segment
 
 
 class BengaliTranscriber(Transcriber):
-    def load_model(self):
+    def load_model(self) -> Speech2Text:
         return Speech2Text("small")
 
     def transcribe(self) -> str:

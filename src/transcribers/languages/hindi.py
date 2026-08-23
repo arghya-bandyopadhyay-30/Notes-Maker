@@ -6,7 +6,7 @@ from src.utils.validation.languages import SupportedLanguages
 
 
 class HindiTranscriber(Transcriber):
-    def load_model(self):
+    def load_model(self) -> WhisperModel:
         return WhisperModel(
             "collabora/faster-whisper-small-hindi",
             device="cpu",

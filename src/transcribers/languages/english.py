@@ -1,10 +1,11 @@
 import whisper
+from whisper import Whisper
 
 from src.transcribers.base import Transcriber
 
 
 class EnglishTranscriber(Transcriber):
-    def load_model(self):
+    def load_model(self) -> Whisper:
         return whisper.load_model("small")
 
     def transcribe(self) -> str:
