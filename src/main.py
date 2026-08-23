@@ -23,7 +23,7 @@ async def run(
     return final_script.to_string(validation_threshold=validation_threshold), video_id
 
 
-async def main():
+async def main() -> None:
     dependencies = DependencyContainer()
 
     if not dependencies.file_system.path_exists(CONFIG_FILE_NAME):

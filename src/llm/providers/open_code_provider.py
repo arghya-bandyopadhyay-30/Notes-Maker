@@ -36,7 +36,7 @@ class OpenCodeProvider(LLMProvider):
             timeout=OPEN_CODE_SESSION_TIMEOUT,
         ).json()
 
-    def close(self):
+    def close(self) -> None:
         if self.open_code_process is None:
             return
 
