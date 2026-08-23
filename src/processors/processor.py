@@ -64,7 +64,7 @@ class Processor:
 
         return response
 
-
+    @execution_time
     async def process(self, original_script: str) -> ProcessedScript:
         if not self.should_process():
             return ProcessedScript(script=original_script, validation_score=1.0)

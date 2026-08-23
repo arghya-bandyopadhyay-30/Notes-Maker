@@ -1,5 +1,6 @@
 import asyncio
 
+from src.pipeline.statistics.execution import execution_time
 from src.pipeline.statistics.tracker import timing_tracker
 from src.processors.processor import Processor
 from src.utils.config.config_service import AppConfigService
@@ -8,16 +9,16 @@ from src.youtube.transcript import TranscriptFetcher
 
 CONFIG_PATH = "config.yaml"
 
-
+@execution_time
 async def run(
     transcript_fetcher: TranscriptFetcher,
     processor: Processor
-) -> tuple[str, str]:
+) -> str:
     original_script, video_id = transcript_fetcher.fetch_transcript()
-    translated_script, validation_score = await processor.process(original_script)
-    return translated_script, video_id
+    final_script = await processor.process(original_script)
+    return final_script.to_string()
 
-
+@execution_time
 async def main():
     dependencies = DependencyContainer()
 

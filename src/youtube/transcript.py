@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from youtube_transcript_api import YouTubeTranscriptApi
 
+from src.pipeline.statistics.execution import execution_time
 from src.utils.config.config import YoutubeConfig
 from src.utils.config.container import DependencyContainer
 from src.utils.validation.languages import SupportedLanguages
@@ -38,6 +39,7 @@ class TranscriptFetcher:
         print("Falling back to audio transcription...")
         return self.youtube_transcriber.transcribe()
 
+    @execution_time
     def fetch_transcript(self) -> tuple[str, str]:
         try:
             script = self.fetch_transcript_text_from_youtube_api()
