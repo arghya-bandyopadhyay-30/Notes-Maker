@@ -12,7 +12,7 @@ class ProviderModels(Enum):
     OPEN_CODE = PROVIDER_OPEN_CODE
 
     @classmethod
-    def _missing_(cls, value):
+    def _missing_(cls, value: object) -> None:
         supported = ", ".join(f"'{provider.value}'" for provider in cls)
 
         raise ValueError(UNSUPPORTED_PROVIDER_ERROR.format(value, supported))
