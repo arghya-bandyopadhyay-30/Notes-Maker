@@ -54,7 +54,10 @@ class OpenCodeProvider(LLMProvider):
 
         self.open_code_process = None
 
-    def get_server_url(self, max_attempts: int = OPEN_CODE_DEFAULT_MAX_ATTEMPTS):
+    def get_server_url(self, max_attempts: int = OPEN_CODE_DEFAULT_MAX_ATTEMPTS) -> str:
+        if self.open_code_process.stdout is None:
+            raise RuntimeError(OPEN_CODE_SERVER_URL_ERROR)
+
         for _ in range(max_attempts):
             line = self.open_code_process.stdout.readline()
 
@@ -94,4 +97,4 @@ class OpenCodeProvider(LLMProvider):
             if part[OPEN_CODE_TYPE_KEY] == OPEN_CODE_TEXT_KEY
         )
 
-        return text_part[OPEN_CODE_TEXT_KEY]
+        return str(text_part[OPEN_CODE_TEXT_KEY])
