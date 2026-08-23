@@ -4,7 +4,7 @@ from src.pipeline.statistics.execution import execution_time
 from src.pipeline.statistics.timing_tracker import timing_tracker
 from src.processors.processor import Processor
 from src.utils.config.app_config_service import AppConfigService
-from src.utils.config.dependency_container import DependencyContainer
+from src.bootstrap.container import DependencyContainer
 from src.utils.formatting.strings import (
     CONFIG_FILE_NAME,
     CONFIG_FILE_NOT_FOUND,

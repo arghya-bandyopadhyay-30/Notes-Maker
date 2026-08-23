@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from src.llm.llm_provider import LLMProvider
+from src.llm.base.llm_provider import LLMProvider
 from src.llm.provider_models import ProviderModels
 from src.utils.config.models_config import ModelsConfig
-from src.utils.config.dependency_container import DependencyContainer
+from src.bootstrap.container import DependencyContainer
 from src.utils.naming.resolver import get_llm_provider_class_name
 from src.utils.formatting.strings import (
     MODELS,

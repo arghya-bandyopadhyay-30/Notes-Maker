@@ -7,7 +7,7 @@ from src.utils.formatting.strings import (
     FASTER_WHISPER_DEVICE_CPU,
     FASTER_WHISPER_COMPUTE_TYPE_INT8,
 )
-from src.utils.validation.supported_languages import SupportedLanguages
+from src.utils.supported_languages import SupportedLanguages
 
 
 class HindiTranscriber(Transcriber):

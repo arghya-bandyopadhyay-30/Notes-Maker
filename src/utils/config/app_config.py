@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from src.utils.config.youtube_config import YoutubeConfig
 from src.utils.config.llm_config import LLMConfig
-from src.utils.config.dependency_container import DependencyContainer
+from src.bootstrap.container import DependencyContainer
 from src.utils.formatting.strings import (
     LLM,
     OUTPUT_DIRECTORY,

@@ -19,7 +19,7 @@ from src.utils.formatting.strings import (
     TRANSLATING_MESSAGE,
     VALIDATING_MESSAGE,
 )
-from src.utils.validation.supported_languages import SupportedLanguages
+from src.utils.supported_languages import SupportedLanguages
 
 
 class Processor:

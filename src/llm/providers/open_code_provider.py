@@ -5,7 +5,7 @@ from pydantic import BaseModel, ValidationError
 
 from src.llm.base.llm_provider import LLMProvider
 from src.prompts.prompt_template import PromptTemplate
-from src.utils.config.dependency_container import DependencyContainer
+from src.bootstrap.container import DependencyContainer
 from src.utils.formatting.strings import (
     OPEN_CODE_EXECUTABLE,
     OPEN_CODE_SERVE_COMMAND,

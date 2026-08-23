@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
 from src.transcribers.transcriber import Transcriber
-from src.utils.validation.supported_languages import SupportedLanguages
-from src.utils.config.dependency_container import DependencyContainer
+from src.utils.supported_languages import SupportedLanguages
+from src.bootstrap.container import DependencyContainer
 from src.utils.naming.resolver import get_transcriber
 from src.utils.formatting.strings import (
     LANGUAGE,
