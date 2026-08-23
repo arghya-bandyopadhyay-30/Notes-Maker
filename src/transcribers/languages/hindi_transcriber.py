@@ -1,6 +1,5 @@
 from faster_whisper import WhisperModel
 
-from src.transcribers.segment import process_segment
 from src.transcribers.transcriber import Transcriber
 from src.utils.formatting.strings import (
     FASTER_WHISPER_COMPUTE_TYPE_INT8,
@@ -22,7 +21,5 @@ class HindiTranscriber(Transcriber):
         segments, info = self.speech_to_text_model.transcribe(
             self.audio_path, language=SupportedLanguages.HINDI
         )
-
-        transcript = [process_segment(segment) for segment in segments]
-
+        transcript = [self.process_segment(segment) for segment in segments]
         return "\n".join(transcript)

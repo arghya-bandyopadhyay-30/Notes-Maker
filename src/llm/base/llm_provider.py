@@ -23,7 +23,7 @@ class LLMProvider(ABC):
         pass
 
     @abstractmethod
-    def close(self):
+    def close(self) -> None:
         pass
 
     async def response_with_retries(

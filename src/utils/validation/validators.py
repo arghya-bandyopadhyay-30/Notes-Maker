@@ -10,7 +10,7 @@ from src.utils.formatting.strings import (
 from src.utils.io.filesystem import FileSystem
 
 
-def require_field(data: dict, field: str):
+def require_field(data: dict, field: str) -> Any:
     if not isinstance(data, dict):
         raise TypeError(CONFIG_DATA_MUST_BE_A_DICT)
 
