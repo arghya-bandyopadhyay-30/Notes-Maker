@@ -103,6 +103,7 @@ TRANSLATED_SCRIPT_KEY = "translated_script"
 TRANSLATING_MESSAGE = "Translating the {0} script to English translated script..."
 VALIDATING_MESSAGE = "Validating the {0} script to English translated script..."
 VALIDATION_THRESHOLD = 0.85
+VALIDATION_THRESHOLD_KEY = "validation_threshold"
 TRANSLATED_ENGLISH_SCRIPT_LABEL = "Translated English Script:"
 ORIGINAL_SCRIPT_LABEL = "Original Script:"
 VALIDATION_SCORE_LABEL = "Validation Score:"
