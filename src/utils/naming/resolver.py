@@ -16,7 +16,7 @@ def get_llm_provider_class_name(
     provider_model_name: str, dependencies: DependencyContainer
 ) -> LLMProvider:
     module = importlib.import_module(LLM_MODULE_PATH.format(provider_model_name))
-    class_name = getattr(
+    class_name: type[LLMProvider] = getattr(
         module, f"{snake_to_pascal_case(provider_model_name.capitalize())}{PROVIDER_SUFFIX}"
     )
 
@@ -25,7 +25,7 @@ def get_llm_provider_class_name(
 
 def get_transcriber(language: str, url: str, dependencies: DependencyContainer) -> Transcriber:
     module = importlib.import_module(TRANSCRIBER_MODULE_PATH.format(language))
-    class_name = getattr(
+    class_name: type[Transcriber] = getattr(
         module, f"{snake_to_pascal_case(language.capitalize())}{TRANSCRIBER_SUFFIX}"
     )
 

@@ -9,7 +9,7 @@ from src.bootstrap.container import DependencyContainer
 from src.transcribers.audio_downloader import download_audio_as_wav
 from src.utils.formatting.strings import SEGMENT_PRINT_FORMAT
 
-SpeechToTextModel = Speech2Text | Whisper | WhisperModel
+type SpeechToTextModel = Speech2Text | Whisper | WhisperModel
 
 
 class Transcriber(ABC):
