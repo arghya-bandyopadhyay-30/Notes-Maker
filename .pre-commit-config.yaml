@@ -30,3 +30,5 @@ repos:
         args:
           - --ignore-missing-imports
           - --allow-untyped-decorators
+          - --disallow-untyped-defs
+          - --check-untyped-defs

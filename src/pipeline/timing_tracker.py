@@ -7,7 +7,8 @@ from src.utils.formatting.strings import TIMING_STACK_VAR
 class TimingTracker:
     def __init__(self):
         self.roots: list[TimingNode] = []
-        self.stack: ContextVar[list[TimingNode]] = ContextVar(TIMING_STACK_VAR, default=[])
+        self.stack: ContextVar[list[TimingNode]] = ContextVar(TIMING_STACK_VAR)
+        self.stack.set([])
 
     def start(self, caller_name: str) -> TimingNode:
         node = TimingNode(caller_name)

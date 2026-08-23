@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import StrEnum
 
 from src.utils.formatting.strings import (
     LANG_BENGALI,
@@ -11,13 +11,13 @@ from src.utils.formatting.strings import (
 )
 
 
-class SupportedLanguages(str, Enum):
+class SupportedLanguages(StrEnum):
     ENGLISH = LANG_ENGLISH
     HINDI = LANG_HINDI
     BENGALI = LANG_BENGALI
 
     @classmethod
-    def _missing_(cls, value):
+    def _missing_(cls, value: str) -> None:
         supported = ", ".join(f"'{language.value}'" for language in cls)
 
         raise ValueError(UNSUPPORTED_LANGUAGE_ERROR.format(value, supported))
