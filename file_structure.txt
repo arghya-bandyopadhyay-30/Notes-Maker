@@ -1,9 +1,32 @@
 src/
 ├── main.py                                    # Application entry point; orchestrates the full pipeline
-├── youtube/                                   # YouTube transcript fetching domain
+├── bootstrap/                                 # Application wiring / dependency injection
 │   ├── __init__.py
-│   └── transcript_fetcher.py                 # Fetches transcripts via YouTube API or falls back to audio transcription
-├── prompts/                                   # Prompt system (prompt metadata, template, composition, factory)
+│   └── container.py                           # DependencyContainer: wires FileSystem, EnvironmentSystem, PromptFactory
+├── youtube/                                   # YouTube domain (transcript fetching + URL parsing)
+│   ├── __init__.py
+│   ├── transcript_fetcher.py                 # Fetches transcripts via YouTube API or falls back to audio transcription
+│   └── video.py                              # extract_video_id(): parses YouTube URLs for video ID
+├── transcribers/                              # Audio transcription domain
+│   ├── __init__.py
+│   ├── transcriber.py                        # Transcriber (ABC): downloads audio, loads model, transcribes
+│   ├── segment.py                            # process_segment(): formats Whisper segments for output
+│   ├── audio_downloader.py                   # download_audio_as_wav(): yt-dlp + ffmpeg audio extraction
+│   └── languages/
+│       ├── __init__.py
+│       ├── english_transcriber.py            # EnglishTranscriber: uses openai-whisper
+│       ├── bengali_transcriber.py            # BengaliTranscriber: uses banglaspeech2text
+│       └── hindi_transcriber.py              # HindiTranscriber: uses faster-whisper
+├── llm/                                       # LLM provider abstractions (extensible)
+│   ├── __init__.py
+│   ├── provider_models.py                    # ProviderModels enum: OLLAMA, OPEN_CODE
+│   ├── base/
+│   │   ├── __init__.py
+│   │   └── llm_provider.py                   # LLMProvider (ABC): base class with retry/validation logic
+│   └── providers/
+│       ├── __init__.py
+│       └── open_code_provider.py             # OpenCodeProvider: local OpenCode CLI wrapper
+├── prompts/                                   # Prompt system (metadata, template, composition, factory)
 │   ├── __init__.py
 │   ├── prompt_metadata.py                    # PromptMetadata dataclass: name, description, parameters
 │   ├── prompt_template.py                    # PromptTemplate dataclass: role, content with placeholder rendering
@@ -22,45 +45,28 @@ src/
 │       ├── execution.py                      # @execution_time decorator & track_execution context manager
 │       ├── timing_node.py                    # TimingNode dataclass: tree node for nested timing
 │       └── timing_tracker.py                 # TimingTracker: manages timing stack & exports statistics
-├── llm/                                       # LLM provider abstractions
-│   ├── __init__.py
-│   ├── llm_provider.py                       # LLMProvider (ABC): base class with retry/validation logic
-│   ├── open_code_provider.py                 # OpenCodeProvider: local OpenCode CLI wrapper
-│   └── provider_models.py                    # ProviderModels enum: OLLAMA, OPEN_CODE
-├── transcribers/                              # Audio transcription domain
-│   ├── __init__.py
-│   ├── transcriber.py                        # Transcriber (ABC): downloads audio, loads model, transcribes
-│   ├── segment.py                            # process_segment(): formats Whisper segments for output
-│   └── languages/
-│       ├── __init__.py
-│       ├── english_transcriber.py            # EnglishTranscriber: uses openai-whisper
-│       ├── bengali_transcriber.py            # BengaliTranscriber: uses banglaspeech2text
-│       └── hindi_transcriber.py              # HindiTranscriber: uses faster-whisper
-└── utils/                                     # Shared utilities (grouped by concern)
+└── utils/                                     # Genuinely shared utilities (used by 3+ domains)
     ├── __init__.py
-    ├── config/                                # Configuration objects & loading
+    ├── supported_languages.py                # SupportedLanguages enum: ENGLISH, HINDI, BENGALI + codes
+    ├── config/                               # Configuration objects & loading
     │   ├── __init__.py
     │   ├── youtube_config.py                 # YoutubeConfig: URL, language, transcriber instance
     │   ├── models_config.py                  # ModelsConfig: translator/validator model names
     │   ├── llm_config.py                     # LLMConfig: provider, models, instantiated provider
     │   ├── app_config.py                     # AppConfig: root config (youtube, output_dir, llm)
-    │   ├── app_config_service.py             # AppConfigService: loads & parses config.yaml
-    │   └── dependency_container.py           # DependencyContainer: wires FileSystem, EnvironmentSystem, PromptFactory
-    ├── io/                                    # I/O operations
+    │   └── app_config_service.py             # AppConfigService: loads & parses config.yaml
+    ├── io/                                   # Shared I/O operations
     │   ├── __init__.py
     │   ├── filesystem.py                     # FileSystem: path ops, YAML read/write, dir creation
-    │   ├── audio_downloader.py               # download_audio_as_wav(): yt-dlp + ffmpeg audio extraction
-    │   ├── environment_system.py             # EnvironmentSystem: executable lookup, subprocess, Ollama model mgmt
-    │   └── video.py                          # extract_video_id(): parses YouTube URLs for video ID
-    ├── validation/                            # Validation helpers
+    │   └── environment_system.py             # EnvironmentSystem: executable lookup, subprocess, Ollama model mgmt
+    ├── validation/
     │   ├── __init__.py
-    │   ├── validators.py                     # require_field(), require_directory_path(), validate_parameters()
-    │   └── supported_languages.py            # SupportedLanguages enum: ENGLISH, HINDI, BENGALI + codes
-    ├── naming/                                # Dynamic class resolution
+    │   └── validators.py                     # require_field(), require_directory_path(), validate_parameters()
+    ├── naming/                               # Dynamic class resolution
     │   ├── __init__.py
     │   ├── resolver.py                       # get_llm_provider_class_name(), get_transcriber()
     │   └── naming_case.py                    # snake_to_pascal_case()
-    └── formatting/                            # String constants & formatters
+    └── formatting/                           # String constants & formatters
         ├── __init__.py
         ├── strings.py                        # All string constants (keys, messages, patterns, paths)
         └── formatters.py                     # format_time(): seconds -> "Xh Ym Zs"
