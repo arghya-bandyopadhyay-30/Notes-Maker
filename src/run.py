@@ -13,10 +13,10 @@ CONFIG_PATH = "config.yaml"
 async def run(
     transcript_fetcher: TranscriptFetcher,
     processor: Processor
-) -> str:
+) -> tuple[str, str]:
     original_script, video_id = transcript_fetcher.fetch_transcript()
     final_script = await processor.process(original_script)
-    return final_script.to_string()
+    return final_script.to_string(), video_id
 
 @execution_time
 async def main():

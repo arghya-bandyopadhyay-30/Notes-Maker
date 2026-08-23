@@ -22,7 +22,7 @@ class ProcessedScript:
         return cls(
             original_script=require_field(data, "original_script"),
             translated_script=require_field(data, "translated_script"),
-            validation_score=require_field(data, "validation_score"),
+            validation_score=require_field(data, "accuracy_score"),
             missing_information=require_field(data, "missing_information"),
             incorrect_meaning=require_field(data, "incorrect_meaning"),
             hallucinated_information=require_field(data, "hallucinated_information"),

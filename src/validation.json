@@ -1,0 +1,1 @@
+{"accuracy_score": 0.97, "missing_information": [], "incorrect_meaning": [], "hallucinated_information": [], "incorrect_terminology": ["\"Cloud Code\" used for \"क्लाउड कोड\" - should be \"Claude Code\" (Anthropic's AI coding assistant)"], "major_grammatical_errors": []}

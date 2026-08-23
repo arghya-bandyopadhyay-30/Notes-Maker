@@ -14,6 +14,7 @@ class TranslatedSegment(BaseModel):
 
 class TranslationValidation(BaseModel):
     accuracy_score: float = Field(
+        ...,
         ge=0.0,
         le=1.0,
         description="Overall accuracy of the English translation compared to the original transcript.",
