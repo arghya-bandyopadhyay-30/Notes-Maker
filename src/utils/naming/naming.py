@@ -14,11 +14,11 @@ def get_llm_provider_class_name(provider_model_name: str, dependencies: Dependen
     return class_name(dependencies=dependencies)
 
 
-def get_transcriber(language: str, url: str, environment_system: EnvironmentSystem) -> Transcriber:
+def get_transcriber(language: str, url: str, dependencies: DependencyContainer) -> Transcriber:
     module = importlib.import_module(f"src.transcribers.languages.{language}")
     class_name = getattr(module, f"{snake_to_pascal_case(language.capitalize())}Transcriber")
 
     return class_name(
         url=url,
-        environment_system=environment_system
+        dependencies=dependencies
     )

@@ -56,3 +56,9 @@ class FileSystem:
             file.write(content)
 
         return path
+
+    def remove(self, path: str) -> None:
+        try:
+            os.remove(path)
+        except FileNotFoundError:
+            return

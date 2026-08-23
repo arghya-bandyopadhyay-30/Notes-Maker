@@ -1,15 +1,13 @@
 from faster_whisper import WhisperModel
 
-from src.transcribers.segment import process_segment
 from src.transcribers.base import Transcriber
-from src.utils.io.environment import EnvironmentSystem
+from src.transcribers.segment import process_segment
 from src.utils.validation.languages import SupportedLanguages
 
 
 class HindiTranscriber(Transcriber):
-    def __init__(self, url: str, environment_system: EnvironmentSystem):
-        super().__init__(url=url, environment_system=environment_system)
-        self.speech_to_text_model = WhisperModel(
+    def load_model(self):
+        return WhisperModel(
             "collabora/faster-whisper-small-hindi",
             device="cpu",
             compute_type="int8",

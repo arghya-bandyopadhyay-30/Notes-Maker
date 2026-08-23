@@ -40,7 +40,7 @@ class YoutubeConfig:
         transcriber = get_transcriber(
             language=language.value,
             url=youtube_url,
-            environment_system=dependencies.environment_system
+            dependencies=dependencies
         )
 
         return cls(
