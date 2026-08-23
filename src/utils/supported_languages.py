@@ -17,7 +17,7 @@ class SupportedLanguages(StrEnum):
     BENGALI = LANG_BENGALI
 
     @classmethod
-    def _missing_(cls, value: str) -> None:
+    def _missing_(cls, value: object) -> None:
         supported = ", ".join(f"'{language.value}'" for language in cls)
 
         raise ValueError(UNSUPPORTED_LANGUAGE_ERROR.format(value, supported))

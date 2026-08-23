@@ -37,6 +37,8 @@ build-backend = "poetry.core.masonry.api"
 [tool.ruff]
 target-version = "py312"
 line-length = 100
+
+[tool.ruff.lint]
 select = [
     "E",   # pycodestyle errors
     "W",   # pycodestyle warnings
@@ -61,7 +63,7 @@ indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "lf"
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["src"]
 known-third-party = ["pydantic", "yt_dlp", "yaml", "ollama", "whisper", "faster_whisper", "transformers", "torch", "onnxruntime", "onnx", "nemo", "langchain_core"]
 known-local-folder = ["src"]
