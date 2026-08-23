@@ -44,6 +44,9 @@ class Processor:
 
     @execution_time
     async def validate(self, original_script: str, translated_script: str) -> TranslationValidation:
+        if not self.should_process():
+            return TranslationValidation(accuracy_score=1.0)
+
         print(
             f"Validating the {self.youtube_language.value.capitalize()} script to English translated script..."
         )
@@ -67,7 +70,7 @@ class Processor:
     @execution_time
     async def process(self, original_script: str) -> ProcessedScript:
         if not self.should_process():
-            return ProcessedScript(script=original_script, validation_score=1.0)
+            return ProcessedScript(original_script=original_script, translated_script=original_script, validation_score=1.0)
 
         translated_script = await self.translate(original_script)
         validation = await self.validate(
@@ -75,12 +78,8 @@ class Processor:
             translated_script=translated_script
         )
 
-        return ProcessedScript(
-            script=translated_script if validation.is_valid else original_script,
-            validation_score=validation.validation_score,
-            missing_information=validation.missing_information,
-            incorrect_meaning=validation.incorrect_meaning,
-            hallucinated_information=validation.hallucinated_information,
-            incorrect_terminology=validation.incorrect_terminology,
-            major_grammatical_errors=validation.major_grammatical_errors,
-        )
+        return ProcessedScript.from_dict({
+            "original_script": original_script,
+            "translated_script": translated_script,
+            **validation.__dict__
+        })

@@ -45,15 +45,16 @@ async def main():
         prompt_factory=dependencies.prompt_factory
     )
 
-    script, video_id = await run(
-        transcript_fetcher=transcript_fetcher,
-        processor=processor
-    )
 
-    file_system.write_file(f"{app_config.output_directory}/{video_id}.txt", script)
-    file_system.write_yaml(f"{app_config.output_directory}/pipeline_statistics.yaml", timing_tracker.to_dict())
-
-    app_config.llm.provider.close()
+    try:
+        script, video_id = await run(
+            transcript_fetcher=transcript_fetcher,
+            processor=processor
+        )
+        file_system.write_file(f"{app_config.output_directory}/{video_id}.txt", script)
+    finally:
+        file_system.write_yaml(f"{app_config.output_directory}/pipeline_statistics.yaml", timing_tracker.to_dict())
+        app_config.llm.provider.close()
 
 
 if __name__ == "__main__":
