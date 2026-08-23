@@ -20,7 +20,7 @@ async def run(
 ) -> tuple[str, str]:
     original_script, video_id = transcript_fetcher.fetch_transcript()
     final_script = await processor.process(original_script)
-    return (final_script.to_string(validation_threshold=validation_threshold), video_id)
+    return final_script.to_string(validation_threshold=validation_threshold), video_id
 
 
 async def main():
