@@ -17,13 +17,17 @@ from src.youtube.transcript_fetcher import TranscriptFetcher
 @execution_time
 async def run(
     transcript_fetcher: TranscriptFetcher,
-    processor: Processor
+    processor: Processor,
+    validation_threshold: float
 ) -> tuple[str, str]:
     original_script, video_id = transcript_fetcher.fetch_transcript()
     final_script = await processor.process(original_script)
-    return final_script.to_string(), video_id
+    return (
+        final_script.to_string(validation_threshold=validation_threshold),
+        video_id
+    )
 
-@execution_time
+
 async def main():
     dependencies = DependencyContainer()
 
@@ -50,11 +54,11 @@ async def main():
         prompt_factory=dependencies.prompt_factory
     )
 
-
     try:
         script, video_id = await run(
             transcript_fetcher=transcript_fetcher,
-            processor=processor
+            processor=processor,
+            validation_threshold=app_config.llm.validation_threshold
         )
         file_system.write_file(
             OUTPUT_SCRIPT_FILE_PATTERN.format(app_config.output_directory, video_id),

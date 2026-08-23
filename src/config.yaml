@@ -14,6 +14,7 @@ youtube:
 
 llm:
   provider_model: "open_code"
+  validation_threshold: 0.85
   models:
     translator: "translategemma:4b"
     validator: "qwen3:8b"

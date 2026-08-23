@@ -32,9 +32,8 @@ class ProcessedScript:
     incorrect_terminology: list[str] = field(default_factory=list)
     major_grammatical_errors: list[str] = field(default_factory=list)
 
-    @property
-    def is_valid(self) -> bool:
-        return self.validation_score > VALIDATION_THRESHOLD
+    def is_valid(self, validation_threshold: float) -> bool:
+        return self.validation_score > validation_threshold
 
     @classmethod
     def from_dict(cls, data: dict) -> "ProcessedScript":
@@ -49,20 +48,32 @@ class ProcessedScript:
             major_grammatical_errors=require_field(data, MAJOR_GRAMMATICAL_ERRORS_FIELD),
         )
 
-    def to_string(self) -> str:
-        return "\n".join([
-            (TRANSLATED_ENGLISH_SCRIPT_LABEL if self.is_valid else ORIGINAL_SCRIPT_LABEL),
-            self.translated_script if self.is_valid else self.original_script,
+    def to_string(self, validation_threshold: float) -> str:
+        is_valid = self.is_valid(validation_threshold)
+
+        script_label = (
+            TRANSLATED_ENGLISH_SCRIPT_LABEL
+            if is_valid
+            else ORIGINAL_SCRIPT_LABEL
+        )
+        script = self.translated_script if is_valid else self.original_script
+
+        issues = [
+            (MISSING_INFORMATION_LABEL, self.missing_information),
+            (INCORRECT_MEANING_LABEL, self.incorrect_meaning),
+            (HALLUCINATED_INFORMATION_LABEL, self.hallucinated_information),
+            (INCORRECT_TERMINOLOGY_LABEL, self.incorrect_terminology),
+            (MAJOR_GRAMMATICAL_ERRORS_LABEL, self.major_grammatical_errors),
+        ]
+
+        sections = [
+            f"{script_label}\n\n{script}",
             f"{VALIDATION_SCORE_LABEL} {self.validation_score:.0%}",
             *(
-                f"{label}: {', '.join(values)}"
-                for label, values in [
-                (MISSING_INFORMATION_LABEL, self.missing_information),
-                (INCORRECT_MEANING_LABEL, self.incorrect_meaning),
-                (HALLUCINATED_INFORMATION_LABEL, self.hallucinated_information),
-                (INCORRECT_TERMINOLOGY_LABEL, self.incorrect_terminology),
-                (MAJOR_GRAMMATICAL_ERRORS_LABEL, self.major_grammatical_errors),
-            ]
+                f"{label}:\n" + "\n".join(f"- {value}" for value in values)
+                for label, values in issues
                 if values
             ),
-        ])
+        ]
+
+        return "\n\n".join(sections)
