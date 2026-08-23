@@ -1,0 +1,73 @@
+[project]
+name = "essentialprojects"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+authors = [{name = "Arghya Bandyopadhyay", email = "arghya.bandyopadhyay.official1@gmail.com"}]
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "youtube-transcript-api>=1.2.4",
+    "ollama>=0.6.2",
+    "yt-dlp>=2026.7.4",
+    "pyyaml>=6.0",
+    "openai-whisper>=20250625",
+    "transformers>=5.15.0",
+    "torchaudio>=2.11.0",
+    "onnxruntime>=1.28.0",
+    "onnx>=1.22.0",
+    "nemo-toolkit[asr]>=3.0.0",
+    "faster-whisper>=1.2.1",
+    "langchain-core>=1.5.6",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+    "TID", # flake8-tidy-imports
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "B008",  # do not perform function calls in argument defaults
+]
+fixable = ["ALL"]
+unfixable = ["TID251"]  # cannot auto-fix wildcard imports
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+
+[tool.ruff.isort]
+known-first-party = ["src"]
+known-third-party = ["pydantic", "yt_dlp", "yaml", "ollama", "whisper", "faster_whisper", "transformers", "torch", "onnxruntime", "onnx", "nemo", "langchain_core"]
+known-local-folder = ["src"]
+combine-as-imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+strict_equality = true
