@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from src.utils.config.youtube_config import YoutubeConfig
-from src.utils.config.llm_config import LLMConfig
 from src.bootstrap.container import DependencyContainer
+from src.utils.config.llm_config import LLMConfig
+from src.utils.config.youtube_config import YoutubeConfig
 from src.utils.formatting.strings import (
     LLM,
     OUTPUT_DIRECTORY,
@@ -32,16 +32,12 @@ class AppConfig:
     ) -> "AppConfig":
         return cls(
             youtube=YoutubeConfig.from_dict(
-                data=require_field(data, YOUTUBE),
-                dependencies=dependencies
+                data=require_field(data, YOUTUBE), dependencies=dependencies
             ),
             output_directory=require_directory_path(
                 require_field(data, OUTPUT_DIRECTORY),
                 OUTPUT_DIRECTORY,
                 dependencies.file_system,
             ),
-            llm=LLMConfig.from_dict(
-                data=require_field(data, LLM),
-                dependencies=dependencies
-            ),
+            llm=LLMConfig.from_dict(data=require_field(data, LLM), dependencies=dependencies),
         )

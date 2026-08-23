@@ -124,7 +124,9 @@ MAJOR_GRAMMATICAL_ERRORS_FIELD = "major_grammatical_errors"
 PYDANTIC_VALIDATION_PROMPT_FILE = "pydantic_validation.yaml"
 PYDANTIC_VALIDATION_PROMPT_KEY = "pydantic_validation"
 PROMPT_NOT_FOUND_ERROR = "Prompt '{0}' not found in '{1}'"
-PYDANTIC_VALIDATION_NOT_FOUND_ERROR = "Prompt 'pydantic_validation' not found in 'pydantic_validation.yaml'"
+PYDANTIC_VALIDATION_NOT_FOUND_ERROR = (
+    "Prompt 'pydantic_validation' not found in 'pydantic_validation.yaml'"
+)
 TIMING_STACK_VAR = "timing_stack"
 TIMING_EXECUTION_TIME_KEY = "execution_time"
 TIME_FORMAT = "{0}h {1}m {2:.3f}s"

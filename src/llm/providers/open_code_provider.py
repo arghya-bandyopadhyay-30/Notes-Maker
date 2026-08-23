@@ -1,28 +1,25 @@
 import re
 
 import requests
-from pydantic import BaseModel, ValidationError
 
-from src.llm.base.llm_provider import LLMProvider
-from src.prompts.prompt_template import PromptTemplate
 from src.bootstrap.container import DependencyContainer
+from src.llm.base.llm_provider import LLMProvider
 from src.utils.formatting.strings import (
-    OPEN_CODE_EXECUTABLE,
-    OPEN_CODE_SERVE_COMMAND,
-    OPEN_CODE_URL_REGEX,
-    OPEN_CODE_SESSION_ENDPOINT,
-    OPEN_CODE_MESSAGE_ENDPOINT,
-    OPEN_CODE_PARTS_KEY,
-    OPEN_CODE_TYPE_KEY,
-    OPEN_CODE_TEXT_KEY,
-    OPEN_CODE_ID_KEY,
-    OPEN_CODE_SERVER_URL_ERROR,
-    OPEN_CODE_OUTPUT_LOG,
     OPEN_CODE_DEFAULT_MAX_ATTEMPTS,
+    OPEN_CODE_EXECUTABLE,
+    OPEN_CODE_ID_KEY,
+    OPEN_CODE_MESSAGE_ENDPOINT,
+    OPEN_CODE_OUTPUT_LOG,
+    OPEN_CODE_PARTS_KEY,
     OPEN_CODE_REQUEST_TIMEOUT,
+    OPEN_CODE_SERVE_COMMAND,
+    OPEN_CODE_SERVER_URL_ERROR,
+    OPEN_CODE_SESSION_ENDPOINT,
     OPEN_CODE_SESSION_TIMEOUT,
+    OPEN_CODE_TEXT_KEY,
+    OPEN_CODE_TYPE_KEY,
+    OPEN_CODE_URL_REGEX,
 )
-from src.utils.io.environment_system import EnvironmentSystem
 
 
 class OpenCodeProvider(LLMProvider):
@@ -30,16 +27,13 @@ class OpenCodeProvider(LLMProvider):
         super().__init__(dependencies)
         open_code_path = self.environment_system.find_executable(OPEN_CODE_EXECUTABLE)
         self.open_code_process = self.environment_system.start_subprocess(
-            [
-                open_code_path,
-                OPEN_CODE_SERVE_COMMAND
-            ]
+            [open_code_path, OPEN_CODE_SERVE_COMMAND]
         )
         self.base_url = self.get_server_url()
         self.session = requests.post(
             f"{self.base_url}{OPEN_CODE_SESSION_ENDPOINT}",
             json={},
-            timeout=OPEN_CODE_SESSION_TIMEOUT
+            timeout=OPEN_CODE_SESSION_TIMEOUT,
         ).json()
 
     def close(self):
@@ -60,7 +54,6 @@ class OpenCodeProvider(LLMProvider):
 
         self.open_code_process = None
 
-
     def get_server_url(self, max_attempts: int = OPEN_CODE_DEFAULT_MAX_ATTEMPTS):
         for _ in range(max_attempts):
             line = self.open_code_process.stdout.readline()
@@ -75,10 +68,7 @@ class OpenCodeProvider(LLMProvider):
             if match:
                 return match.group()
 
-        raise RuntimeError(
-            OPEN_CODE_SERVER_URL_ERROR
-        )
-
+        raise RuntimeError(OPEN_CODE_SERVER_URL_ERROR)
 
     async def invoke(self, messages: list[dict]) -> str:
         response = requests.post(

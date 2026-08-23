@@ -1,22 +1,22 @@
 from dataclasses import dataclass, field
+
 from src.utils.formatting.strings import (
-    TRANSLATED_ENGLISH_SCRIPT_LABEL,
-    ORIGINAL_SCRIPT_LABEL,
-    VALIDATION_SCORE_LABEL,
-    MISSING_INFORMATION_LABEL,
-    INCORRECT_MEANING_LABEL,
-    HALLUCINATED_INFORMATION_LABEL,
-    INCORRECT_TERMINOLOGY_LABEL,
-    MAJOR_GRAMMATICAL_ERRORS_LABEL,
-    ORIGINAL_SCRIPT_FIELD,
-    TRANSLATED_SCRIPT_FIELD,
     ACCURACY_SCORE_FIELD,
-    MISSING_INFORMATION_FIELD,
-    INCORRECT_MEANING_FIELD,
     HALLUCINATED_INFORMATION_FIELD,
+    HALLUCINATED_INFORMATION_LABEL,
+    INCORRECT_MEANING_FIELD,
+    INCORRECT_MEANING_LABEL,
     INCORRECT_TERMINOLOGY_FIELD,
+    INCORRECT_TERMINOLOGY_LABEL,
     MAJOR_GRAMMATICAL_ERRORS_FIELD,
-    VALIDATION_THRESHOLD,
+    MAJOR_GRAMMATICAL_ERRORS_LABEL,
+    MISSING_INFORMATION_FIELD,
+    MISSING_INFORMATION_LABEL,
+    ORIGINAL_SCRIPT_FIELD,
+    ORIGINAL_SCRIPT_LABEL,
+    TRANSLATED_ENGLISH_SCRIPT_LABEL,
+    TRANSLATED_SCRIPT_FIELD,
+    VALIDATION_SCORE_LABEL,
 )
 from src.utils.validation.validators import require_field
 
@@ -51,11 +51,7 @@ class ProcessedScript:
     def to_string(self, validation_threshold: float) -> str:
         is_valid = self.is_valid(validation_threshold)
 
-        script_label = (
-            TRANSLATED_ENGLISH_SCRIPT_LABEL
-            if is_valid
-            else ORIGINAL_SCRIPT_LABEL
-        )
+        script_label = TRANSLATED_ENGLISH_SCRIPT_LABEL if is_valid else ORIGINAL_SCRIPT_LABEL
         script = self.translated_script if is_valid else self.original_script
 
         issues = [

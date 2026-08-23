@@ -20,16 +20,12 @@ def track_execution(caller_name: str):
     try:
         yield
     finally:
-        timing_tracker.finish(
-            node,
-            get_time() - start_time
-        )
+        timing_tracker.finish(node, get_time() - start_time)
 
 
-def execution_time(
-    function: Callable[..., Any]
-) -> Callable[..., Any]:
+def execution_time(function: Callable[..., Any]) -> Callable[..., Any]:
     if inspect.iscoroutinefunction(function):
+
         @wraps(function)
         async def async_wrapper(*args: Any, **kwargs: Any) -> Any:
             with track_execution(function.__name__):

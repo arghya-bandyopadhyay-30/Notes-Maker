@@ -2,13 +2,13 @@ from dataclasses import dataclass
 
 from youtube_transcript_api import YouTubeTranscriptApi
 
+from src.bootstrap.container import DependencyContainer
 from src.pipeline.execution import execution_time
 from src.utils.config.youtube_config import YoutubeConfig
-from src.bootstrap.container import DependencyContainer
 from src.utils.formatting.strings import (
-    TRYING_FETCH_TRANSCRIPT_API,
     FALLING_BACK_AUDIO_TRANSCRIPTION,
     TRANSCRIPT_JOIN_SEPARATOR,
+    TRYING_FETCH_TRANSCRIPT_API,
 )
 from src.utils.supported_languages import SupportedLanguages
 from src.youtube.video import extract_video_id
@@ -31,13 +31,11 @@ class TranscriptFetcher:
     def fetch_transcript_text_from_youtube_api(self) -> str:
         print(TRYING_FETCH_TRANSCRIPT_API)
         transcript = self.youtube_transcript_api.fetch(
-            self.youtube_video_id,
-            languages=[self.youtube_language.language_code]
+            self.youtube_video_id, languages=[self.youtube_language.language_code]
         )
 
         return TRANSCRIPT_JOIN_SEPARATOR.join(
-            snippet.text.replace(TRANSCRIPT_JOIN_SEPARATOR, " ").strip()
-            for snippet in transcript
+            snippet.text.replace(TRANSCRIPT_JOIN_SEPARATOR, " ").strip() for snippet in transcript
         )
 
     def fetch_transcript_text_from_audio(self) -> str:

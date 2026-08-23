@@ -7,10 +7,7 @@ from src.utils.formatting.strings import TIMING_STACK_VAR
 class TimingTracker:
     def __init__(self):
         self.roots: list[TimingNode] = []
-        self.stack: ContextVar[list[TimingNode]] = ContextVar(
-            TIMING_STACK_VAR,
-            default=[]
-        )
+        self.stack: ContextVar[list[TimingNode]] = ContextVar(TIMING_STACK_VAR, default=[])
 
     def start(self, caller_name: str) -> TimingNode:
         node = TimingNode(caller_name)
@@ -31,9 +28,7 @@ class TimingTracker:
         stack.pop()
 
     def to_dict(self) -> dict:
-        return {
-            node.caller_name: node.to_dict()
-            for node in self.roots
-        }
+        return {node.caller_name: node.to_dict() for node in self.roots}
+
 
 timing_tracker = TimingTracker()

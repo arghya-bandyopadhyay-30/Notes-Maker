@@ -36,9 +36,7 @@ class FileSystem:
             raise ValueError(YAML_FILE_IS_EMPTY.format(path))
 
         if not isinstance(data, dict):
-            raise ValueError(
-                YAML_FILE_MUST_BE_MAPPING.format(path)
-            )
+            raise ValueError(YAML_FILE_MUST_BE_MAPPING.format(path))
 
         return data
 

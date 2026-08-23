@@ -21,9 +21,8 @@ class PromptTemplate:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any], placeholders: dict[str, Any]) -> "PromptTemplate":
-        render_prompt = (
-            lambda prompt: prompt.format(**placeholders)
-        )
+        def render_prompt(prompt: str) -> str:
+            return prompt.format(**placeholders)
 
         return cls(
             role=require_field(data, ROLE),

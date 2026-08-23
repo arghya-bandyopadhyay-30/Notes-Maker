@@ -7,6 +7,5 @@ class DependencyContainer:
         self.file_system = FileSystem()
         self.environment_system = EnvironmentSystem()
         from src.prompts.prompt_factory import PromptFactory
-        self.prompt_factory = PromptFactory(
-            file_system=self.file_system
-        )
+
+        self.prompt_factory = PromptFactory(file_system=self.file_system)

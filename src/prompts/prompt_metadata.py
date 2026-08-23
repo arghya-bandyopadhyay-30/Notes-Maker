@@ -1,4 +1,4 @@
-from dataclasses import field, dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from src.utils.formatting.strings import (
@@ -25,13 +25,10 @@ class PromptMetadata:
     @classmethod
     def from_dict(cls, data: dict[str, Any], placeholders: dict[str, Any]) -> "PromptMetadata":
         parameters = require_field(data, PARAMETERS)
-        validate_parameters(
-            parameters=parameters,
-            placeholders=placeholders
-        )
+        validate_parameters(parameters=parameters, placeholders=placeholders)
 
         return cls(
             name=require_field(data, NAME),
             description=require_field(data, DESCRIPTION),
-            parameters=parameters
+            parameters=parameters,
         )

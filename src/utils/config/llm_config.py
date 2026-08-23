@@ -1,16 +1,16 @@
 from dataclasses import dataclass
 
+from src.bootstrap.container import DependencyContainer
 from src.llm.base.llm_provider import LLMProvider
 from src.llm.provider_models import ProviderModels
 from src.utils.config.models_config import ModelsConfig
-from src.bootstrap.container import DependencyContainer
-from src.utils.naming.resolver import get_llm_provider_class_name
 from src.utils.formatting.strings import (
     MODELS_CONFIG,
     PROVIDER_MODEL,
     VALIDATION_THRESHOLD,
     VALIDATION_THRESHOLD_KEY,
 )
+from src.utils.naming.resolver import get_llm_provider_class_name
 from src.utils.validation.validators import require_field
 
 
@@ -38,8 +38,7 @@ class LLMConfig:
             provider_model=provider_model,
             models_config=ModelsConfig.from_dict(require_field(data, MODELS_CONFIG)),
             provider=get_llm_provider_class_name(
-                provider_model_name=provider_model.value,
-                dependencies=dependencies
+                provider_model_name=provider_model.value, dependencies=dependencies
             ),
             validation_threshold=validation_threshold,
         )

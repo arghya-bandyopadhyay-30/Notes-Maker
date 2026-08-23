@@ -25,14 +25,10 @@ class Prompt:
     def from_dict(cls, data: dict[str, Any], placeholders: dict[str, Any]) -> "Prompt":
         return cls(
             metadata=PromptMetadata.from_dict(
-                data=require_field(data, METADATA),
-                placeholders=placeholders
+                data=require_field(data, METADATA), placeholders=placeholders
             ),
             template=[
-                PromptTemplate.from_dict(
-                    data=item,
-                    placeholders=placeholders
-                )
+                PromptTemplate.from_dict(data=item, placeholders=placeholders)
                 for item in require_field(data, TEMPLATE)
             ],
         )

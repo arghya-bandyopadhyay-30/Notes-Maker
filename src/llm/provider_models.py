@@ -15,6 +15,4 @@ class ProviderModels(Enum):
     def _missing_(cls, value):
         supported = ", ".join(f"'{provider.value}'" for provider in cls)
 
-        raise ValueError(
-            UNSUPPORTED_PROVIDER_ERROR.format(value, supported)
-        )
+        raise ValueError(UNSUPPORTED_PROVIDER_ERROR.format(value, supported))

@@ -1,8 +1,5 @@
-import os
-
 import yt_dlp
 
-from src.utils.io.environment_system import EnvironmentSystem
 from src.utils.formatting.strings import (
     AUDIO_OUTPUT_DIRECTORY,
     BEST_AUDIO_FORMAT,
@@ -14,6 +11,7 @@ from src.utils.formatting.strings import (
     WAV,
     WAV_FILE_EXTENSION,
 )
+from src.utils.io.environment_system import EnvironmentSystem
 
 
 def download_audio_as_wav(
@@ -31,7 +29,9 @@ def download_audio_as_wav(
                 "path": node_path,
             }
         },
-        "remote_components": {"ejs:github",},
+        "remote_components": {
+            "ejs:github",
+        },
         "extractor_args": {
             "youtube": {
                 "player_client": [

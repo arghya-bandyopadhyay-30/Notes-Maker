@@ -37,7 +37,7 @@ def require_directory_path(
 def validate_parameters(parameters: list[str], placeholders: dict[str, Any]) -> None:
     required_parameters = set(parameters)
     provided_parameters = set(placeholders.keys())
-    missing_placeholder = (required_parameters - provided_parameters)
+    missing_placeholder = required_parameters - provided_parameters
 
     if missing_placeholder:
         raise ValueError(MISSING_PLACEHOLDERS.format(", ".join(missing_placeholder)))

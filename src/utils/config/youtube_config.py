@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 
-from src.transcribers.transcriber import Transcriber
-from src.utils.supported_languages import SupportedLanguages
 from src.bootstrap.container import DependencyContainer
-from src.utils.naming.resolver import get_transcriber
+from src.transcribers.transcriber import Transcriber
 from src.utils.formatting.strings import (
     LANGUAGE,
     URL,
 )
+from src.utils.naming.resolver import get_transcriber
+from src.utils.supported_languages import SupportedLanguages
 from src.utils.validation.validators import require_field
 
 
@@ -29,13 +29,7 @@ class YoutubeConfig:
         language_code = require_field(data, LANGUAGE)
         language = SupportedLanguages(language_code.lower())
         transcriber = get_transcriber(
-            language=language.value,
-            url=youtube_url,
-            dependencies=dependencies
+            language=language.value, url=youtube_url, dependencies=dependencies
         )
 
-        return cls(
-            url=youtube_url,
-            language=language,
-            transcriber=transcriber
-        )
+        return cls(url=youtube_url, language=language, transcriber=transcriber)

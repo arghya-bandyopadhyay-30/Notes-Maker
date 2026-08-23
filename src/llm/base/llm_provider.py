@@ -3,14 +3,13 @@ from abc import ABC, abstractmethod
 
 from pydantic import BaseModel, ValidationError
 
-from src.pipeline.execution import execution_time
-from src.prompts.prompt_factory import PromptFactory
-from src.prompts.prompt_template import PromptTemplate
 from src.bootstrap.container import DependencyContainer
+from src.pipeline.execution import execution_time
+from src.prompts.prompt_template import PromptTemplate
 from src.utils.formatting.strings import (
+    LLM_DEFAULT_MAX_ATTEMPTS,
     LLM_VALIDATION_FAILED_ATTEMPT,
     LLM_VALIDATION_FAILED_MAX_ATTEMPTS,
-    LLM_DEFAULT_MAX_ATTEMPTS,
 )
 
 
@@ -33,10 +32,7 @@ class LLMProvider(ABC):
         parser: type[BaseModel],
         max_attempts: int = LLM_DEFAULT_MAX_ATTEMPTS,
     ) -> BaseModel:
-        messages = [
-            item.to_dict()
-            for item in prompt
-        ]
+        messages = [item.to_dict() for item in prompt]
 
         async def attempt(
             attempt_number: int,
@@ -55,17 +51,11 @@ class LLMProvider(ABC):
             except ValidationError as exception:
                 error = str(exception)
 
-                print(
-                    LLM_VALIDATION_FAILED_ATTEMPT.format(
-                        attempt_number, max_attempts, error
-                    )
-                )
+                print(LLM_VALIDATION_FAILED_ATTEMPT.format(attempt_number, max_attempts, error))
 
                 if attempt_number == max_attempts:
                     raise RuntimeError(
-                        LLM_VALIDATION_FAILED_MAX_ATTEMPTS.format(
-                            max_attempts, error
-                        )
+                        LLM_VALIDATION_FAILED_MAX_ATTEMPTS.format(max_attempts, error)
                     ) from exception
 
                 return await attempt(
@@ -91,10 +81,7 @@ class LLMProvider(ABC):
 
         return [
             *messages,
-            *[
-                item.to_dict()
-                for item in validation_prompt.template
-            ],
+            *[item.to_dict() for item in validation_prompt.template],
         ]
 
     @execution_time
@@ -112,8 +99,5 @@ class LLMProvider(ABC):
         parser: type[BaseModel],
     ) -> list[BaseModel]:
         return await asyncio.gather(
-            *(
-                self.response_with_retries(prompt, parser)
-                for prompt in prompts
-            )
+            *(self.response_with_retries(prompt, parser) for prompt in prompts)
         )

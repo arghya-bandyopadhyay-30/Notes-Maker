@@ -1,5 +1,6 @@
 import re
-from typing import Callable, Final
+from collections.abc import Callable
+from typing import Final
 from urllib.parse import ParseResult, parse_qs, urlparse
 
 from src.utils.formatting.strings import (
@@ -22,13 +23,9 @@ from src.utils.formatting.strings import (
     YOUTUBE_WATCH_PATH,
 )
 
-VIDEO_ID_PATTERN: Final[re.Pattern[str]] = re.compile(
-    YOUTUBE_VIDEO_ID_PATTERN
-)
+VIDEO_ID_PATTERN: Final[re.Pattern[str]] = re.compile(YOUTUBE_VIDEO_ID_PATTERN)
 
-PATH_PATTERN: Final[re.Pattern[str]] = re.compile(
-    YOUTUBE_PATH_PATTERN
-)
+PATH_PATTERN: Final[re.Pattern[str]] = re.compile(YOUTUBE_PATH_PATTERN)
 
 
 def normalise_host(host: str) -> str:
@@ -39,17 +36,13 @@ def normalise_host(host: str) -> str:
 
     for prefix in YOUTUBE_SUBDOMAIN_PREFIXES:
         if normalised.startswith(prefix):
-            return normalised[len(prefix):]
+            return normalised[len(prefix) :]
 
     return normalised
 
 
 def unwrap_quotes(url: str) -> str:
-    if (
-        len(url) >= 2
-        and url[0] == url[-1]
-        and url[0] in QUOTE_CHARS
-    ):
+    if len(url) >= 2 and url[0] == url[-1] and url[0] in QUOTE_CHARS:
         return url[1:-1].strip()
 
     return url
@@ -100,9 +93,7 @@ def extract_from_embed_path(
     return EMPTY_STRING
 
 
-URL_EXTRACTORS: Final[
-    tuple[Callable[[str, ParseResult], str], ...]
-] = (
+URL_EXTRACTORS: Final[tuple[Callable[[str, ParseResult], str], ...]] = (
     extract_from_watch_url,
     extract_from_short_url,
     extract_from_embed_path,
@@ -124,25 +115,16 @@ def extract_video_id(url: str) -> str:
     parsed = urlparse(candidate)
 
     if not parsed.netloc:
-        raise ValueError(
-            YOUTUBE_INVALID_URL_MISSING_HOSTNAME.format(candidate)
-        )
+        raise ValueError(YOUTUBE_INVALID_URL_MISSING_HOSTNAME.format(candidate))
 
     host = normalise_host(parsed.netloc)
 
     video_id = next(
-        (
-            result
-            for extractor in URL_EXTRACTORS
-            for result in (extractor(host, parsed),)
-            if result
-        ),
+        (result for extractor in URL_EXTRACTORS for result in (extractor(host, parsed),) if result),
         EMPTY_STRING,
     )
 
     if video_id:
         return video_id
 
-    raise ValueError(
-        YOUTUBE_COULD_NOT_EXTRACT_VIDEO_ID.format(candidate)
-    )
+    raise ValueError(YOUTUBE_COULD_NOT_EXTRACT_VIDEO_ID.format(candidate))
