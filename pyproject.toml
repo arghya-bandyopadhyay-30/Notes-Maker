@@ -1,27 +1,34 @@
-[project]
+[tool.poetry]
 name = "essentialprojects"
 version = "0.1.0"
 description = ""
+authors = ["Arghya Bandyopadhyay <arghya.bandyopadhyay.official1@gmail.com>"]
 readme = "README.md"
-authors = [{name = "Arghya Bandyopadhyay", email = "arghya.bandyopadhyay.official1@gmail.com"}]
-requires-python = ">=3.12,<3.14"
-dependencies = [
-    "youtube-transcript-api>=1.2.4",
-    "ollama>=0.6.2",
-    "yt-dlp>=2026.7.4",
-    "pyyaml>=6.0",
-    "openai-whisper>=20250625",
-    "transformers>=5.15.0",
-    "torchaudio>=2.11.0",
-    "onnxruntime>=1.28.0",
-    "onnx>=1.22.0",
-    "nemo-toolkit[asr]>=3.0.0",
-    "faster-whisper>=1.2.1",
-    "langchain-core>=1.5.6",
-]
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.14"
+youtube-transcript-api = "^1.2.4"
+ollama = "^0.6.2"
+yt-dlp = "^2026.7.4"
+pyyaml = "^6.0"
+openai-whisper = "^20250625"
+transformers = "^5.15.0"
+torchaudio = "^2.11.0"
+onnxruntime = "^1.28.0"
+onnx = "^1.22.0"
+nemo-toolkit = {extras = ["asr"], version = "^3.0.0"}
+faster-whisper = "^1.2.1"
+langchain-core = "^1.5.6"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.16"
+pre-commit = "^4.6"
+pytest = "^8.2"
+mypy = "^1.11"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.8"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
