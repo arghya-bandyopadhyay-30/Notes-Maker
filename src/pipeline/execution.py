@@ -1,6 +1,6 @@
 import inspect
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from functools import wraps
 from typing import Any
@@ -8,12 +8,12 @@ from typing import Any
 from src.pipeline.timing_tracker import timing_tracker
 
 
-def get_time():
+def get_time() -> float:
     return time.perf_counter()
 
 
 @contextmanager
-def track_execution(caller_name: str):
+def track_execution(caller_name: str) -> Iterator[None]:
     node = timing_tracker.start(caller_name)
     start_time = get_time()
 
