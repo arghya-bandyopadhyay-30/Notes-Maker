@@ -6,6 +6,9 @@ authors = ["Arghya Bandyopadhyay <arghya.bandyopadhyay.official1@gmail.com>"]
 readme = "README.md"
 packages = [{include = "src"}]
 
+[tool.poetry.virtualenvs]
+in-project = true
+
 [tool.poetry.dependencies]
 python = ">=3.12,<3.14"
 youtube-transcript-api = "^1.2.4"
