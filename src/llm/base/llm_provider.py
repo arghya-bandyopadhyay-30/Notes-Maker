@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 from pydantic import BaseModel, ValidationError
 
-from src.pipeline.statistics.execution import execution_time
+from src.pipeline.execution import execution_time
 from src.prompts.prompt_factory import PromptFactory
 from src.prompts.prompt_template import PromptTemplate
 from src.bootstrap.container import DependencyContainer

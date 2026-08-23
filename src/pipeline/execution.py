@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from functools import wraps
 from typing import Any
 
-from src.pipeline.statistics.timing_tracker import timing_tracker
+from src.pipeline.timing_tracker import timing_tracker
 
 
 def get_time():

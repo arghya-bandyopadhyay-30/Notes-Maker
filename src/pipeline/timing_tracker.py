@@ -1,6 +1,6 @@
 from contextvars import ContextVar
 
-from src.pipeline.statistics.timing_node import TimingNode
+from src.pipeline.timing_node import TimingNode
 from src.utils.formatting.strings import TIMING_STACK_VAR
 
 

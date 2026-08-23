@@ -1,7 +1,7 @@
 import asyncio
 
-from src.pipeline.statistics.execution import execution_time
-from src.pipeline.statistics.timing_tracker import timing_tracker
+from src.pipeline.execution import execution_time
+from src.pipeline.timing_tracker import timing_tracker
 from src.processors.processor import Processor
 from src.utils.config.app_config_service import AppConfigService
 from src.bootstrap.container import DependencyContainer

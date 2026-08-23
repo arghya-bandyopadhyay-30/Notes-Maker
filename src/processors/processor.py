@@ -1,6 +1,6 @@
 from langchain_core.output_parsers import PydanticOutputParser
 
-from src.pipeline.statistics.execution import execution_time
+from src.pipeline.execution import execution_time
 from src.processors.translated_segment import TranslatedSegment
 from src.processors.translation_validation import TranslationValidation
 from src.processors.processed_script import ProcessedScript
