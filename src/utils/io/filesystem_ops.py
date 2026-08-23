@@ -1,14 +1,68 @@
 import os
 
+import yt_dlp
 import yaml
 
+from src.utils.io.environment import EnvironmentSystem
 from src.utils.formatting.strings import (
+    AUDIO_OUTPUT_DIRECTORY,
+    BEST_AUDIO_FORMAT,
     FILE_NOT_FOUND,
+    FFMPEG,
+    FFMPEG_EXTRACT_AUDIO,
+    ID,
+    NODE,
     READ_MODE,
     UTF_8_ENCODING,
+    VIDEO_ID_FORMAT,
+    WAV,
+    WAV_FILE_EXTENSION,
+    WRITE_MODE,
     YAML_FILE_IS_EMPTY,
-    YAML_FILE_MUST_BE_MAPPING, WRITE_MODE,
+    YAML_FILE_MUST_BE_MAPPING,
 )
+
+
+def download_audio_as_wav(
+    url: str,
+    environment_system: EnvironmentSystem,
+) -> str:
+    node_path = environment_system.find_executable(NODE)
+    environment_system.find_executable(FFMPEG)
+
+    ydl_opts = {
+        "format": BEST_AUDIO_FORMAT,
+        "outtmpl": f"{AUDIO_OUTPUT_DIRECTORY}/{VIDEO_ID_FORMAT}.%(ext)s",
+        "js_runtimes": {
+            NODE: {
+                "path": node_path,
+            }
+        },
+        "remote_components": {"ejs:github",},
+        "extractor_args": {
+            "youtube": {
+                "player_client": [
+                    "web_embedded",
+                ],
+            },
+        },
+        "postprocessors": [
+            {
+                "key": FFMPEG_EXTRACT_AUDIO,
+                "preferredcodec": WAV,
+            }
+        ],
+    }
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(
+            url,
+            download=True,
+        )
+
+    video_id = info[ID]
+
+    return f"{AUDIO_OUTPUT_DIRECTORY}/{video_id}{WAV_FILE_EXTENSION}"
 
 
 class FileSystem:
