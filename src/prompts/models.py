@@ -10,7 +10,7 @@ from src.utils.formatting.strings import (
     ROLE,
     TEMPLATE,
 )
-from src.utils.validation.validation import require_field, validate_parameters
+from src.utils.validation.validators import require_field, validate_parameters
 
 
 @dataclass

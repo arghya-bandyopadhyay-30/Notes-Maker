@@ -2,7 +2,7 @@ from langchain_core.output_parsers import PydanticOutputParser
 
 from src.pipeline.statistics.execution import execution_time
 from src.processors.models import TranslatedSegment, TranslationValidation
-from src.processors.script import ProcessedScript
+from src.processors.processed_script import ProcessedScript
 from src.prompts.factory import PromptFactory
 from src.utils.config.config import LLMConfig
 from src.utils.formatting.strings import (

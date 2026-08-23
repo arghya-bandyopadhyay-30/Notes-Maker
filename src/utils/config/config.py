@@ -5,7 +5,7 @@ from src.llm.models import ProviderModels
 from src.transcribers.base import Transcriber
 from src.utils.validation.languages import SupportedLanguages
 from src.utils.config.container import DependencyContainer
-from src.utils.naming.naming import get_transcriber, get_llm_provider_class_name
+from src.utils.naming.resolver import get_transcriber, get_llm_provider_class_name
 from src.utils.formatting.strings import (
     LANGUAGE,
     LLM,
@@ -17,7 +17,7 @@ from src.utils.formatting.strings import (
     VALIDATOR,
     YOUTUBE,
 )
-from src.utils.validation.validation import require_directory_path, require_field
+from src.utils.validation.validators import require_directory_path, require_field
 
 
 @dataclass

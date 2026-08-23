@@ -18,7 +18,7 @@ from src.utils.formatting.strings import (
     MAJOR_GRAMMATICAL_ERRORS_FIELD,
     VALIDATION_THRESHOLD,
 )
-from src.utils.validation.validation import require_field
+from src.utils.validation.validators import require_field
 
 
 @dataclass

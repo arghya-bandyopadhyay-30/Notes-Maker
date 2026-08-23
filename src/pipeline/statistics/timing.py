@@ -1,6 +1,6 @@
 from dataclasses import field, dataclass
 
-from src.utils.formatting.formatting import format_time
+from src.utils.formatting.formatters import format_time
 from src.utils.formatting.strings import TIMING_EXECUTION_TIME_KEY
 
 

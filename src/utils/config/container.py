@@ -1,5 +1,5 @@
 from src.utils.io.environment import EnvironmentSystem
-from src.utils.io.file_system import FileSystem
+from src.utils.io.filesystem import FileSystem
 
 
 class DependencyContainer:
