@@ -1,4 +1,4 @@
-from src.utils.config.config import AppConfig
+from src.utils.config.app_config import AppConfig
 from src.utils.config.dependency_container import DependencyContainer
 
 

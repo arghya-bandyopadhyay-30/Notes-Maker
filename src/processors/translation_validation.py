@@ -2,12 +2,29 @@ from pydantic import BaseModel, Field
 
 
 class TranslationValidation(BaseModel):
-    score: float = Field(
+    accuracy_score: float = Field(
+        ...,
         ge=0.0,
         le=1.0,
-        description="Translation accuracy score between 0 and 1",
+        description="Overall accuracy of the English translation compared to the original transcript.",
     )
-    issues: list[str] = Field(
+    missing_information: list[str] = Field(
         default_factory=list,
-        description="Issues found in the translation."
+        description="Information present in the original transcript but missing from the translation.",
+    )
+    incorrect_meaning: list[str] = Field(
+        default_factory=list,
+        description="Parts of the translation that incorrectly represent the original meaning.",
+    )
+    hallucinated_information: list[str] = Field(
+        default_factory=list,
+        description="Information present in the translation that is not supported by the original transcript.",
+    )
+    incorrect_terminology: list[str] = Field(
+        default_factory=list,
+        description="Technical terms that are translated or used incorrectly.",
+    )
+    major_grammatical_errors: list[str] = Field(
+        default_factory=list,
+        description="Major grammatical errors that change the meaning of the translation.",
     )

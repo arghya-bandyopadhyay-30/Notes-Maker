@@ -1,6 +1,6 @@
 from typing import Any
 
-from src.prompts.models import Prompt
+from src.prompts.prompt import Prompt
 from src.utils.io.filesystem import FileSystem
 from src.utils.formatting.strings import (
     PROMPT_RESOURCES_DIRECTORY,

@@ -5,7 +5,7 @@ from pydantic import BaseModel, ValidationError
 
 from src.pipeline.statistics.execution import execution_time
 from src.prompts.prompt_factory import PromptFactory
-from src.prompts.models import PromptTemplate
+from src.prompts.prompt_template import PromptTemplate
 from src.utils.config.dependency_container import DependencyContainer
 from src.utils.formatting.strings import (
     LLM_VALIDATION_FAILED_ATTEMPT,

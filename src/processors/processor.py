@@ -1,10 +1,11 @@
 from langchain_core.output_parsers import PydanticOutputParser
 
 from src.pipeline.statistics.execution import execution_time
-from src.processors.models import TranslatedSegment, TranslationValidation
+from src.processors.translated_segment import TranslatedSegment
+from src.processors.translation_validation import TranslationValidation
 from src.processors.processed_script import ProcessedScript
 from src.prompts.prompt_factory import PromptFactory
-from src.utils.config.config import LLMConfig
+from src.utils.config.llm_config import LLMConfig
 from src.utils.formatting.strings import (
     TRANSLATION_PROMPT_FILE,
     TRANSLATION_PROMPT_KEY,

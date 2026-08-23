@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from youtube_transcript_api import YouTubeTranscriptApi
 
 from src.pipeline.statistics.execution import execution_time
-from src.utils.config.config import YoutubeConfig
+from src.utils.config.youtube_config import YoutubeConfig
 from src.utils.config.dependency_container import DependencyContainer
 from src.utils.formatting.strings import (
     TRYING_FETCH_TRANSCRIPT_API,
