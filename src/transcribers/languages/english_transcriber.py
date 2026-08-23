@@ -2,7 +2,7 @@ import whisper
 from whisper import Whisper
 
 from src.transcribers.transcriber import Transcriber
-from src.utils.formatting.strings import WHISPER_MODEL_SMALL
+from src.utils.formatting.strings import WHISPER_MODEL_SMALL, WHISPER_RESULT_TEXT_KEY
 
 
 class EnglishTranscriber(Transcriber):
@@ -14,4 +14,4 @@ class EnglishTranscriber(Transcriber):
             audio=self.audio_path, fp16=False, verbose=True
         )
 
-        return result["text"].strip()
+        return str(result[WHISPER_RESULT_TEXT_KEY].strip())
