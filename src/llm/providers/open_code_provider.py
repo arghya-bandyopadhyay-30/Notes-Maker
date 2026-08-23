@@ -1,4 +1,5 @@
 import re
+from subprocess import Popen
 
 import requests
 
@@ -26,7 +27,7 @@ class OpenCodeProvider(LLMProvider):
     def __init__(self, dependencies: DependencyContainer):
         super().__init__(dependencies)
         open_code_path = self.environment_system.find_executable(OPEN_CODE_EXECUTABLE)
-        self.open_code_process = self.environment_system.start_subprocess(
+        self.open_code_process: Popen[str] = self.environment_system.start_subprocess(
             [open_code_path, OPEN_CODE_SERVE_COMMAND]
         )
         self.base_url = self.get_server_url()
@@ -37,11 +38,11 @@ class OpenCodeProvider(LLMProvider):
         ).json()
 
     def close(self) -> None:
-        if self.open_code_process is None:
+        if self.closed:
             return
 
         if self.open_code_process.poll() is not None:
-            self.open_code_process = None
+            self.closed = True
             return
 
         self.open_code_process.terminate()
@@ -52,7 +53,7 @@ class OpenCodeProvider(LLMProvider):
             self.open_code_process.kill()
             self.open_code_process.wait()
 
-        self.open_code_process = None
+        self.closed = True
 
     def get_server_url(self, max_attempts: int = OPEN_CODE_DEFAULT_MAX_ATTEMPTS) -> str:
         if self.open_code_process.stdout is None:

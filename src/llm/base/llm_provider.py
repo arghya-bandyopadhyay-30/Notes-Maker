@@ -17,6 +17,7 @@ class LLMProvider(ABC):
     def __init__(self, dependencies: DependencyContainer):
         self.prompt_factory = dependencies.prompt_factory
         self.environment_system = dependencies.environment_system
+        self.closed = False
 
     @abstractmethod
     async def invoke(self, messages: list[dict]) -> str:
