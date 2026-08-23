@@ -5,6 +5,11 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from src.pipeline.statistics.execution import execution_time
 from src.utils.config.config import YoutubeConfig
 from src.utils.config.container import DependencyContainer
+from src.utils.formatting.strings import (
+    TRYING_FETCH_TRANSCRIPT_API,
+    FALLING_BACK_AUDIO_TRANSCRIPTION,
+    TRANSCRIPT_JOIN_SEPARATOR,
+)
 from src.utils.validation.languages import SupportedLanguages
 from src.utils.io.video import extract_video_id
 
@@ -24,19 +29,19 @@ class TranscriptFetcher:
         self.youtube_transcriber = youtube_config.transcriber
 
     def fetch_transcript_text_from_youtube_api(self) -> str:
-        print("Trying to fetch transcript from YouTube API...")
+        print(TRYING_FETCH_TRANSCRIPT_API)
         transcript = self.youtube_transcript_api.fetch(
             self.youtube_video_id,
             languages=[self.youtube_language.language_code]
         )
 
-        return "\n".join(
-            snippet.text.replace("\n", " ").strip()
+        return TRANSCRIPT_JOIN_SEPARATOR.join(
+            snippet.text.replace(TRANSCRIPT_JOIN_SEPARATOR, " ").strip()
             for snippet in transcript
         )
 
     def fetch_transcript_text_from_audio(self) -> str:
-        print("Falling back to audio transcription...")
+        print(FALLING_BACK_AUDIO_TRANSCRIPTION)
         return self.youtube_transcriber.transcribe()
 
     @execution_time

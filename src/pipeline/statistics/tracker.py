@@ -1,13 +1,14 @@
 from contextvars import ContextVar
 
 from src.pipeline.statistics.timing import TimingNode
+from src.utils.formatting.strings import TIMING_STACK_VAR
 
 
 class TimingTracker:
     def __init__(self):
         self.roots: list[TimingNode] = []
         self.stack: ContextVar[list[TimingNode]] = ContextVar(
-            "timing_stack",
+            TIMING_STACK_VAR,
             default=[]
         )
 

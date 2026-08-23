@@ -1,13 +1,13 @@
 from faster_whisper.transcribe import Segment
 
+from src.utils.formatting.strings import SEGMENT_PRINT_FORMAT
+
 
 def process_segment(segment: Segment):
     text = segment.text.strip()
 
     print(
-        f"[{segment.start:.2f}s -> "
-        f"{segment.end:.2f}s] "
-        f"{text}"
+        SEGMENT_PRINT_FORMAT.format(segment.start, segment.end, text)
     )
 
     return text

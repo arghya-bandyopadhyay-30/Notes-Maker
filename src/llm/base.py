@@ -7,6 +7,11 @@ from src.pipeline.statistics.execution import execution_time
 from src.prompts.factory import PromptFactory
 from src.prompts.models import PromptTemplate
 from src.utils.config.container import DependencyContainer
+from src.utils.formatting.strings import (
+    LLM_VALIDATION_FAILED_ATTEMPT,
+    LLM_VALIDATION_FAILED_MAX_ATTEMPTS,
+    LLM_DEFAULT_MAX_ATTEMPTS,
+)
 
 
 class LLMProvider(ABC):
@@ -26,7 +31,7 @@ class LLMProvider(ABC):
         self,
         prompt: list[PromptTemplate],
         parser: type[BaseModel],
-        max_attempts: int = 3,
+        max_attempts: int = LLM_DEFAULT_MAX_ATTEMPTS,
     ) -> BaseModel:
         messages = [
             item.to_dict()
@@ -51,16 +56,16 @@ class LLMProvider(ABC):
                 error = str(exception)
 
                 print(
-                    f"LLM response validation failed "
-                    f"(attempt {attempt_number}/{max_attempts}): "
-                    f"{error}"
+                    LLM_VALIDATION_FAILED_ATTEMPT.format(
+                        attempt_number, max_attempts, error
+                    )
                 )
 
                 if attempt_number == max_attempts:
                     raise RuntimeError(
-                        f"LLM response validation failed after "
-                        f"{max_attempts} attempts: "
-                        f"{error}"
+                        LLM_VALIDATION_FAILED_MAX_ATTEMPTS.format(
+                            max_attempts, error
+                        )
                     ) from exception
 
                 return await attempt(

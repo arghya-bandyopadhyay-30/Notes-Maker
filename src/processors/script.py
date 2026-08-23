@@ -1,4 +1,23 @@
 from dataclasses import dataclass, field
+from src.utils.formatting.strings import (
+    TRANSLATED_ENGLISH_SCRIPT_LABEL,
+    ORIGINAL_SCRIPT_LABEL,
+    VALIDATION_SCORE_LABEL,
+    MISSING_INFORMATION_LABEL,
+    INCORRECT_MEANING_LABEL,
+    HALLUCINATED_INFORMATION_LABEL,
+    INCORRECT_TERMINOLOGY_LABEL,
+    MAJOR_GRAMMATICAL_ERRORS_LABEL,
+    ORIGINAL_SCRIPT_FIELD,
+    TRANSLATED_SCRIPT_FIELD,
+    ACCURACY_SCORE_FIELD,
+    MISSING_INFORMATION_FIELD,
+    INCORRECT_MEANING_FIELD,
+    HALLUCINATED_INFORMATION_FIELD,
+    INCORRECT_TERMINOLOGY_FIELD,
+    MAJOR_GRAMMATICAL_ERRORS_FIELD,
+    VALIDATION_THRESHOLD,
+)
 from src.utils.validation.validation import require_field
 
 
@@ -15,34 +34,34 @@ class ProcessedScript:
 
     @property
     def is_valid(self) -> bool:
-        return self.validation_score > 0.85
+        return self.validation_score > VALIDATION_THRESHOLD
 
     @classmethod
     def from_dict(cls, data: dict) -> "ProcessedScript":
         return cls(
-            original_script=require_field(data, "original_script"),
-            translated_script=require_field(data, "translated_script"),
-            validation_score=require_field(data, "accuracy_score"),
-            missing_information=require_field(data, "missing_information"),
-            incorrect_meaning=require_field(data, "incorrect_meaning"),
-            hallucinated_information=require_field(data, "hallucinated_information"),
-            incorrect_terminology=require_field(data, "incorrect_terminology"),
-            major_grammatical_errors=require_field(data, "major_grammatical_errors"),
+            original_script=require_field(data, ORIGINAL_SCRIPT_FIELD),
+            translated_script=require_field(data, TRANSLATED_SCRIPT_FIELD),
+            validation_score=require_field(data, ACCURACY_SCORE_FIELD),
+            missing_information=require_field(data, MISSING_INFORMATION_FIELD),
+            incorrect_meaning=require_field(data, INCORRECT_MEANING_FIELD),
+            hallucinated_information=require_field(data, HALLUCINATED_INFORMATION_FIELD),
+            incorrect_terminology=require_field(data, INCORRECT_TERMINOLOGY_FIELD),
+            major_grammatical_errors=require_field(data, MAJOR_GRAMMATICAL_ERRORS_FIELD),
         )
 
     def to_string(self) -> str:
         return "\n".join([
-            ("Translated English Script:" if self.is_valid else "Original Script:"),
+            (TRANSLATED_ENGLISH_SCRIPT_LABEL if self.is_valid else ORIGINAL_SCRIPT_LABEL),
             self.translated_script if self.is_valid else self.original_script,
-            f"Validation Score: {self.validation_score:.0%}",
+            f"{VALIDATION_SCORE_LABEL} {self.validation_score:.0%}",
             *(
                 f"{label}: {', '.join(values)}"
                 for label, values in [
-                ("Missing Information", self.missing_information),
-                ("Incorrect Meaning", self.incorrect_meaning),
-                ("Hallucinated Information", self.hallucinated_information),
-                ("Incorrect Terminology", self.incorrect_terminology),
-                ("Major Grammatical Errors", self.major_grammatical_errors),
+                (MISSING_INFORMATION_LABEL, self.missing_information),
+                (INCORRECT_MEANING_LABEL, self.incorrect_meaning),
+                (HALLUCINATED_INFORMATION_LABEL, self.hallucinated_information),
+                (INCORRECT_TERMINOLOGY_LABEL, self.incorrect_terminology),
+                (MAJOR_GRAMMATICAL_ERRORS_LABEL, self.major_grammatical_errors),
             ]
                 if values
             ),

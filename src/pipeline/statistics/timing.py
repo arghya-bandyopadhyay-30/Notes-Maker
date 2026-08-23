@@ -1,6 +1,7 @@
 from dataclasses import field, dataclass
 
 from src.utils.formatting.formatting import format_time
+from src.utils.formatting.strings import TIMING_EXECUTION_TIME_KEY
 
 
 @dataclass
@@ -12,7 +13,7 @@ class TimingNode:
     def to_dict(self) -> dict:
         return {
             **{
-                "execution_time": format_time(round(self.execution_time, 3)
+                TIMING_EXECUTION_TIME_KEY: format_time(round(self.execution_time, 3)
                 ),
             },
             **{

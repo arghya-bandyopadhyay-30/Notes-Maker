@@ -5,6 +5,19 @@ from src.processors.models import TranslatedSegment, TranslationValidation
 from src.processors.script import ProcessedScript
 from src.prompts.factory import PromptFactory
 from src.utils.config.config import LLMConfig
+from src.utils.formatting.strings import (
+    TRANSLATION_PROMPT_FILE,
+    TRANSLATION_PROMPT_KEY,
+    VALIDATION_PROMPT_FILE,
+    VALIDATION_PROMPT_KEY,
+    SOURCE_LANGUAGE_KEY,
+    SCRIPT_KEY,
+    PARSED_FORMAT_KEY,
+    ORIGINAL_SCRIPT_KEY,
+    TRANSLATED_SCRIPT_KEY,
+    TRANSLATING_MESSAGE,
+    VALIDATING_MESSAGE,
+)
 from src.utils.validation.languages import SupportedLanguages
 
 
@@ -23,15 +36,15 @@ class Processor:
     @execution_time
     async def translate(self, original_script: str) -> str:
         print(
-            f"Translating the {self.youtube_language.value.capitalize()} script to English translated script..."
+            TRANSLATING_MESSAGE.format(self.youtube_language.value.capitalize())
         )
         prompt = self.prompt_factory.prompt(
-            prompt_file="translation.yaml",
-            prompt_key="translation",
+            prompt_file=TRANSLATION_PROMPT_FILE,
+            prompt_key=TRANSLATION_PROMPT_KEY,
             placeholders={
-                "source_language": self.youtube_language.value,
-                "script": original_script,
-                "parsed_format": self.parser_format(
+                SOURCE_LANGUAGE_KEY: self.youtube_language.value,
+                SCRIPT_KEY: original_script,
+                PARSED_FORMAT_KEY: self.parser_format(
                     TranslatedSegment
                 ),
             },
@@ -48,16 +61,16 @@ class Processor:
             return TranslationValidation(accuracy_score=1.0)
 
         print(
-            f"Validating the {self.youtube_language.value.capitalize()} script to English translated script..."
+            VALIDATING_MESSAGE.format(self.youtube_language.value.capitalize())
         )
         prompt = self.prompt_factory.prompt(
-            prompt_file="validation.yaml",
-            prompt_key="validation",
+            prompt_file=VALIDATION_PROMPT_FILE,
+            prompt_key=VALIDATION_PROMPT_KEY,
             placeholders={
-                "source_language": self.youtube_language.value,
-                "original_script": original_script,
-                "translated_script": translated_script,
-                "parsed_format": self.parser_format(
+                SOURCE_LANGUAGE_KEY: self.youtube_language.value,
+                ORIGINAL_SCRIPT_KEY: original_script,
+                TRANSLATED_SCRIPT_KEY: translated_script,
+                PARSED_FORMAT_KEY: self.parser_format(
                     TranslationValidation
                 ),
             },
@@ -79,7 +92,7 @@ class Processor:
         )
 
         return ProcessedScript.from_dict({
-            "original_script": original_script,
-            "translated_script": translated_script,
+            ORIGINAL_SCRIPT_KEY: original_script,
+            TRANSLATED_SCRIPT_KEY: translated_script,
             **validation.__dict__
         })

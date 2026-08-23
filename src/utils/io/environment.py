@@ -5,13 +5,21 @@ from contextlib import contextmanager
 
 import ollama
 
+from src.utils.formatting.strings import (
+    EXECUTABLE_NOT_FOUND_ERROR,
+    MODEL_ALREADY_EXISTS,
+    MODEL_NOT_FOUND_PULLING,
+    MODEL_DOWNLOADED_SUCCESS,
+    OPERATION_TIME_FORMAT,
+)
+
 
 class EnvironmentSystem:
     def find_executable(self, executable: str) -> str:
         executable_path = shutil.which(executable)
 
         if executable_path is None:
-            raise ValueError(f"{executable.capitalize()} was not found in PATH")
+            raise ValueError(EXECUTABLE_NOT_FOUND_ERROR.format(executable.capitalize()))
 
         return executable_path
 
@@ -34,15 +42,15 @@ class EnvironmentSystem:
 
         if model_name in installed_models:
             print(
-                f"Model '{model_name}' already exists. Skipping pull."
+                MODEL_ALREADY_EXISTS.format(model_name)
             )
             return
 
-        print(f"Model '{model_name}' not found. Pulling model...")
+        print(MODEL_NOT_FOUND_PULLING.format(model_name))
 
         ollama.pull(model_name)
 
-        print(f"Model '{model_name}' downloaded successfully.")
+        print(MODEL_DOWNLOADED_SUCCESS.format(model_name))
 
     @contextmanager
     def timed(self, operation: str):
@@ -51,4 +59,4 @@ class EnvironmentSystem:
             yield
         finally:
             elapsed = time.perf_counter() - start
-            print(f"{operation} took {elapsed:.3f}s")
+            print(OPERATION_TIME_FORMAT.format(operation, elapsed))

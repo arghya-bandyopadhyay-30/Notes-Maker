@@ -2,7 +2,14 @@ from typing import Any
 
 from src.prompts.models import Prompt
 from src.utils.io.file_system import FileSystem
-from src.utils.formatting.strings import PROMPT_RESOURCES_DIRECTORY, PROMPT_FACTORY_DIRECTORY
+from src.utils.formatting.strings import (
+    PROMPT_RESOURCES_DIRECTORY,
+    PROMPT_FACTORY_DIRECTORY,
+    PYDANTIC_VALIDATION_PROMPT_FILE,
+    PYDANTIC_VALIDATION_PROMPT_KEY,
+    PROMPT_NOT_FOUND_ERROR,
+    PYDANTIC_VALIDATION_NOT_FOUND_ERROR,
+)
 
 
 class PromptFactory:
@@ -18,7 +25,7 @@ class PromptFactory:
         prompts = self.file_system.read_yaml(prompt_file_path)
 
         if prompt_key not in prompts:
-            raise KeyError(f"Prompt '{prompt_key}' not found in '{prompt_file}'")
+            raise KeyError(PROMPT_NOT_FOUND_ERROR.format(prompt_key, prompt_file))
 
         return Prompt.from_dict(
             data=prompts[prompt_key],
@@ -29,14 +36,14 @@ class PromptFactory:
         prompt_file_path = self.file_system.join_paths(
             PROMPT_FACTORY_DIRECTORY,
             PROMPT_RESOURCES_DIRECTORY,
-            "pydantic_validation.yaml"
+            PYDANTIC_VALIDATION_PROMPT_FILE
         )
         prompts = self.file_system.read_yaml(prompt_file_path)
 
-        if "pydantic_validation" not in prompts:
-            raise KeyError(f"Prompt 'pydantic_validation' not found in 'pydantic_validation.yaml'")
+        if PYDANTIC_VALIDATION_PROMPT_KEY not in prompts:
+            raise KeyError(PYDANTIC_VALIDATION_NOT_FOUND_ERROR)
 
         return Prompt.from_dict(
-            data=prompts["pydantic_validation"],
+            data=prompts[PYDANTIC_VALIDATION_PROMPT_KEY],
             placeholders=placeholders
         )

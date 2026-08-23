@@ -5,9 +5,14 @@ from src.pipeline.statistics.tracker import timing_tracker
 from src.processors.processor import Processor
 from src.utils.config.config_service import AppConfigService
 from src.utils.config.container import DependencyContainer
+from src.utils.formatting.strings import (
+    CONFIG_FILE_NAME,
+    CONFIG_FILE_NOT_FOUND,
+    OUTPUT_SCRIPT_FILE_PATTERN,
+    OUTPUT_STATISTICS_FILE_PATTERN,
+)
 from src.youtube.transcript import TranscriptFetcher
 
-CONFIG_PATH = "config.yaml"
 
 @execution_time
 async def run(
@@ -22,13 +27,13 @@ async def run(
 async def main():
     dependencies = DependencyContainer()
 
-    if not dependencies.file_system.path_exists(CONFIG_PATH):
-        print(f"Config file not found: {CONFIG_PATH}")
+    if not dependencies.file_system.path_exists(CONFIG_FILE_NAME):
+        print(CONFIG_FILE_NOT_FOUND.format(CONFIG_FILE_NAME))
         return
 
     app_config = AppConfigService(
         dependencies=dependencies,
-        config_path=CONFIG_PATH,
+        config_path=CONFIG_FILE_NAME,
     ).get_config()
 
     file_system = dependencies.file_system
@@ -51,11 +56,17 @@ async def main():
             transcript_fetcher=transcript_fetcher,
             processor=processor
         )
-        file_system.write_file(f"{app_config.output_directory}/{video_id}.txt", script)
+        file_system.write_file(
+            OUTPUT_SCRIPT_FILE_PATTERN.format(app_config.output_directory, video_id),
+            script
+        )
     finally:
-        file_system.write_yaml(f"{app_config.output_directory}/pipeline_statistics.yaml", timing_tracker.to_dict())
-        app_config.youtube.transcriber.close()
+        file_system.write_yaml(
+            OUTPUT_STATISTICS_FILE_PATTERN.format(app_config.output_directory),
+            timing_tracker.to_dict()
+        )
         app_config.llm.provider.close()
+        app_config.youtube.transcriber.close()
 
 
 if __name__ == "__main__":
