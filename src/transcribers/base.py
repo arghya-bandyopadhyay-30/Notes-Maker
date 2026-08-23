@@ -6,7 +6,7 @@ from faster_whisper import WhisperModel
 from whisper import Whisper
 
 from src.utils.config.container import DependencyContainer
-from src.utils.io.filesystem_ops import download_audio_as_wav
+from src.utils.io.file_system import download_audio_as_wav
 
 SpeechToTextModel: TypeAlias = Speech2Text | Whisper | WhisperModel
 

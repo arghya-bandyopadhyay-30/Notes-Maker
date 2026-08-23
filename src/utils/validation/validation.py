@@ -7,7 +7,7 @@ from src.utils.formatting.strings import (
     FIELD_MUST_BE_NON_EMPTY_STRING,
     MISSING_PLACEHOLDERS,
 )
-from src.utils.io.filesystem_ops import FileSystem
+from src.utils.io.file_system import FileSystem
 
 
 def require_field(data: dict, field: str):

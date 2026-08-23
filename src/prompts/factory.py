@@ -1,7 +1,7 @@
 from typing import Any
 
 from src.prompts.models import Prompt
-from src.utils.io.filesystem_ops import FileSystem
+from src.utils.io.file_system import FileSystem
 from src.utils.formatting.strings import PROMPT_RESOURCES_DIRECTORY, PROMPT_FACTORY_DIRECTORY
 
 
